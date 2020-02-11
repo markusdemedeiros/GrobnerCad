@@ -48,9 +48,11 @@ public abstract class Geometry {
     public String getName() {
         return name;
     }
+
     public String getType() {
         return type;
     }
+
     public int getNumVariables() {
         return numVariables;
     }
