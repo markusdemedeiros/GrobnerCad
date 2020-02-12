@@ -117,25 +117,38 @@ public class SolverApp {
         showConstraintOptions();
         while (keepGoing) {
             String command = getOption("Specify next constraint");
-            if (command.equals("d")) {
-                addPPDistance();
-            } else if (command.equals("c")) {
-                addPPCoincident();
-            } else if (command.equals("h")) {
-                addPPHorizontal();
-            } else if (command.equals("v")) {
-                addPPVertical();
-            } else if (command.equals("x")) {
-                addPSetXConstraint();
-            } else if (command.equals("y")) {
-                addPSetYConstraint();
-            } else if (command.equals("n")) {
-                keepGoing = false;
-            } else if (command.equals("q")) {
-                return false;
-            } else {
-                System.out.println("You typed an invalid command, I read: " + command);
+            boolean commandExcecuted = addConstraintIfPossible(command);
+            if (!commandExcecuted)  {
+                if (command.equals("n")) {
+                    keepGoing = false;
+                } else if (command.equals("q")) {
+                    return false;
+                } else {
+                    System.out.println("You typed an invalid command, I read: " + command);
+                }
             }
+        }
+        return true;
+    }
+
+    // There is no rational reason to have this seperate from getConstraints, but checkstyle hates me personally.
+    // EFFECTS: adds constraint if possible, otherwise returns false
+    // MODIFIES: this
+    private boolean addConstraintIfPossible(String command) {
+        if (command.equals("d")) {
+            addPPDistance();
+        } else if (command.equals("c")) {
+            addPPCoincident();
+        } else if (command.equals("h")) {
+            addPPHorizontal();
+        } else if (command.equals("v")) {
+            addPPVertical();
+        } else if (command.equals("x")) {
+            addPSetXConstraint();
+        } else if (command.equals("y")) {
+            addPSetYConstraint();
+        } else {
+            return false;
         }
         return true;
     }
