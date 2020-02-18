@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class PointTest {
     Point p0;
 
@@ -13,7 +14,6 @@ public class PointTest {
         p0 = new Point("T");
     }
 
-    // Point is primarily a constructor, all tests can be in one.
     @Test
     public void pointTest() {
         assertEquals("T", p0.getName());

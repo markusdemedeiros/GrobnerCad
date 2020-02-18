@@ -24,6 +24,7 @@ On a personal note, I am a student of pure mathematics with interest in pure and
 
 ## User Stories (not yet implemented)
 - As a user, I want to be able to save and edit my lists of constraints at a later time, or in different text editing programs
+- As a user, I want to be able to load systems of geometric constraints I have previously specified for processing. 
 - As a user, I want to have algebraic and geometric information about my solution space extracted into human readable formats
 - As a user, I want to be able to tell the program to analyse my drawing and
   determine if it is over-, under-, or well-constrained. 
