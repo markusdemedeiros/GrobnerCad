@@ -101,4 +101,11 @@ public class PolynomialForm {
         }
         return -1;
     }
+
+    // EFFECTS: Returns true iff one polynomial form is identical in
+    //      representation to another. Two "equal" polynomial forms can
+    //      have different representations.
+    public boolean is(PolynomialForm pf) {
+        return (pf.toString().equals(this.toString()));
+    }
 }
