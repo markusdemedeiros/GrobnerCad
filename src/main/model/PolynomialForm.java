@@ -94,17 +94,20 @@ public class PolynomialForm {
 
     // EFFECTS: Returns index of name in variable list, or -1 if not in list
     private int dictLookup(String name) {
+        int index = -1;
         for (int i = 0; i < variables.size(); i++) {
             if (variables.get(i).equals(name)) {
-                return i;
+                index = i;
             }
         }
-        return -1;
+        return index;
     }
 
     // EFFECTS: Returns true iff one polynomial form is identical in
     //      representation to another. Two "equal" polynomial forms can
     //      have different representations.
+    // You should use the actual generated polynomials to see if two
+    //      are equivalent. This has a different purpose.
     public boolean is(PolynomialForm pf) {
         return (pf.toString().equals(this.toString()));
     }
