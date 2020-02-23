@@ -57,11 +57,14 @@ public class Solver {
     public Analyst solve() {
         PolynomialList<BigDecimal> plst = new PolynomialList<BigDecimal>(polyRing, polyList);
         Ideal<BigDecimal> ideal = new Ideal<BigDecimal>(plst);
-        System.out.println("[SOLVER LOG]: PRE-SOLVE POLYNOMIALS");
-        for (GenPolynomial p : ideal.getList()) {
-            System.out.println("\t" + p.toString());
-        }
-        solvedIdeal = ideal.GB();  //Ouch, there goes my CPU
+
+        // Helpful for debugging the actual algebra
+        //System.out.println("[SOLVER LOG]: PRE-SOLVE POLYNOMIALS");
+        //for (GenPolynomial p : ideal.getList()) {
+        //    System.out.println("\t" + p.toString());
+        //}
+
+        solvedIdeal = ideal.GB();  //Ouch, there goes my CPU. Please make efficient
         return new Analyst(solvedIdeal, variableDict);
     }
 

@@ -25,7 +25,6 @@ public class Analyst {
             result += "\t" + i + ": " + variableDict.get(i) + "\n";
         }
         result += "POLYNOMIALS:\n";
-        System.out.println("[SOLVER LOG] Basis size:" + basis.getList().size());
         for (GenPolynomial<BigDecimal> polynomial : basis.getList()) {
             result += "\t" + polynomial.toString() + "\n";
         }
