@@ -4,8 +4,13 @@ import model.*;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
+import model.persistence.Reader;
+import model.persistence.Writer;
 
 import javax.print.PrintService;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -202,7 +207,14 @@ public class SolverApp {
     // MODIFIES: this
     private boolean loadSystem() {
         String sysname = getOption("Enter system name") + ".sys";
-        System.out.println("Yeehaw imagination is fun!");
+        try {
+            FullSystem loaded = Reader.readSystem(new File("./data/" + sysname));
+            geoElements = (ArrayList<Geometry>) loaded.getGeometery();
+            geoConstraints = (ArrayList<Constraint>) loaded.getAlgebra();
+        } catch (IOException e) {
+            System.out.println("That system does not exist");
+            return false;
+        }
 
         System.out.println("Loaded constraint system " + sysname);
         return true;
@@ -215,8 +227,7 @@ public class SolverApp {
         System.out.println("System of constraints fully specified");
         UIElm.options(new ArrayList<>(Arrays.asList(
                 "s", "Save system and solve",
-                "n", "Do not save system, and solve",
-                "q", "Quit program")));
+                "n", "Do not save system, and solve")));
         boolean keepGoing = true;
         while (keepGoing) {
             String command = getOption("Before solving, would you like to save?");
@@ -232,9 +243,19 @@ public class SolverApp {
     }
 
     // EFFECTS: Saves system to disk, returns true if save is valid (TODO: Replace with exceptions probably)
+    // TODO: File overwrites for opened systems, file creation for new ones.
     private boolean saveSystem() {
         String sysname = getOption("Enter save name") + ".sys";
-        System.out.println("Yeehaw imagination is fun!");
+        FullSystem fs = new FullSystem(geoElements, geoConstraints);
+
+        try {
+            Writer writer = new Writer(new File("./data/" + sysname));
+            writer.write(fs);
+            writer.close();     // Move this to a mode sensible spot? I only use it once, in FullSystem.
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not save constraint system " + sysname);
+            return false;
+        }
 
         System.out.println("Saved constraint system " + sysname);
         return true;
