@@ -31,7 +31,7 @@ public abstract class Constraint {
         for (PolynomialForm pf : polynomialForms) {
             result += String.format(" : %s", pf.toString());
         }
-        result = result + ">\n";
+        result = result + ">";
         return result;
     }
 

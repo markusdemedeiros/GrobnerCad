@@ -31,7 +31,7 @@ public class ConstraintsTest {
         correctPolyforms1.add(new PolynomialForm("{1}[O_1]1+{-1}[A_1]1"));
         correctPolyforms1.add(new PolynomialForm("{1}[O_2]1+{-1}[A_2]1"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<pp-CDT PPCO1 : {1}[O_1]1+{-1}[A_1]1 : {1}[O_2]1+{-1}[A_2]1>\n",
+                "<pp-CDT PPCO1 : {1}[O_1]1+{-1}[A_1]1 : {1}[O_2]1+{-1}[A_2]1>",
                 "<pp-CDT PPCO1 : [PT : O] = [PT : A]>");
 
         // Probably not necessary
@@ -40,7 +40,7 @@ public class ConstraintsTest {
         correctPolyforms2.add(new PolynomialForm("{1}[A_1]1+{-1}[B_1]1"));
         correctPolyforms2.add(new PolynomialForm("{1}[A_2]1+{-1}[B_2]1"));
         constraintImplementationTest(testConstraint2, correctPolyforms2,
-                "<pp-CDT PPCO2 : {1}[A_1]1+{-1}[B_1]1 : {1}[A_2]1+{-1}[B_2]1>\n",
+                "<pp-CDT PPCO2 : {1}[A_1]1+{-1}[B_1]1 : {1}[A_2]1+{-1}[B_2]1>",
                 "<pp-CDT PPCO2 : [PT : A] = [PT : B]>");
     }
 
@@ -51,7 +51,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms1 = new ArrayList<>();
         correctPolyforms1.add(new PolynomialForm("{1}[O_1]2+{-2}[O_1]1[A_1]1+{1}[A_1]2+{1}[O_2]2+{-2}[O_2]1[A_2]1+{1}[A_2]2+{-0.0}"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<pp-DST PPDS1 : {1}[O_1]2+{-2}[O_1]1[A_1]1+{1}[A_1]2+{1}[O_2]2+{-2}[O_2]1[A_2]1+{1}[A_2]2+{-0.0}>\n",
+                "<pp-DST PPDS1 : {1}[O_1]2+{-2}[O_1]1[A_1]1+{1}[A_1]2+{1}[O_2]2+{-2}[O_2]1[A_2]1+{1}[A_2]2+{-0.0}>",
                 "<pp-DST PPDS1 : [PT : O] - 0.0 - [PT : A]>");
 
         // Nonzero distance points test
@@ -59,7 +59,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms2 = new ArrayList<>();
         correctPolyforms2.add(new PolynomialForm("{1}[B_1]2+{-2}[B_1]1[A_1]1+{1}[A_1]2+{1}[B_2]2+{-2}[B_2]1[A_2]1+{1}[A_2]2+{-100.0}"));
         constraintImplementationTest(testConstraint2, correctPolyforms2,
-                "<pp-DST PPDS2 : {1}[B_1]2+{-2}[B_1]1[A_1]1+{1}[A_1]2+{1}[B_2]2+{-2}[B_2]1[A_2]1+{1}[A_2]2+{-100.0}>\n",
+                "<pp-DST PPDS2 : {1}[B_1]2+{-2}[B_1]1[A_1]1+{1}[A_1]2+{1}[B_2]2+{-2}[B_2]1[A_2]1+{1}[A_2]2+{-100.0}>",
                 "<pp-DST PPDS2 : [PT : B] - 10.0 - [PT : A]>");
     }
 
@@ -69,7 +69,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms1 = new ArrayList<>();
         correctPolyforms1.add(new PolynomialForm("{1}[O_2]1+{-1}[A_2]1"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<pp-HOR TESTNAME : {1}[O_2]1+{-1}[A_2]1>\n",
+                "<pp-HOR TESTNAME : {1}[O_2]1+{-1}[A_2]1>",
                 "<pp-HOR TESTNAME : [PT : O] - H - [PT : A]>");
     }
 
@@ -79,7 +79,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms1 = new ArrayList<>();
         correctPolyforms1.add(new PolynomialForm("{1}[O_1]1+{-1}[A_1]1"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<pp-VER TESTNAME : {1}[O_1]1+{-1}[A_1]1>\n",
+                "<pp-VER TESTNAME : {1}[O_1]1+{-1}[A_1]1>",
                 "<pp-VER TESTNAME : [PT : O] - V - [PT : A]>");
     }
 
@@ -90,7 +90,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms1 = new ArrayList<>();
         correctPolyforms1.add(new PolynomialForm("{1}[O_1]1+{-0.0}"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<p-STX TESTNAME : {1}[O_1]1+{-0.0}>\n",
+                "<p-STX TESTNAME : {1}[O_1]1+{-0.0}>",
                 "<p-STX TESTNAME : [PT : O](x) = 0.0>");
 
         // Nonzero test
@@ -98,7 +98,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms2 = new ArrayList<>();
         correctPolyforms2.add(new PolynomialForm("{1}[A_1]1+{-5.5}"));
         constraintImplementationTest(testConstraint2, correctPolyforms2,
-                "<p-STX TESTNAME : {1}[A_1]1+{-5.5}>\n",
+                "<p-STX TESTNAME : {1}[A_1]1+{-5.5}>",
                 "<p-STX TESTNAME : [PT : A](x) = 5.5>");
     }
 
@@ -109,7 +109,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms1 = new ArrayList<>();
         correctPolyforms1.add(new PolynomialForm("{1}[O_2]1+{-0.0}"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<p-STY TESTNAME : {1}[O_2]1+{-0.0}>\n",
+                "<p-STY TESTNAME : {1}[O_2]1+{-0.0}>",
                 "<p-STY TESTNAME : [PT : O](y) = 0.0>");
 
         // Nonzero test
@@ -117,7 +117,7 @@ public class ConstraintsTest {
         ArrayList<PolynomialForm> correctPolyforms2 = new ArrayList<>();
         correctPolyforms2.add(new PolynomialForm("{1}[A_2]1+{-5.5}"));
         constraintImplementationTest(testConstraint2, correctPolyforms2,
-                "<p-STY TESTNAME : {1}[A_2]1+{-5.5}>\n",
+                "<p-STY TESTNAME : {1}[A_2]1+{-5.5}>",
                 "<p-STY TESTNAME : [PT : A](y) = 5.5>");
     }
 

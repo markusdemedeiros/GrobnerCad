@@ -21,10 +21,10 @@ On a personal note, I am a student of pure mathematics with interest in pure and
 - As a user, I want to be able to add geometric constraints to a list of geometric constraints that act on my list of geometric objects. 
 - As a user, I want to see the exact space of polynomials which represent my drawing's solution.
 - As a user, I want to be able to tell if my drawing is inconsistently constrained. 
-
-## User Stories (not yet implemented)
 - As a user, I want to be able to save and edit my lists of constraints at a later time, or in different text editing programs
 - As a user, I want to be able to load systems of geometric constraints I have previously specified for processing. 
+
+## User Stories (not yet implemented)
 - As a user, I want to have algebraic and geometric information about my solution space extracted into human readable formats
 - As a user, I want to be able to tell the program to analyse my drawing and
   determine if it is over-, under-, or well-constrained. 
