@@ -31,7 +31,7 @@ public class ConstraintsTest {
         correctPolyforms1.add(new PolynomialForm("{1}[O_1]1+{-1}[A_1]1"));
         correctPolyforms1.add(new PolynomialForm("{1}[O_2]1+{-1}[A_2]1"));
         constraintImplementationTest(testConstraint1, correctPolyforms1,
-                "<pp-CDT PPCO1 : {1}[O_1]1+{-1}[A_1]1>\n<pp-CDT PPCO1 : {1}[O_2]1+{-1}[A_2]1>\n",
+                "<pp-CDT PPCO1 : {1}[O_1]1+{-1}[A_1]1 : {1}[O_2]1+{-1}[A_2]1>\n",
                 "<pp-CDT PPCO1 : [PT : O] = [PT : A]>");
 
         // Probably not necessary
@@ -40,7 +40,7 @@ public class ConstraintsTest {
         correctPolyforms2.add(new PolynomialForm("{1}[A_1]1+{-1}[B_1]1"));
         correctPolyforms2.add(new PolynomialForm("{1}[A_2]1+{-1}[B_2]1"));
         constraintImplementationTest(testConstraint2, correctPolyforms2,
-                "<pp-CDT PPCO2 : {1}[A_1]1+{-1}[B_1]1>\n<pp-CDT PPCO2 : {1}[A_2]1+{-1}[B_2]1>\n",
+                "<pp-CDT PPCO2 : {1}[A_1]1+{-1}[B_1]1 : {1}[A_2]1+{-1}[B_2]1>\n",
                 "<pp-CDT PPCO2 : [PT : A] = [PT : B]>");
     }
 
