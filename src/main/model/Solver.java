@@ -5,7 +5,9 @@ import edu.jas.arith.BigDecimal;
 import edu.jas.poly.*;
 import model.geometric.Geometry;
 import model.algebraic.Constraint;
+import model.persistence.Saveable;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,7 @@ public class Solver {
             }
         }
     }
+
 
 //    // EFFECTS: Returns index of name in list, -1 otherwise
 //    // REQUIRES: name is in dictionary

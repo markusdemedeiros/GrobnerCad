@@ -10,6 +10,8 @@ public class GeometryTest {
     public void testPoint() {
         Point pt = new Point("A");
         geometryImplementationTest(pt, "[PT : A]", "[PT : A]", "[PT : A]");
+
+        assertEquals("PT", pt.getType());
     }
 
     // Tests if geometry was implemented correctly
@@ -20,4 +22,5 @@ public class GeometryTest {
         assertEquals(showHuman, testGeometery.showHuman());
         assertEquals(showShort, testGeometery.showShort());
     }
+
 }

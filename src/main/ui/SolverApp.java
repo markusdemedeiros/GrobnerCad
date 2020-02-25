@@ -26,8 +26,9 @@ public class SolverApp {
         geoConstraints = new ArrayList<>();
 
         UIElm.title("Welcome to the Grobner Solver");
-        System.out.print("View help.md to read about this program!");
+        System.out.println("View help.md to read about this program!");
         while (getData()) {
+            promptSave();
             Solver s = new Solver(geoElements, geoConstraints);
             System.out.println("Solving the system of constraints: ");
             for (Constraint k : geoConstraints) {
@@ -38,18 +39,25 @@ public class SolverApp {
             System.out.println("Your ideal of solutions:");
             System.out.println(analyst.showSolution());
             System.out.println();
+            System.out.println("Enter anything to continue");   // Here is where I would prompt for analysis, when
+                                                                // the theorey is fully fleshed out
+            input.next();
+            System.out.println();
             reset();
         }
         System.out.println("Thank you for using my constriant solver!");
     }
 
+
     // MODIFIES: this
     // EFFECTS: returns true if all data was entered properly and we are ready to solve the constrain problem
     private boolean getData() {
         // short-circuiting allows program to halt if any step fails (or quits)
-        return (getGeometry()
-                && checkGeometery()
-                && getConstraints());
+        return (getLoad()               // Get loaded constraints, if any
+                && getGeometry()        // Edit geometric elements
+                && checkGeometery()     // Check geometric elements
+                && getConstraints()     // Get algebraic constraints
+                && checkConstraints()); // Check algebrac constraints
     }
 
     // MODIFIES: this
@@ -58,8 +66,7 @@ public class SolverApp {
     private boolean getGeometry() {
         boolean keepGoing = true;
         String command = null;
-        System.out.println("Specifying new constraint problem:");
-        System.out.println("(1/5) Select objects:");
+        System.out.println("(2/3) Specify objects:");
         UIElm.options(new ArrayList<String>(Arrays.asList(
                 "p", "New Point",
                 "n", "All geometry specified",
@@ -92,9 +99,18 @@ public class SolverApp {
         return true;
     }
 
+
+    //  TODO: Implement this
+
+    // EFFECTS: Returns true if algebraic objects are valid, and reports to user.
+    //              Currently just checks that it is nonempty
+    private boolean checkConstraints() {
+        return true;
+    }
+
     // EFFECTS: Prints constraint options to screen
     private void showConstraintOptions() {
-        System.out.println("(2/5) Select Constraints");
+        System.out.println("(3/3) Select Constraints");
         UIElm.options(new ArrayList<>(Arrays.asList(
                 "d", "Distance Constraint (two points)",
                 "c", "Incidence Constraint (two points)",
@@ -152,6 +168,80 @@ public class SolverApp {
         }
         return true;
     }
+
+    // EFFECTS: Prompts the user to load previous constraints for editing
+    //              Returns true if program should continue, false if it should quit
+    // MODIFIES: this
+    private boolean getLoad() {
+        System.out.println("(1/3) Initializing system of constraints");
+        UIElm.options(new ArrayList<>(Arrays.asList(
+                "l", "Load system and edit",
+                "n", "New system",
+                "q", "Quit program")));
+        boolean keepGoing = true;
+        while (keepGoing) {
+            String command = getOption("Enter option");
+            if (command.equals("l")) {
+                keepGoing = !loadSystem();
+            } else if (command.equals("n")) {
+                System.out.println("Creating new constriant system");
+                keepGoing = false;
+            } else if (command.equals("q")) {
+                return false;
+            } else {
+                System.out.println("You typed an invalid command, I read: " + command);
+            }
+        }
+        System.out.println();
+        return true;
+    }
+
+
+    // EFFECTS: Gets filename from user and loads system
+    //              Returns true if system loaded correctly
+    // MODIFIES: this
+    private boolean loadSystem() {
+        String sysname = getOption("Enter system name") + ".sys";
+        System.out.println("Yeehaw imagination is fun!");
+
+        System.out.println("Loaded constraint system " + sysname);
+        return true;
+    }
+
+    // EFFECTS: Prompts the user to save their system of constraints before continuing
+    // REQUIRES: Fully specified, valid (nonempty) system of constraints
+    //                  TODO: Add support for empty/poorly defined systems later
+    private void promptSave() {
+        System.out.println("System of constraints fully specified");
+        UIElm.options(new ArrayList<>(Arrays.asList(
+                "s", "Save system and solve",
+                "n", "Do not save system, and solve",
+                "q", "Quit program")));
+        boolean keepGoing = true;
+        while (keepGoing) {
+            String command = getOption("Before solving, would you like to save?");
+            if (command.equals("s")) {
+                keepGoing = !saveSystem();
+            } else if (command.equals("n")) {
+                keepGoing = false;
+            } else {
+                System.out.println("You typed an invalid command, I read: " + command);
+            }
+        }
+        System.out.println();
+    }
+
+    // EFFECTS: Saves system to disk, returns true if save is valid (TODO: Replace with exceptions probably)
+    private boolean saveSystem() {
+        String sysname = getOption("Enter save name") + ".sys";
+        System.out.println("Yeehaw imagination is fun!");
+
+        System.out.println("Saved constraint system " + sysname);
+        return true;
+    }
+
+
+
 
     // TODO: Combine some of these into more general options (p/coord, pp/geo)
     // EFFETCS: Prompts user to add PPCoincident constraint
