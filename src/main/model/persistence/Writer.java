@@ -13,13 +13,8 @@ public class Writer {
     private PrintWriter printWriter;
 
     // Effects: Initialises writer, throws FileNotFound
-    // REQUIRES System supports UTF-8. Obviously.
-    public Writer(File file) throws FileNotFoundException {
-        try {
-            printWriter = new PrintWriter(file, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public Writer(File file) throws FileNotFoundException, UnsupportedEncodingException {
+        printWriter = new PrintWriter(file, "UTF-8");
     }
 
     // EFFECTS: Saves obj to disk as specified by obj

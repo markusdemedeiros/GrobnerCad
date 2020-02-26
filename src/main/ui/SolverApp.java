@@ -11,6 +11,7 @@ import javax.print.PrintService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -253,7 +254,11 @@ public class SolverApp {
             writer.write(fs);
             writer.close();     // Move this to a mode sensible spot? I only use it once, in FullSystem.
         } catch (FileNotFoundException e) {
-            System.out.println("Could not save constraint system " + sysname);
+            System.out.println("Could not save constraint system, file " + sysname + " not found.");
+            return false;
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("Could not save constraint system due to critical internal error");
+            e.printStackTrace();
             return false;
         }
 

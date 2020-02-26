@@ -1,10 +1,9 @@
-package model;
+package model.persistence;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import model.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
-import model.persistence.Reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
