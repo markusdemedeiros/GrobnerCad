@@ -38,7 +38,7 @@ public abstract class Constraint {
     // EFFECTS: returns a string which describes the behavior of the constraint in human terms
     public abstract String showHuman();
 
-    // EFFECTS: Getter for list of polynomialForms
+    // EFFECTS: Getter for list of polynomialForms a
     public List<PolynomialForm> getPolynomialForms() {
         return polynomialForms;
     }
