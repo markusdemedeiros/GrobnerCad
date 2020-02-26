@@ -1,4 +1,4 @@
-package model;
+package model.calculational;
 
 import edu.jas.application.Ideal;
 import edu.jas.arith.BigDecimal;

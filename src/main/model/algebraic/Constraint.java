@@ -1,6 +1,6 @@
 package model.algebraic;
 
-import model.PolynomialForm;
+import model.calculational.PolynomialForm;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package model;
+package model.calculational;
 
 import edu.jas.arith.BigDecimal;
 import edu.jas.poly.ExpVector;

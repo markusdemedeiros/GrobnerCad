@@ -1,4 +1,4 @@
-package model;
+package model.calculational;
 
 import model.algebraic.Constraint;
 import model.geometric.Geometry;

@@ -1,13 +1,14 @@
 package ui;
 
-import model.*;
 import model.algebraic.*;
+import model.calculational.Analyst;
+import model.calculational.FullSystem;
+import model.calculational.Solver;
 import model.geometric.Geometry;
 import model.geometric.Point;
 import model.persistence.Reader;
 import model.persistence.Writer;
 
-import javax.print.PrintService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

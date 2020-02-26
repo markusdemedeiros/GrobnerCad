@@ -1,6 +1,8 @@
-package model;
+package model.calculational;
 
 import model.algebraic.*;
+import model.calculational.Analyst;
+import model.calculational.Solver;
 import model.geometric.Geometry;
 import model.geometric.Point;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

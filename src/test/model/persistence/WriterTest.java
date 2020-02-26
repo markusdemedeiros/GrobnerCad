@@ -1,6 +1,6 @@
 package model.persistence;
 
-import model.FullSystem;
+import model.calculational.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

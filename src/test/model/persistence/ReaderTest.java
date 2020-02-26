@@ -1,6 +1,6 @@
 package model.persistence;
 
-import model.FullSystem;
+import model.calculational.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
