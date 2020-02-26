@@ -17,6 +17,7 @@ public class ConstraintsTest {
     private Point p1;
     private Point p2;
 
+
     @BeforeEach
     public void setup() {
         pOrigin = new Point("O");
