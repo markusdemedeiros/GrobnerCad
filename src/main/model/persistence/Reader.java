@@ -1,12 +1,10 @@
 package model.persistence;
 
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
-import sun.java2d.loops.GeneralRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +33,7 @@ public class Reader {
         List<String> geoStrings = fileContent.subList(fileContent.indexOf("{GEO}"),
                 fileContent.indexOf("{ALG}"));
         System.out.println(geoStrings.toString());
-        List<String> algStrings =  fileContent.subList(fileContent.indexOf("{ALG}"),
+        List<String> algStrings = fileContent.subList(fileContent.indexOf("{ALG}"),
                 fileContent.size());
         System.out.println(algStrings.toString());
 
@@ -82,7 +80,7 @@ public class Reader {
         if (type.equals(Constraint.PP_DISTANCE_TYPE)) {
             result = parsePPDistance(toParse, geometry);
         } else if (type.equals(Constraint.PP_COINCIDENT_TYPE)) {
-            result =  parsePPCoincident(toParse, geometry);
+            result = parsePPCoincident(toParse, geometry);
         } else if (type.equals(Constraint.PP_HORIZONTAL_TYPE)) {
             result = parsePPHorizontal(toParse, geometry);
         } else if (type.equals(Constraint.PP_VERTICAL_TYPE)) {

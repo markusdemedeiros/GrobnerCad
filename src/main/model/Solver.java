@@ -2,12 +2,12 @@ package model;
 
 import edu.jas.application.Ideal;
 import edu.jas.arith.BigDecimal;
-import edu.jas.poly.*;
-import model.geometric.Geometry;
+import edu.jas.poly.GenPolynomial;
+import edu.jas.poly.GenPolynomialRing;
+import edu.jas.poly.PolynomialList;
 import model.algebraic.Constraint;
-import model.persistence.Saveable;
+import model.geometric.Geometry;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 

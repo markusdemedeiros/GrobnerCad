@@ -4,7 +4,6 @@ import edu.jas.application.Ideal;
 import edu.jas.arith.BigDecimal;
 import edu.jas.poly.GenPolynomial;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Solver specific class to interpret results after a grobner basis is calculated

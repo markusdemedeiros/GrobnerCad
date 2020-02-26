@@ -1,7 +1,5 @@
 package model.geometric;
 
-import model.geometric.Geometry;
-
 // Geometric point represented as a pair of coordinates (x,y)
 public class Point extends Geometry {
 

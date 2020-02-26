@@ -5,7 +5,6 @@ import model.geometric.Geometry;
 import model.persistence.Saveable;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 // Class to represent a complete system of algebraic and geometric objects

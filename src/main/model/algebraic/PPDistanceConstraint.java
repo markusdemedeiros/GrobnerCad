@@ -13,7 +13,7 @@ public class PPDistanceConstraint extends Constraint {
 
     // MODIFIES: this
     // REQUIRES: Distance be positive (negative distance is stupid)
-    public  PPDistanceConstraint(String name, Point p1, Point p2, double distance) {
+    public PPDistanceConstraint(String name, Point p1, Point p2, double distance) {
         // Set local variables
         this.type = PP_DISTANCE_TYPE;
         this.name = name;

@@ -19,7 +19,7 @@ public abstract class Constraint {
 
     protected String type;  // Individual constraint type, from above
     protected String name;  // Individual constraint name
-                                // CANNOT CONTAIN SPECIAL CHARACTERS []{}_()
+    // CANNOT CONTAIN SPECIAL CHARACTERS []{}_()
 
     // List of equations describing the constraint
     protected List<PolynomialForm> polynomialForms;
