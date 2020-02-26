@@ -39,8 +39,8 @@ public class ReaderTest {
                         (Point) testGeometery.get(0),
                         (Point) testGeometery.get(1)),
                 new PPDistanceConstraint("DIST",
+                        (Point) testGeometery.get(0),
                         (Point) testGeometery.get(1),
-                        (Point) testGeometery.get(2),
                         10),
                 new PPCoincidentConstraint("COINC",
                         (Point) testGeometery.get(0),
@@ -69,6 +69,16 @@ public class ReaderTest {
                         && c.getName().equals(g.getName()));
             }
             assertTrue(testpasssed); // true => at least one identical element
+        }
+
+        // Do the same for the constraints
+        assertEquals(allconstraints.size(), fs.getAlgebra().size());
+        for (Constraint c : fs.getAlgebra()) {
+            boolean testPassed = false;
+            for (Constraint x : allconstraints) {
+                testPassed = testPassed || (x.show().equals(c.show()));
+            }
+            assertTrue(testPassed);
         }
     }
 }

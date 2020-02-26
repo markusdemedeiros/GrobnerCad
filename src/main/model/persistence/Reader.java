@@ -14,6 +14,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
+
 // A reader that can read constraint problems from a file
 public class Reader {
 
@@ -51,9 +54,8 @@ public class Reader {
             String name = current.substring(1, current.indexOf(":") - 2);
             if (current.substring(1, 3).equals("PT")) {
                 result.add(parsePoint(current));
-            } else {
-                // Something broke, leaving this here for exception refactor
             }
+            // USE ELSE here to throe exception in the future
         }
         return result;
     }
@@ -76,23 +78,22 @@ public class Reader {
 
     // EFFECTS: Gets a constraint, given it's type, it's string representation, and the geometric context
     private static Constraint readConstraintFromType(String type, String toParse, List<Geometry> geometry) {
+        Constraint result = null;
         if (type.equals(Constraint.PP_DISTANCE_TYPE)) {
-            return parsePPDistance(toParse, geometry);
+            result = parsePPDistance(toParse, geometry);
         } else if (type.equals(Constraint.PP_COINCIDENT_TYPE)) {
-            return parsePPCoincident(toParse, geometry);
+            result =  parsePPCoincident(toParse, geometry);
         } else if (type.equals(Constraint.PP_HORIZONTAL_TYPE)) {
-            return parsePPHorizontal(toParse, geometry);
+            result = parsePPHorizontal(toParse, geometry);
         } else if (type.equals(Constraint.PP_VERTICAL_TYPE)) {
-            return parsePPVertical(toParse, geometry);
+            result = parsePPVertical(toParse, geometry);
         } else if (type.equals(Constraint.P_SETX_CONSTRAINT)) {
-            return parsePSetX(toParse, geometry);
+            result = parsePSetX(toParse, geometry);
         } else if (type.equals(Constraint.P_SETY_CONSTRAINT)) {
-            return parsePSetY(toParse, geometry);
-        } else {
-            System.out.println("Shit broke on " + type);
+            result = parsePSetY(toParse, geometry);
         }
         // No support for generic constraints, it's okay to ignore the else for now
-        return null;
+        return result;
     }
 
     // EFFECTS: Returns a geometric element by name from list
@@ -122,9 +123,9 @@ public class Reader {
                 toParse.indexOf("_"));
         double value = Double.parseDouble(toParse.substring(toParse.lastIndexOf("{") + 1,
                 toParse.lastIndexOf("}")));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
-        return new PSetYConstraint(name, (Point) searchGeoByName(pt, geometry), value);
+        return new PSetYConstraint(name, (Point) searchGeoByName(pt, geometry), -1 * value);
     }
 
     private static PSetXConstraint parsePSetX(String toParse, List<Geometry> geometry) {
@@ -132,9 +133,9 @@ public class Reader {
                 toParse.indexOf("_"));
         double value = Double.parseDouble(toParse.substring(toParse.lastIndexOf("{") + 1,
                 toParse.lastIndexOf("}")));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
-        return new PSetXConstraint(name, (Point) searchGeoByName(pt, geometry), value);
+        return new PSetXConstraint(name, (Point) searchGeoByName(pt, geometry), -1 * value);
     }
 
     private static PPVerticalConstraint parsePPVertical(String toParse, List<Geometry> geometry) {
@@ -142,7 +143,7 @@ public class Reader {
                 toParse.indexOf("_"));
         String pt2 = toParse.substring(toParse.lastIndexOf("[") + 1,
                 toParse.lastIndexOf("_"));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
         return new PPVerticalConstraint(name,
                 (Point) searchGeoByName(pt1, geometry),
@@ -154,7 +155,7 @@ public class Reader {
                 toParse.indexOf("_"));
         String pt2 = toParse.substring(toParse.lastIndexOf("[") + 1,
                 toParse.lastIndexOf("_"));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
         return new PPHorizontalConstraint(name,
                 (Point) searchGeoByName(pt1, geometry),
@@ -166,7 +167,7 @@ public class Reader {
                 toParse.indexOf("_"));
         String pt2 = toParse.substring(toParse.lastIndexOf("[") + 1,
                 toParse.lastIndexOf("_"));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
         return new PPCoincidentConstraint(name,
                 (Point) searchGeoByName(pt1, geometry),
@@ -178,14 +179,14 @@ public class Reader {
                 toParse.indexOf("_"));
         String pt2 = toParse.substring(toParse.lastIndexOf("[") + 1,
                 toParse.lastIndexOf("_"));
-        String name = toParse.substring(toParse.indexOf(" "),
+        String name = toParse.substring(toParse.indexOf(" ") + 1,
                 toParse.indexOf(":") - 1);
         double value = Double.parseDouble(toParse.substring(toParse.lastIndexOf("{") + 1,
                 toParse.lastIndexOf("}")));
         return new PPDistanceConstraint(name,
                 (Point) searchGeoByName(pt1, geomerty),
                 (Point) searchGeoByName(pt2, geomerty),
-                value);
+                sqrt(abs(value)));
     }
 
 
