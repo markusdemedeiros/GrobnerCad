@@ -2,6 +2,9 @@ package ui;
 
 public class Main {
     public static void main(String[] args) {
-        SolverApp application = new SolverApp();
+        //SolverApp application = new SolverApp();
+
+        MainWindow mw = new MainWindow();
+        mw.setVisible(true);
     }
 }
