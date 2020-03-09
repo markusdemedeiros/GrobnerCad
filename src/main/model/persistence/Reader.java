@@ -32,10 +32,10 @@ public class Reader {
         /* I throw out line 1 assuming it the file is correct. Check and use excpetions instead. */
         List<String> geoStrings = fileContent.subList(fileContent.indexOf("{GEO}"),
                 fileContent.indexOf("{ALG}"));
-        System.out.println(geoStrings.toString());
+        //System.out.println(geoStrings.toString());
         List<String> algStrings = fileContent.subList(fileContent.indexOf("{ALG}"),
                 fileContent.size());
-        System.out.println(algStrings.toString());
+        //System.out.println(algStrings.toString());
 
         List<Geometry> geometery = parseGeometry(geoStrings);
         List<Constraint> constraints = parseConstraints(algStrings, geometery);

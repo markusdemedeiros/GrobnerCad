@@ -21,12 +21,10 @@ public class DrawingEditorPanel extends JPanel {
         // Layout is BorderLayout with drawing in the center. This is to enable JToolbar to snap to any edge
         setLayout(new BorderLayout());
 
-        // TODO: Remove this. If I see blue it means an error.
-        setBackground(Color.BLUE);
-        setOpaque(true);
-
         // Toolbar
         // TODO: Mulitline toolbar
+        // TODO: Toggle construction
+        // TODO: Extract to function
         jt = new JToolBar(JToolBar.VERTICAL);
         jt.setBackground(DataGUI.DRK_GREY);
 

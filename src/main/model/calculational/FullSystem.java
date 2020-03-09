@@ -31,6 +31,22 @@ public class FullSystem implements Saveable {
         return algebra;
     }
 
+    public Constraint[] getAlgebraAsArray() {
+        Constraint[] output = new Constraint[algebra.size()];
+        for (int i = 0; i < algebra.size(); i++) {
+            output[i] = algebra.get(i);
+        }
+        return output;
+    }
+
+    public Geometry[] getGeometryAsArray() {
+        Geometry[] output = new Geometry[geometery.size()];
+        for (int i = 0; i < geometery.size(); i++) {
+            output[i] = geometery.get(i);
+        }
+        return output;
+    }
+
 
     @Override
     public void save(PrintWriter printWriter) {
@@ -43,4 +59,5 @@ public class FullSystem implements Saveable {
             printWriter.println(con.show());
         }
     }
+
 }

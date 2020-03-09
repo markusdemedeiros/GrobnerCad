@@ -1,12 +1,18 @@
 package ui.gui.mainWindow;
 
 import com.formdev.flatlaf.*;
+import model.calculational.FullSystem;
+import model.persistence.Reader;
+import ui.gui.mainWindow.panel.DataPanel;
 import ui.gui.mainWindow.panel.DrawingEditorPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 
 // Handles layout of components for main drawing window
@@ -14,13 +20,10 @@ import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
 
+    private FullSystem currentSystem;
 
-
-
-    private DrawingEditorPanel dp;
-
-    public static final Dimension DEF_SIZE = new Dimension(700, 400);
-    private JPanel content;
+    public static final Dimension MIN_SIZE = new Dimension(700, 500);
+    public static final Dimension DEF_SIZE = new Dimension(1000, 600);
 
     // Adds components to main UI
     @SuppressWarnings("checkstyle:MethodLength")
@@ -37,16 +40,25 @@ public class MainWindow extends JFrame {
 
         // Drawing editor
         DrawingEditorPanel dep = new DrawingEditorPanel();
-        //dc.setPreferredSize(new Dimension(300, 300));
         add(dep, new GridBagConstraints(0, 0, 1, 1,
-                1.0, 1.0,
+                1, 1,
                 GridBagConstraints.LINE_START, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
+
+        // Panels
+        DataPanel cp = new DataPanel(currentSystem);
+        add(cp, new GridBagConstraints(1, 0, 1, 1,
+                0, 1,
+                GridBagConstraints.LINE_END, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+
+
 
         // ================================
         // WINDOW PARAMATERS
         setTitle("Drawing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setMinimumSize(MIN_SIZE);
         setSize(DEF_SIZE);
     }
 
@@ -85,8 +97,14 @@ public class MainWindow extends JFrame {
 
 
 
-
     public MainWindow() {
+        try {
+            currentSystem = Reader.readSystem(new File("./data/allconstraints.sys"));
+        } catch (IOException e) {
+            // Just crash for now, I will handle this later
+            throw new UncheckedIOException(e);
+        }
+
         initUI();
     }
 }

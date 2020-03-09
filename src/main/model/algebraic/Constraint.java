@@ -40,4 +40,12 @@ public abstract class Constraint {
         return polynomialForms;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
 }

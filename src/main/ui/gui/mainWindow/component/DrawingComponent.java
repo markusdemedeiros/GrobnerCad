@@ -10,14 +10,25 @@ public class DrawingComponent extends JPanel {
 
     private Graphics2D g2;
 
+    // Represents the coordinate of the top left pixel
+    private float coordsx;
+    private float coordsy;
+
+
+    // TODO NEXT: Implement dragging around using this and overriding repaint()
+    public DrawingComponent() {
+        coordsx = 0;
+        coordsy = 0;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         g2 = (Graphics2D) g;
         super.paintComponent(g2);
-        g2.setBackground(Color.red);
         Dimension size = getSize();
         g2.drawRect(0, 0, drawingWidth(), drawingHeight());
     }
+
 
 
     // EFFECTS: Returns the x co-ordinate of the bottom right pixel
