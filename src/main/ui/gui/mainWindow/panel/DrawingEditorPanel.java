@@ -30,8 +30,6 @@ public class DrawingEditorPanel extends JPanel {
         JButton jb2 = new JButton("B");
         jt.add(jb2);
 
-        // Some trivial commment so I can commit
-        // More trivial stff
 
         // Drawing Panel
         drawing = new JPanel();
