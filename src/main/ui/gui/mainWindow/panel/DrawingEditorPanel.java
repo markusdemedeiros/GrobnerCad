@@ -1,17 +1,20 @@
 package ui.gui.mainWindow.panel;
 
 import sun.java2d.loops.GeneralRenderer;
+import ui.DataGUI;
 import ui.gui.mainWindow.MainWindow;
 import ui.gui.mainWindow.component.DrawingComponent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.xml.crypto.Data;
 import java.awt.*;
 
 public class DrawingEditorPanel extends JPanel {
     private DrawingComponent dc;
     private JToolBar jt;
     private JPanel drawing; // Contains DrawingComponent and any related static components. Uses a gridBagLayout.
+
 
 
     public DrawingEditorPanel() {
@@ -23,14 +26,15 @@ public class DrawingEditorPanel extends JPanel {
         setOpaque(true);
 
         // Toolbar
+        // TODO: Mulitline toolbar
         jt = new JToolBar(JToolBar.VERTICAL);
-        jt.setBackground(MainWindow.DRK_GREY);
-        JButton jb1 = new JButton("A");
-        jt.add(jb1);
-        JButton jb2 = new JButton("B");
-        jt.add(jb2);
+        jt.setBackground(DataGUI.DRK_GREY);
 
-
+        jt.add(makeToolbarButton(DataGUI.TEST_ICON));
+        jt.add(makeToolbarButton(DataGUI.TEST_ICON2));
+        jt.addSeparator();
+        jt.add(makeToolbarButton(DataGUI.TEST_ICON3));
+        jt.add(makeToolbarButton(DataGUI.TEST_ICON4));
         // Drawing Panel
         drawing = new JPanel();
         dc = new DrawingComponent();
@@ -46,6 +50,12 @@ public class DrawingEditorPanel extends JPanel {
 
     }
 
-
+    // Makes a toolbar button
+    private JButton makeToolbarButton(Icon label) {
+        JButton button = new JButton(label);
+        button.setPreferredSize(new Dimension(DataGUI.TOOLBAR_BUTTON_SIZE, DataGUI.TOOLBAR_BUTTON_SIZE));
+        button.setBorderPainted(false);
+        return button;
+    }
 
 }

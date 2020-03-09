@@ -1,8 +1,6 @@
 package ui.gui.mainWindow;
 
 import com.formdev.flatlaf.*;
-import ui.gui.mainWindow.component.DrawingComponent;
-import ui.gui.mainWindow.panel.DataPanel;
 import ui.gui.mainWindow.panel.DrawingEditorPanel;
 
 import javax.swing.*;
@@ -16,10 +14,8 @@ import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
 
-    // COLOUR SCHEME, picked from the theme. TODO: Get this right from the theme .jar?
-    public static final Color LGT_GREY =  new Color(0xbbbbbb);
-    public static final Color MED_GREY =    new Color(0x3c3f41);
-    public static final Color DRK_GREY =    new Color(0x303234);
+
+
 
     private DrawingEditorPanel dp;
 
@@ -39,7 +35,7 @@ public class MainWindow extends JFrame {
 
         this.setJMenuBar(menubar());
 
-
+        // Drawing editor
         DrawingEditorPanel dep = new DrawingEditorPanel();
         //dc.setPreferredSize(new Dimension(300, 300));
         add(dep, new GridBagConstraints(0, 0, 1, 1,
