@@ -1,6 +1,6 @@
 package ui;
 
-import ui.gui.mainWindow.MainWindow;
+import ui.gui.mainwindow.MainWindow;
 
 public class Main {
     public static void main(String[] args) {

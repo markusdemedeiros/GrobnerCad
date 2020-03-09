@@ -1,10 +1,10 @@
-package ui.gui.mainWindow;
+package ui.gui.mainwindow;
 
 import com.formdev.flatlaf.*;
 import model.calculational.FullSystem;
 import model.persistence.Reader;
-import ui.gui.mainWindow.panel.DataPanel;
-import ui.gui.mainWindow.panel.DrawingEditorPanel;
+import ui.gui.mainwindow.panel.DataPanel;
+import ui.gui.mainwindow.panel.DrawingEditorPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +24,7 @@ public class MainWindow extends JFrame {
 
     public static final Dimension MIN_SIZE = new Dimension(700, 500);
     public static final Dimension DEF_SIZE = new Dimension(1000, 600);
+    private DrawingEditorPanel dep;
 
     // Adds components to main UI
     @SuppressWarnings("checkstyle:MethodLength")
@@ -39,7 +40,7 @@ public class MainWindow extends JFrame {
         this.setJMenuBar(menubar());
 
         // Drawing editor
-        DrawingEditorPanel dep = new DrawingEditorPanel();
+        dep = new DrawingEditorPanel();
         add(dep, new GridBagConstraints(0, 0, 1, 1,
                 1, 1,
                 GridBagConstraints.LINE_START, GridBagConstraints.BOTH,
@@ -70,6 +71,7 @@ public class MainWindow extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenuItem quitItem = new JMenuItem("Quit");
         JMenuItem repaintItem = new JMenuItem("Repaint");
+        JMenuItem moveXItem = new JMenuItem("Increase x offset by 1");
 
         fileMenu.add(quitItem);
         fileMenu.add(repaintItem);
@@ -88,9 +90,10 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Do nothing else for now
-                repaint();
+                dep.redrawAll();
             }
         });
+
 
         return menubar;
     }

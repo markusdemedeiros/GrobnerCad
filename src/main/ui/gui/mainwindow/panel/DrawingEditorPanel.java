@@ -1,13 +1,9 @@
-package ui.gui.mainWindow.panel;
+package ui.gui.mainwindow.panel;
 
-import sun.java2d.loops.GeneralRenderer;
 import ui.DataGUI;
-import ui.gui.mainWindow.MainWindow;
-import ui.gui.mainWindow.component.DrawingComponent;
+import ui.gui.mainwindow.component.DrawingComponent;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.xml.crypto.Data;
 import java.awt.*;
 
 public class DrawingEditorPanel extends JPanel {
@@ -33,6 +29,8 @@ public class DrawingEditorPanel extends JPanel {
         jt.addSeparator();
         jt.add(makeToolbarButton(DataGUI.TEST_ICON3));
         jt.add(makeToolbarButton(DataGUI.TEST_ICON4));
+
+
         // Drawing Panel
         drawing = new JPanel();
         dc = new DrawingComponent();
@@ -46,6 +44,7 @@ public class DrawingEditorPanel extends JPanel {
         add(drawing, BorderLayout.CENTER);
         add(jt, BorderLayout.WEST);
 
+
     }
 
     // Makes a toolbar button
@@ -55,5 +54,14 @@ public class DrawingEditorPanel extends JPanel {
         button.setBorderPainted(false);
         return button;
     }
+
+    // These functions can be called by MainWindow- they really only refer to what other parts of the program can do
+    //          to the pannel
+
+    public void redrawAll() {
+        dc.updateAndRedrawAll();
+    }
+
+
 
 }

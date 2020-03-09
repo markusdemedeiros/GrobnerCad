@@ -1,13 +1,7 @@
 package ui;
 
-import model.algebraic.*;
-import model.geometric.Geometry;
-import model.geometric.Point;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
 
 // ALl constants for the GUI
 public interface DataGUI {

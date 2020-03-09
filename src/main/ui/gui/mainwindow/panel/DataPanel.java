@@ -1,4 +1,4 @@
-package ui.gui.mainWindow.panel;
+package ui.gui.mainwindow.panel;
 
 import model.algebraic.Constraint;
 import model.calculational.FullSystem;
