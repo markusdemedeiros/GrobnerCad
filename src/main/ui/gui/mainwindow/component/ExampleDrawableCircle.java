@@ -4,6 +4,8 @@ import javafx.scene.shape.Circle;
 
 import java.awt.*;
 
+import static java.lang.StrictMath.pow;
+
 public class ExampleDrawableCircle extends Drawable {
 
     int radius = 20;
@@ -22,6 +24,8 @@ public class ExampleDrawableCircle extends Drawable {
 
     @Override
     public boolean inHitbox(int x, int y) {
-        return false;
+        double dist = Math.sqrt(pow(x - coordX - radius,2) + pow(y - coordX - radius, 2));
+        System.out.println(dist);
+        return dist <= radius;
     }
 }

@@ -40,11 +40,13 @@ public class DrawingComponent extends JPanel implements MouseListener {
         // Init coordinate system
         coordsx = 0;
         coordsy = 0;
+        //      List of all components on screen
+        //      Order determines component selection (change this in data pannels?)
         components = new ArrayList<Drawable>();
 
         // Init background
         try {
-            backgroundImage = ImageIO.read(new File("./res/210Background2.png"));
+            backgroundImage = ImageIO.read(new File("./res/210Background3.png"));
         } catch (IOException e) {
             // Crash that
             throw new UncheckedIOException(e);
@@ -69,6 +71,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         super.paintComponent(g2);
 
         // Each update needs to redraw the background and any drawable components
+        // TODO: Does every update really need to update the background? Not a huge compute sink but still...
         displayBackground();
         displayDrawable();
 
@@ -120,8 +123,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
     // Forces update of entire scene and redraws everything
     public void updateAndRedrawAll() {
-        displayBackground();
         updateToDraw();
+        displayBackground();
         displayDrawable();
     }
 
@@ -152,7 +155,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // MOUSE LISTENER
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Nothing
+        // Might need to add an affine factor to compensate for border, we'll see if it's an issue later.
+        System.out.println(components.get(0).inHitbox(e.getX() - coordsx, e.getY() - coordsy));
     }
 
     // Extract to draggable interface, for all components

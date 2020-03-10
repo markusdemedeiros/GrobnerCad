@@ -38,7 +38,7 @@ public abstract class Drawable {
 
 
     // Mouse Interaction variables
-    //      Returns true if a click with absolute coords x and y should count as a click
+    //      Returns true if a click with absolute coords (offsets from origin) x and y should count as a click
     public abstract boolean inHitbox(int x, int y);
 
 
