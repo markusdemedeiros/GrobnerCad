@@ -11,6 +11,7 @@ public class DrawingEditorPanel extends JPanel {
     private JToolBar jt;
     private JPanel drawing; // Contains DrawingComponent and any related static components. Uses a gridBagLayout.
 
+    // TODO: Add graphical border so you aren't drawing right on the edge? Perhaps in DrawingPannel.
 
 
     public DrawingEditorPanel() {

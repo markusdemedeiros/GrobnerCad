@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+// Have I depricated this class? I think so...
 public class DrawingPannel extends JPanel {
 
     public DrawingPannel() {
