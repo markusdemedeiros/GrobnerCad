@@ -20,6 +20,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // List of all components on screen
     //      Order determines component selection (change this in data pannels?)
     private List<Drawable> components;
+    private Drawable selected;
 
     // Screen co-ordinates of virtual origin
     private int voriginx;
@@ -140,12 +141,17 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
 
     // Gets all objects at position
-    private List<Component> getAllObjectsAtPosition(int x, int y) {
+    private List<Drawable> getAllObjectsAtPosition(int x, int y) {
         return null;
     }
 
     // Gets top object at position
-    private Component getObjectAtPosition(int x, int y) {
+    private Drawable getObjectAtPosition(int x, int y) {
+        for (Drawable c : components) {
+            if (c.inHitbox(x, y)) {
+                return c;
+            }
+        }
         return null;
     }
 
@@ -153,12 +159,23 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // ===========================================================
     // MOUSE EVENT HANDLING
 
+    // Mouse selects items and repaints
     @Override
     public void mouseClicked(MouseEvent e) {
-        // Might need to add an affine factor to compensate for border, we'll see if it's an issue later.
-        int xposition = e.getX() - voriginx;     // mouse event is in-component position, these
-        int yposition = e.getY() - voriginy;     //      coords are relative to the origin
-        System.out.println(components.get(0).inHitbox(e.getX() - voriginx, e.getY() - voriginy));
+        deselectAll();
+        selected = getObjectAtPosition(screenToOriginX(e.getX()),
+                screenToOriginY(e.getY()));
+        if (selected != null)  {
+            selected.toggleSelected();
+        }
+        repaint();
+    }
+
+    private void deselectAll() {
+        if (selected != null) {
+            selected.toggleSelected();
+            selected = null;
+        }
     }
 
     // Extract to draggable interface(?), for all components

@@ -18,6 +18,7 @@ public abstract class Drawable {
     protected int boundingX;
     protected int boundingY;
     private boolean toDraw;
+    private boolean isSelected;
 
     //      Objects will be drawn iff their bounding box intersects screen
     //      paramater coords are coordinates of screen boundaries
@@ -32,15 +33,31 @@ public abstract class Drawable {
         return toDraw;
     }
 
+
     // Draws image to Graphics3D at it's internally stored coordinates
-    public abstract void drawImage(Graphics2D g2d, int originx, int originy);
+    public void drawImage(Graphics2D g2d, int originx, int originy) {
+        if (isSelected) {
+            drawSelected(g2d, originx, originy);
+        } else {
+            drawNotSelected(g2d, originx, originy);
+        }
+    }
+
+    protected abstract void drawSelected(Graphics2D g, int originx, int originy);
+
+    protected abstract void drawNotSelected(Graphics2D g, int originx, int originy);
 
 
 
     // Mouse Interaction variables
     //      Returns true if a click with absolute coords (offsets from origin) x and y should count as a click
+    //      TODO: Refactor so it short circuits on invisibility, and then calls another abstract function to check click
+    //              this is because this fn is potentially computationally expensive
     public abstract boolean inHitbox(int x, int y);
 
+    public void toggleSelected() {
+        isSelected = !isSelected;
+    }
 
 
     // Drag variables
