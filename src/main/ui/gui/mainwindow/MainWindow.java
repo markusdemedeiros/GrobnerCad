@@ -30,7 +30,6 @@ public class MainWindow extends JFrame {
     @SuppressWarnings("checkstyle:MethodLength")
     private void initUI() {
         setLayout(new GridBagLayout());
-
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
         } catch (UnsupportedLookAndFeelException e) {

@@ -20,4 +20,7 @@ public interface DataGUI {
     Icon TEST_ICON3 = new ImageIcon("./res/icons/toolbar/ppdst1.png");
     Icon TEST_ICON4 = new ImageIcon("./res/icons/toolbar/pset1.png");
 
+
+    Stroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+
 }

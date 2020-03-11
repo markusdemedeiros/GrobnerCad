@@ -20,6 +20,9 @@ public abstract class Drawable {
     private boolean toDraw;
     private boolean isSelected;
 
+
+    // ADD DEFAULT CONSTRUCTOR WITH rETTER FUNCTIONS
+
     //      Objects will be drawn iff their bounding box intersects screen
     //      paramater coords are coordinates of screen boundaries
     public void updateToDraw(int xleft, int xright, int ytop, int ybot) {
@@ -72,9 +75,16 @@ public abstract class Drawable {
     }
 
     // Set absolute position of the object
+    // In screen coords
     public void setOffset(int offsetX, int offsetY) {
         this.coordX = offsetX;
         this.coordY = offsetY;
+    }
+
+    // Add space to the bounding box
+    public void addBounding(int dx, int dy) {
+        this.boundingX = dx;
+        this.boundingY = dy;
     }
 
 }

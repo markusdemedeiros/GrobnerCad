@@ -46,6 +46,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         voriginy = 0;
 
         components = new ArrayList<Drawable>();
+        selected = null;
 
         // Init background
         try {
@@ -57,12 +58,14 @@ public class DrawingComponent extends JPanel implements MouseListener {
         backgroundHeight = backgroundImage.getHeight();
 
         // This is just example code for now. Usually, components is populated by load operations or button
-        ExampleDrawableCircle circ = new ExampleDrawableCircle();
-        circ.setOffset(100, 100);
+        GraphicalPoint circ = new GraphicalPoint();
+        circ.setOffset(80, 220);
         components.add(circ);
-        ExampleDrawableCircle circ2 = new ExampleDrawableCircle();
-        circ2.setOffset(150, 200);
+        GraphicalPoint circ2 = new GraphicalPoint();
+        circ2.setOffset(250, 500);
         components.add(circ2);
+        GraphicalLine gl = new GraphicalLine(circ, circ2);
+        components.add(gl);
 
         // Final JComponent initialization
         addMouseListener(this);
@@ -165,7 +168,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         deselectAll();
         selected = getObjectAtPosition(screenToOriginX(e.getX()),
                 screenToOriginY(e.getY()));
-        if (selected != null)  {
+        if (selected != null) {
             selected.toggleSelected();
         }
         repaint();
