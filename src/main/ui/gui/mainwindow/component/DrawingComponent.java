@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DrawingComponent extends JPanel implements MouseListener {
@@ -20,7 +21,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // List of all components on screen
     //      Order determines component selection (change this in data pannels?)
     private List<Drawable> components;
-    private Drawable selected;
+    private List<Drawable> selected;
 
     // Screen co-ordinates of virtual origin
     private int voriginx;
@@ -46,7 +47,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         voriginy = 0;
 
         components = new ArrayList<Drawable>();
-        selected = null;
+        selected = new ArrayList<Drawable>();
 
         // Init background
         try {
@@ -168,23 +169,31 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // MOUSE EVENT HANDLING
 
     // Mouse selects items and repaints
+    // I'm a little worried this has too much coupling. There might be a better way to do this in another class.
     @Override
     public void mouseClicked(MouseEvent e) {
-        deselectAll();
-        selected = getObjectAtPosition(screenToOriginX(e.getX()),
+        Drawable clicked = getObjectAtPosition(screenToOriginX(e.getX()),
                 screenToOriginY(e.getY()));
-        if (selected != null) {
-            selected.toggleSelected();
+
+        if (clicked == null) {
+            deselectAll();
+        } else if (selected.contains(clicked)) {
+            clicked.toggleSelected();
+            selected.remove(clicked);
+        } else {
+            clicked.toggleSelected();
+            selected.add(clicked);
         }
         repaint();
     }
 
     private void deselectAll() {
-        if (selected != null) {
-            selected.toggleSelected();
-            selected = null;
+        for (Drawable d : selected) {
+            d.toggleSelected();
         }
+        selected = new ArrayList<Drawable>();
     }
+
 
     // Extract to draggable interface(?), for all components
     @Override
