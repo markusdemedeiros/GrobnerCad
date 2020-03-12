@@ -71,6 +71,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         addMouseListener(this);
     }
 
+
     // This is run every time the screen is drawn
     @Override
     public void paintComponent(Graphics g) {
@@ -83,7 +84,11 @@ public class DrawingComponent extends JPanel implements MouseListener {
         displayDrawable();
 
         // Test to track (0,0)
-        g2.drawLine(0,0, voriginx, voriginy);
+        int originsize = 5;
+        g2.drawLine(voriginx - originsize, voriginy - originsize, voriginx + originsize, voriginy + originsize);
+        g2.drawLine(voriginx - originsize, voriginy + originsize, voriginx + originsize, voriginy - originsize);
+
+        // Bounding rectangle
         g2.drawRect(0,0, drawingWidth(), drawingHeight());
     }
 

@@ -21,14 +21,17 @@ public class GraphicalPoint extends Drawable {
     // Circle inside the bounding box
     @Override
     public void drawSelected(Graphics2D g2d, int originx, int originy) {
-        Ellipse2D shape = new Ellipse2D.Double(coordX + originx - radius, coordY + originy - radius, 2 * radius, 2 * radius);
-        g2d.fill(shape);
+        g2d.draw(getOutline(originx, originy));
+        g2d.fill(getOutline(originx, originy));
     }
 
     @Override
     protected void drawNotSelected(Graphics2D g2d, int originx, int originy) {
-        Ellipse2D shape = new Ellipse2D.Double(coordX + originx - radius, coordY + originy - radius, 2 * radius, 2 * radius);
-        g2d.draw(shape);
+        g2d.draw(getOutline(originx, originy));
+    }
+
+    private Shape getOutline(int originx, int originy) {
+        return new Ellipse2D.Double(coordX + originx - radius, coordY + originy - radius, 2 * radius, 2 * radius);
     }
 
     @Override

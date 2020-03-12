@@ -25,6 +25,7 @@ public abstract class Drawable {
 
     //      Objects will be drawn iff their bounding box intersects screen
     //      paramater coords are coordinates of screen boundaries
+
     public void updateToDraw(int xleft, int xright, int ytop, int ybot) {
         toDraw = ((coordX + boundingX >= xleft) &&      // Left side is inside screen
                 (coordX <= xright) &&                   // Right side is inside screen
