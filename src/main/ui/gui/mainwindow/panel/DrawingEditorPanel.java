@@ -2,9 +2,14 @@ package ui.gui.mainwindow.panel;
 
 import ui.DataGUI;
 import ui.gui.mainwindow.component.DrawingComponent;
+import ui.gui.mainwindow.component.GraphicalPoint;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import static ui.DataGUI.TEST_ICON;
 
 public class DrawingEditorPanel extends JPanel {
     private DrawingComponent dc;
@@ -20,12 +25,23 @@ public class DrawingEditorPanel extends JPanel {
 
         // Toolbar
         // TODO: Mulitline toolbar
-        // TODO: Toggle construction
+        // TODO: Toggle construction mode
         // TODO: Extract to function
         jt = new JToolBar(JToolBar.VERTICAL);
         jt.setBackground(DataGUI.DRK_GREY);
 
-        jt.add(makeToolbarButton(DataGUI.TEST_ICON));
+        JButton addPoint = makeToolbarButton(DataGUI.TEST_ICON);
+        addPoint.addActionListener(new ActionListener() {
+
+            // Places point at (50, 50) for testing purposes
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dc.addDrawable(new GraphicalPoint(), 50, 50);
+            }
+        });
+
+
+        jt.add(addPoint);
         jt.add(makeToolbarButton(DataGUI.TEST_ICON2));
         jt.addSeparator();
         jt.add(makeToolbarButton(DataGUI.TEST_ICON3));
@@ -44,8 +60,6 @@ public class DrawingEditorPanel extends JPanel {
         // Add components
         add(drawing, BorderLayout.CENTER);
         add(jt, BorderLayout.WEST);
-
-
     }
 
     // Makes a toolbar button

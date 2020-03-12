@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class DrawingComponent extends JPanel implements MouseListener {
     public static final Dimension MIN_SIZE = new Dimension(300, 100);
 
@@ -63,7 +65,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         circ.setOffset(80, 220);
         components.add(circ);
         GraphicalPoint circ2 = new GraphicalPoint();
-        circ2.setOffset(250, 500);
+        circ2.setOffset(250, 0);
         components.add(circ2);
         GraphicalLine gl = new GraphicalLine(circ, circ2);
         components.add(gl);
@@ -74,6 +76,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
 
     // This is run every time the screen is drawn
+    // TODO: Look into docs, paintcomponet might not be the best place to but this (bug at init).
     @Override
     public void paintComponent(Graphics g) {
         this.g2 = (Graphics2D) g;
@@ -91,6 +94,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
         // Bounding rectangle
         g2.drawRect(0,0, drawingWidth(), drawingHeight());
+
     }
 
 
@@ -116,6 +120,16 @@ public class DrawingComponent extends JPanel implements MouseListener {
                         null);  // TODO: Look into observer.
             }
         }
+    }
+
+
+
+    // Adds a component to the screen and redraws
+    public void addDrawable(Drawable d, int localOriginX, int localOriginY) {
+        d.setOffset(localOriginX, localOriginY);
+        components.add(d);
+        updateToDraw();
+        repaint();
     }
 
 
@@ -163,6 +177,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         }
         return null;
     }
+
 
 
     // ===========================================================

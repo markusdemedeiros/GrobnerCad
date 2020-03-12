@@ -1,6 +1,7 @@
 package ui.gui.mainwindow.component;
 
 import javafx.scene.shape.Circle;
+import ui.DataGUI;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -10,7 +11,7 @@ import static java.lang.StrictMath.pow;
 public class GraphicalPoint extends Drawable {
 
     int radius = 5;
-    int clickableRadius = radius + 10; // Because clickable is far too small
+    int clickableRadius = radius + DataGUI.CLICK_TOLERANCE;
 
     public GraphicalPoint() {
         boundingX = 2 * radius;

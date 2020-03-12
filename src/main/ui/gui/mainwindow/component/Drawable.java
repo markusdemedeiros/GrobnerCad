@@ -57,6 +57,8 @@ public abstract class Drawable {
     //      Returns true if a click with absolute coords (offsets from origin) x and y should count as a click
     //      TODO: Refactor so it short circuits on invisibility, and then calls another abstract function to check click
     //              this is because this fn is potentially computationally expensive
+    //      TODO: Make new abstract function inHitbox(tolerance), and call it from here, so I don't forget tolerance.
+    //              That's proper robust.
     public abstract boolean inHitbox(int x, int y);
 
     public void toggleSelected() {

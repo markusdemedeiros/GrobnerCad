@@ -11,6 +11,10 @@ public class GraphicalLine extends Drawable {
     private GraphicalPoint p1;
     private GraphicalPoint p2;
 
+    private double lineYIntercept;
+    private double slope;
+
+
     public GraphicalLine(GraphicalPoint p1, GraphicalPoint p2) {
         this.p1 = p1;
         this.p2 = p2;
@@ -43,8 +47,10 @@ public class GraphicalLine extends Drawable {
 
     @Override
     public boolean inHitbox(int x, int y) {
-        // TEMP
-        return (p1.getVirtualCenterX() < x) && (x < p2.getVirtualCenterX()) && (p1.getVirtualCenterY() < y) & (y < p2.getVirtualCenterY());
+        // This is true iff the click is betwen point edges, up to error
+       return (coordX - DataGUI.CLICK_TOLERANCE <= x)
+               && (x <= coordX + boundingX + DataGUI.CLICK_TOLERANCE)
+               && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE);
     }
 
     // The coordinate (virtual pixels) is the top left corner of the bounding box.
@@ -65,5 +71,9 @@ public class GraphicalLine extends Drawable {
         // Get bounding box length, measured positive
         boundingX = Math.abs(p1x - p2x);
         boundingY = Math.abs(p1y - p2y);
+
+        // Compute slope of line
+        slope = Double.valueOf(p2y - p1y) / Double.valueOf(p2x - p1x);
+        lineYIntercept = p1y - slope * p1x;
     }
 }
