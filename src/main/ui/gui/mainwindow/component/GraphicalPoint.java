@@ -42,6 +42,11 @@ public class GraphicalPoint extends Drawable {
         return dist <= clickableRadius;
     }
 
+    @Override
+    public String getType() {
+       return POINT_ID;
+    }
+
     public int getVirtualCenterX() {
         return coordX;
     }

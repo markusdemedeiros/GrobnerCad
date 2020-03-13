@@ -67,6 +67,9 @@ public abstract class Drawable {
         isSelected = !isSelected;
     }
 
+    public static final String POINT_ID = "PT";
+    public static final String LINE_ID = "LN";
+    public abstract String getType();
 
     // Drag variables
     private boolean isBeingDragged = false;

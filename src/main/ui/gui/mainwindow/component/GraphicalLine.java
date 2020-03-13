@@ -61,6 +61,11 @@ public class GraphicalLine extends Drawable {
                && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE);
     }
 
+    @Override
+    public String getType() {
+        return LINE_ID;
+    }
+
 
     // The coordinate (virtual pixels) is the top left corner of the bounding box.
     // This could potentially change based on the positions of the points when they move

@@ -2,6 +2,7 @@ package ui.gui.mainwindow.panel;
 
 import model.algebraic.Constraint;
 import model.calculational.FullSystem;
+import model.exceptions.IncorrectSelectionException;
 import model.geometric.Geometry;
 import ui.DataGUI;
 
@@ -138,6 +139,8 @@ public class DataPanel extends JPanel {
         }
         return output;
     }
+
+
 
 
 

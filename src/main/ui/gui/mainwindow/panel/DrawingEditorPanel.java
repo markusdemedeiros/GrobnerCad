@@ -1,5 +1,6 @@
 package ui.gui.mainwindow.panel;
 
+import model.exceptions.IncorrectSelectionException;
 import ui.DataGUI;
 import ui.gui.mainwindow.component.DrawingComponent;
 import ui.gui.mainwindow.component.GraphicalPoint;
@@ -42,8 +43,21 @@ public class DrawingEditorPanel extends JPanel {
 
 
         jt.add(addPoint);
-        jt.add(makeToolbarButton(DataGUI.TEST_ICON2));
+        JButton newLineButton = makeToolbarButton(DataGUI.TEST_ICON2);
+        newLineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dc.createNewLineFromSelected();
+                } catch (IncorrectSelectionException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
+        jt.add(newLineButton);
+
         jt.addSeparator();
+
         jt.add(makeToolbarButton(DataGUI.TEST_ICON3));
         jt.add(makeToolbarButton(DataGUI.TEST_ICON4));
 
@@ -76,6 +90,7 @@ public class DrawingEditorPanel extends JPanel {
     public void redrawAll() {
         dc.updateAndRedrawAll();
     }
+
 
 
 

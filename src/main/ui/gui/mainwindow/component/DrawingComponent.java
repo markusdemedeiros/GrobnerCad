@@ -1,5 +1,6 @@
 package ui.gui.mainwindow.component;
 
+import model.exceptions.IncorrectSelectionException;
 import ui.DataGUI;
 
 import javax.imageio.ImageIO;
@@ -208,7 +209,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     private void doClick(MouseEvent e) {
-        System.out.println("DOING CLICK");
         Drawable clicked = getObjectAtPosition(screenToOriginX(e.getX()),
                 screenToOriginY(e.getY()));
 
@@ -391,6 +391,29 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void setOffset(int offsetX, int offsetY) {
         voriginx = offsetX;
         voriginy = offsetY;
+    }
+
+
+
+    // Just makes a new line from two points
+    public void createNewLine(GraphicalPoint p1, GraphicalPoint p2) {
+        GraphicalLine output = new GraphicalLine(p1, p2);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
+
+    // Creates new line and repaints
+    public void createNewLineFromSelected() throws IncorrectSelectionException {
+        if (selected.size() != 2 ||
+        selected.get(0).getType() != Drawable.POINT_ID ||
+        selected.get(1).getType() != Drawable.POINT_ID) {
+            throw new IncorrectSelectionException("Please select two points");
+        } else {
+            createNewLine((GraphicalPoint) selected.get(0),
+                    (GraphicalPoint) selected.get(1));
+        }
+        repaint();
     }
 
 
