@@ -25,5 +25,6 @@ public interface DataGUI {
     Stroke bigStroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0);
 
     int CLICK_TOLERANCE = 10;
+    int CLICK_SENS_TOLERANCE = 2;
 
 }

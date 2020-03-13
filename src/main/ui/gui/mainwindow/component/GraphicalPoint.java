@@ -49,4 +49,14 @@ public class GraphicalPoint extends Drawable {
     public int getVirtualCenterY() {
         return coordY;
     }
+
+    @Override
+    public void recompute() {
+        // Nothing to compute for a point, it's position depends on nothing at creation.
+    }
+
+    @Override
+    public boolean isMoveable() {
+        return true;
+    }
 }

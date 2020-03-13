@@ -18,6 +18,14 @@ public class GraphicalLine extends Drawable {
     public GraphicalLine(GraphicalPoint p1, GraphicalPoint p2) {
         this.p1 = p1;
         this.p2 = p2;
+
+        // Line position is dependent on point position
+        this.p1.addDependency(this);
+        this.p2.addDependency(this);
+
+        // Endpoint positions are dependent on line position
+        this.addDependency(p1);
+        this.addDependency(p2);
         recomputeCoords();
     }
 
@@ -53,6 +61,7 @@ public class GraphicalLine extends Drawable {
                && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE);
     }
 
+
     // The coordinate (virtual pixels) is the top left corner of the bounding box.
     // This could potentially change based on the positions of the points when they move
     // This function recalculates this.
@@ -75,5 +84,15 @@ public class GraphicalLine extends Drawable {
         // Compute slope of line
         slope = Double.valueOf(p2y - p1y) / Double.valueOf(p2x - p1x);
         lineYIntercept = p1y - slope * p1x;
+    }
+
+    @Override
+    public void recompute() {
+        recomputeCoords();
+    }
+
+    @Override
+    public boolean isMoveable() {
+        return false;
     }
 }

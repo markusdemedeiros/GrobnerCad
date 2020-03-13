@@ -1,5 +1,7 @@
 package ui.gui.mainwindow.component;
 
+import ui.DataGUI;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +11,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
 
+
+// THE LITTLE 2D DRAWING ENGINE THAT COULD
 public class DrawingComponent extends JPanel implements MouseListener {
     public static final Dimension MIN_SIZE = new Dimension(300, 100);
 
@@ -23,7 +28,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // List of all components on screen
     //      Order determines component selection (change this in data pannels?)
     private List<Drawable> components;
-    private List<Drawable> selected;
+    private ArrayList<Drawable> selected;
 
     // Screen co-ordinates of virtual origin
     private int voriginx;
@@ -37,7 +42,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // Dragging flags
     //      dragBeginx and dragBeginy are measured in absolute co-ordinates (relative to monitor)
     //      this allows drags to exit the component
-    private boolean planeIsDragging = false;
+    private boolean validDrag = false;  // True iff drag begins in component
     private int dragBeginX;
     private int dragBeginY;
 
@@ -67,8 +72,20 @@ public class DrawingComponent extends JPanel implements MouseListener {
         GraphicalPoint circ2 = new GraphicalPoint();
         circ2.setOffset(250, 0);
         components.add(circ2);
+        GraphicalPoint circ3 = new GraphicalPoint();
+        circ3.setOffset(300, 100);
+        components.add(circ3);
+        GraphicalPoint circ4 = new GraphicalPoint();
+        circ4.setOffset(10, 10);
+        components.add(circ4);
         GraphicalLine gl = new GraphicalLine(circ, circ2);
         components.add(gl);
+        GraphicalLine gl2 = new GraphicalLine(circ2, circ3);
+        components.add(gl2);
+        GraphicalLine gl4 = new GraphicalLine(circ, circ3);
+        components.add(gl4);
+        GraphicalLine gl3 = new GraphicalLine(circ, circ4);
+        components.add(gl3);
 
         // Final JComponent initialization
         addMouseListener(this);
@@ -187,6 +204,11 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // I'm a little worried this has too much coupling. There might be a better way to do this in another class.
     @Override
     public void mouseClicked(MouseEvent e) {
+        doClick(e);
+    }
+
+    private void doClick(MouseEvent e) {
+        System.out.println("DOING CLICK");
         Drawable clicked = getObjectAtPosition(screenToOriginX(e.getX()),
                 screenToOriginY(e.getY()));
 
@@ -206,27 +228,93 @@ public class DrawingComponent extends JPanel implements MouseListener {
         for (Drawable d : selected) {
             d.toggleSelected();
         }
-        selected = new ArrayList<Drawable>();
+        this.selected = new ArrayList<Drawable>();
+        repaint();
     }
 
 
     // Extract to draggable interface(?), for all components
     @Override
     public void mousePressed(MouseEvent e) {
-        planeIsDragging = true;
-        dragBeginX = e.getXOnScreen();
-        dragBeginY = e.getYOnScreen();
+        validDrag = true;
+        dragBeginX = e.getX();
+        dragBeginY = e.getY();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         // Do nothing if the click began outside of the screen
-        if (planeIsDragging) {
-            planeIsDragging = false;
-            // Drag plane
-            dragPlane(e.getXOnScreen() - dragBeginX,
-                    e.getYOnScreen() - dragBeginY);
-            repaint();
+        if (validDrag) {
+            validDrag = false;
+            int dx = e.getX() - dragBeginX;
+            int dy = e.getY() - dragBeginY;
+            // Don't do zero length drags, a zero length drag should be registered as a click
+            if (Math.abs(dx) > DataGUI.CLICK_SENS_TOLERANCE && Math.abs(dy) > DataGUI.CLICK_SENS_TOLERANCE) {
+                // True drag has been detected. Move the items if the drag started on a selected object
+                if (selected.size() == 0
+                || !selected.contains(getObjectAtPosition(screenToOriginX(dragBeginX), screenToOriginY(dragBeginY)))) {
+                    dragPlane(dx, dy);
+                } else {
+                    // Move all selected points
+                    moveSelected(dx, dy);
+                }
+                repaint();
+            }
+        }
+    }
+
+    // Recomputes at a list of dirty points, and averything effected by them
+    // ** ACK! INFINITE LOOPS BE HERE **
+    // Possible to Break them with an ischanged function
+    //      However, that does not include asymptotic phenomena.
+    //      Must write a termination proof for the types of moves I am doing (should be pretty easy, it's linear)
+
+    // PROOF SKETCH:
+    //      A move depends only on the object's intrinsic qualitites, so can be determined on an object-level.
+    //      The process of determining all dirty elements terminates as a list of at most every element
+    //      Hence, a move is equivalent to finding all dirty elements and then individually moving them
+    //          and the other object dependencies are well defined no matter the order of the move
+    //          provided they are computed after the move takes place.
+    public void moveSelected(int dx, int dy) {
+        // We only want to move the moveable objects!
+        for (Drawable d : selected) {
+            if (d.isMoveable()) {
+                d.addOffset(dx, dy);
+            }
+        }
+
+        // Then after all moves, recompute the attributes of all objects effected by the move
+        for (Drawable d : getDirty((ArrayList<Drawable>) selected.clone())) {
+            d.recompute();
+        }
+    }
+
+    // Set up the recursion
+    private ArrayList<Drawable> getDirty(ArrayList<Drawable> partialDirty) {
+        return dirtyRecursion(partialDirty, new ArrayList<Drawable>());
+    }
+
+    // Recursively walks dependency tree
+    private ArrayList<Drawable> dirtyRecursion(ArrayList<Drawable> toCompute, ArrayList<Drawable> computed) {
+        if (toCompute.size() == 0) {
+            return computed;
+        } else {
+            // Remove the first element of the list and mark it as computed
+            Drawable head = toCompute.get(0);
+            toCompute.remove(0);
+            computed.add(head);
+
+            // Get everything the head depends upon
+            ArrayList<Drawable> headDeps = head.getDependencies();
+            // We must compute all of headDeps not in toCompute and not in computed.
+            for (Drawable d : headDeps) {
+                if (!toCompute.contains(d) && !computed.contains(d)) {
+                    toCompute.add(d);
+                }
+            }
+
+            // Then calculate the remainder
+            return dirtyRecursion(toCompute, computed);
         }
     }
 

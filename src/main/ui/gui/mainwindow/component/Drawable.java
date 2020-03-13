@@ -1,9 +1,8 @@
 package ui.gui.mainwindow.component;
 
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 // Any object (aside from background because that's an infinte collection)
 //      which can be drawn on screen must implement this
@@ -19,6 +18,9 @@ public abstract class Drawable {
     protected int boundingY;
     private boolean toDraw;
     private boolean isSelected;
+
+    // These are the objects that must be recalculated if the object changes in position
+    protected ArrayList<Drawable> dependencies = new ArrayList<Drawable>();
 
 
     // ADD DEFAULT CONSTRUCTOR WITH rETTER FUNCTIONS
@@ -70,6 +72,7 @@ public abstract class Drawable {
     private boolean isBeingDragged = false;
     private int dragStartX;
     private int dragStartY;
+    public abstract boolean isMoveable();
 
     // Update position relative to plane origin
     public void addOffset(int offsetX, int offsetY) {
@@ -89,5 +92,17 @@ public abstract class Drawable {
         this.boundingX = dx;
         this.boundingY = dy;
     }
+
+    // List of everything which must be recomputed if this component moves
+    public ArrayList<Drawable> getDependencies() {
+        return dependencies;
+    }
+
+    public void addDependency(Drawable d) {
+        dependencies.add(d);
+    }
+
+    // Recalculates position
+    public abstract void recompute();
 
 }
