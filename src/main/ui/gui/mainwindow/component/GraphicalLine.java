@@ -91,6 +91,23 @@ public class GraphicalLine extends Drawable {
         lineYIntercept = p1y - slope * p1x;
     }
 
+
+
+    // Gets a midpoint of x% of the way through the line
+    public int getMidpointX(double percentage) {
+        return (int) (coordX + boundingX * percentage);
+    }
+
+    public int getMidpointY(double percentage) {
+        GraphicalPoint leftPoint;
+        if (p1.getVirtualCenterX() <= p2.getVirtualCenterX()) {
+            leftPoint = p1;
+        } else {
+            leftPoint = p2;
+        }
+        return (int) (leftPoint.getVirtualCenterY() + boundingX * slope * percentage);
+    }
+
     @Override
     public void recompute() {
         recomputeCoords();

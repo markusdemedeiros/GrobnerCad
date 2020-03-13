@@ -87,6 +87,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(gl4);
         GraphicalLine gl3 = new GraphicalLine(circ, circ4);
         components.add(gl3);
+        TestLineLabel ll1 = new TestLineLabel(gl3);
+        components.add(ll1);
 
         // Final JComponent initialization
         addMouseListener(this);
