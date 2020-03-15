@@ -41,6 +41,7 @@ public abstract class Drawable {
 
 
     // Draws image to Graphics3D at it's internally stored coordinates
+    // This function handles all logic of how to draw the component in differing situations.
     public void drawImage(Graphics2D g2d, int originx, int originy) {
         if (isSelected) {
             drawSelected(g2d, originx, originy);
