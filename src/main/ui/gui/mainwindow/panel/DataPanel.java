@@ -14,6 +14,7 @@ import static javax.swing.BorderFactory.createEmptyBorder;
 
 // Pannels to display constraint data in table format
 //          NOT USED IN THIS BUILD
+//          WILL BE HELFUL IN THE FUTURE!
 public class DataPanel extends JPanel {
 
 

@@ -31,7 +31,7 @@ public abstract class SquareLineLabel extends LineLabel {
 
     @Override
     protected void drawNotSelected(Graphics2D g, int originx, int originy) {
-        drawBoundingBox(g, originx, originy);
+        drawBoundingBox(g, originx, originy, 0);
         drawIcon(g, originx + getTopLeftX(), originy + getTopLeftY());
     }
 
@@ -39,18 +39,20 @@ public abstract class SquareLineLabel extends LineLabel {
     protected void drawSelected(Graphics2D g, int originx, int originy) {
         Stroke defaultStroke = g.getStroke();
         g.setStroke(DataGUI.bigStroke);
-        drawBoundingBox(g, originx, originy);
+        drawBoundingBox(g, originx, originy, DataGUI.BIG_STROKE_WIDTH / 2);
         g.setStroke(defaultStroke);
         drawIcon(g, originx + getTopLeftX(), originy + getTopLeftY());
     }
 
 
-    protected void drawBoundingBox(Graphics2D g, int originx, int originy) {
-        g.drawRect(getTopLeftX() + originx,
-                getTopCenterY() + originy,
-                DataGUI.CONSTRAINT_SIZE,
-                DataGUI.CONSTRAINT_SIZE);
+    protected void drawBoundingBox(Graphics2D g, int originx, int originy, int offsetForStroke) {
+        g.drawRect(getTopLeftX() + originx - offsetForStroke,
+                getTopCenterY() + originy - offsetForStroke,
+                DataGUI.CONSTRAINT_SIZE + 2 * offsetForStroke,
+                DataGUI.CONSTRAINT_SIZE + 2 * offsetForStroke);
     }
+
+
 
     public abstract void drawIcon(Graphics2D g, int topLeftX, int topLeftY);
 
@@ -67,6 +69,7 @@ public abstract class SquareLineLabel extends LineLabel {
     }
 
     // TODO: In the next big refactor, I can get rid of these functions. They (should) be replaced with coordX, coordY
+    //          as they can be made to mean the same thing.
     protected int getTopLeftX() {
         return getTopCenterX() - DataGUI.CONSTRAINT_SIZE / 2;
     }

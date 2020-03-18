@@ -105,8 +105,10 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(gl4);
         GraphicalLine gl3 = new GraphicalLine(circ, circ4);
         components.add(gl3);
-        ConstraintHorizontalLineLabel ll1 = new ConstraintHorizontalLineLabel(gl3, 0.3);
+        ConstraintHorizontalLineLabel ll1 = new ConstraintHorizontalLineLabel(gl3);
         components.add(ll1);
+        ConstraintVerticalLineLabel lv1 = new ConstraintVerticalLineLabel(gl3);
+        components.add(lv1);
     }
 
 

@@ -26,8 +26,9 @@ public interface DataGUI {
     File backgroundImageFile = new File("./res/210Background3.png");
 
     // LINE DRAWING
-    Stroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
-    Stroke bigStroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0);
+    int BIG_STROKE_WIDTH = 3;
+    Stroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10, new float[]{9}, 0);
+    Stroke bigStroke = new BasicStroke(BIG_STROKE_WIDTH, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
 
     // CONSTRAINT DRAWING
     int CONSTRAINT_SIZE = 10;       // Size of constraint (square of size length 20)
