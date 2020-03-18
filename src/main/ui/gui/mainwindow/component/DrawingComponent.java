@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
@@ -79,6 +78,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
         // JComponent init (final operations)
         addMouseListener(this);
+        recomputeAll();
     }
 
 
@@ -105,7 +105,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(gl4);
         GraphicalLine gl3 = new GraphicalLine(circ, circ4);
         components.add(gl3);
-        TestLineLabel ll1 = new TestLineLabel(gl3);
+        ConstraintHorizontalLineLabel ll1 = new ConstraintHorizontalLineLabel(gl3, 0.3);
         components.add(ll1);
     }
 
@@ -335,15 +335,25 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //              of each individual component), this is equivalent to moving all valid pieces seperately, and then
     //              recomputing the scene.
     public void moveSelected(int dx, int dy) {
+        LinkedList<Drawable> moved = new LinkedList<>();
         // We only want to move the moveable objects!
         for (Drawable d : selected) {
             if (d.isMoveable()) {
+                moved.add(d);
                 d.addOffset(dx, dy);
             }
         }
 
         // Then after all moves, recompute the attributes of all objects effected by the move
-        for (Drawable d : getDirty((List<Drawable>) selected.clone())) {
+        // NOTE: we must get the dirty elements ONLY for those which have actually been moved, NOT all selected
+        for (Drawable d : getDirty(moved)) {
+            d.recompute();
+        }
+    }
+
+    // Force coodinate recomputation on all elements
+    public void recomputeAll() {
+        for (Drawable d : components) {
             d.recompute();
         }
     }

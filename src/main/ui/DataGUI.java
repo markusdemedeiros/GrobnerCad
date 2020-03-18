@@ -29,9 +29,16 @@ public interface DataGUI {
     Stroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     Stroke bigStroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0);
 
+    // CONSTRAINT DRAWING
+    int CONSTRAINT_SIZE = 10;       // Size of constraint (square of size length 20)
+    int CONSTRAINT_OFFSET = 8;      // Offset from line to constraint
+
+    // HORIZONTAL
+
+
     // CLICK SENSITIVITY
     int CLICK_TOLERANCE = 10;
-    int CLICK_SENS_TOLERANCE = 2;
+    int CLICK_SENS_TOLERANCE = 1;
 
     int ORIGIN_SIZE = 5;
 

@@ -3,7 +3,6 @@ package ui.gui.mainwindow;
 import com.formdev.flatlaf.*;
 import model.calculational.FullSystem;
 import model.persistence.Reader;
-import ui.gui.mainwindow.panel.DataPanel;
 import ui.gui.mainwindow.panel.DrawingEditorPanel;
 
 import javax.swing.*;
@@ -45,14 +44,15 @@ public class MainWindow extends JFrame {
                 GridBagConstraints.LINE_START, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
 
+        /*  Constraint panels are not used in this build.
+                I need to focus on implementing all the functionality before providing alternate ways to use it :S
         // Panels
         DataPanel cp = new DataPanel(currentSystem);
         add(cp, new GridBagConstraints(1, 0, 1, 1,
                 0, 1,
                 GridBagConstraints.LINE_END, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
-
-
+        */
 
         // ================================
         // WINDOW PARAMATERS
@@ -70,10 +70,11 @@ public class MainWindow extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenuItem quitItem = new JMenuItem("Quit");
         JMenuItem repaintItem = new JMenuItem("Repaint");
-        JMenuItem moveXItem = new JMenuItem("Increase x offset by 1");
+        JMenuItem recomputeItem = new JMenuItem("Recompute All");
 
         fileMenu.add(quitItem);
         fileMenu.add(repaintItem);
+        fileMenu.add(recomputeItem);
 
         menubar.add(fileMenu);
 
@@ -93,6 +94,12 @@ public class MainWindow extends JFrame {
             }
         });
 
+        recomputeItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dep.recomputeAll();
+            }
+        });
 
         return menubar;
     }

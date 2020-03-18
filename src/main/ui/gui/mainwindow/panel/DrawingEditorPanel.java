@@ -91,6 +91,10 @@ public class DrawingEditorPanel extends JPanel {
         dc.updateAndRedrawAll();
     }
 
+    public void recomputeAll() {
+        dc.recomputeAll();
+    }
+
 
 
 

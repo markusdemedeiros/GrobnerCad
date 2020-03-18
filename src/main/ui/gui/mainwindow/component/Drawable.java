@@ -109,4 +109,8 @@ public abstract class Drawable {
     // Recalculates position
     public abstract void recompute();
 
+
+    // Useful coord functions
+    // TODO: oroginx, originy virtual to screen
+
 }

@@ -1,6 +1,7 @@
 package ui.gui.mainwindow.component;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
+import model.exceptions.ZeroSlopeException;
 import ui.DataGUI;
 
 import java.awt.*;
@@ -56,9 +57,9 @@ public class GraphicalLine extends Drawable {
     @Override
     public boolean inHitbox(int x, int y) {
         // This is true iff the click is betwen point edges, up to error
-       return (coordX - DataGUI.CLICK_TOLERANCE <= x)
+       return ((coordX - DataGUI.CLICK_TOLERANCE <= x)
                && (x <= coordX + boundingX + DataGUI.CLICK_TOLERANCE)
-               && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE);
+               && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE));
     }
 
     @Override
@@ -93,9 +94,15 @@ public class GraphicalLine extends Drawable {
 
 
 
-    // Gets a midpoint of x% of the way through the line
+    // Gets a midpoint of x% of the way through the line measured from the left
     public int getMidpointX(double percentage) {
-        return (int) (coordX + boundingX * percentage);
+        GraphicalPoint leftPoint;
+        if (p1.getVirtualCenterX() <= p2.getVirtualCenterX()) {
+            leftPoint = p1;
+        } else {
+            leftPoint = p2;
+        }
+        return (int) (leftPoint.getVirtualCenterX() + boundingX * percentage);
     }
 
     public int getMidpointY(double percentage) {
@@ -105,6 +112,7 @@ public class GraphicalLine extends Drawable {
         } else {
             leftPoint = p2;
         }
+
         return (int) (leftPoint.getVirtualCenterY() + boundingX * slope * percentage);
     }
 
@@ -116,5 +124,13 @@ public class GraphicalLine extends Drawable {
     @Override
     public boolean isMoveable() {
         return false;
+    }
+
+    // Gets the slope of the normal vector to the line
+    public double getNormal() throws ZeroSlopeException {
+        if (slope == 0) {
+            throw new ZeroSlopeException();
+        }
+        return -1 / slope;
     }
 }
