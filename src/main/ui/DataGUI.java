@@ -17,10 +17,14 @@ public interface DataGUI {
 
     // TOOLBAR BUTTONS
     int TOOLBAR_BUTTON_SIZE = 29; // Size of toolbar buttons in pixels
-    Icon TEST_ICON = new ImageIcon("./res/icons/toolbar/AddPoint3.png");
-    Icon TEST_ICON2 = new ImageIcon("./res/icons/toolbar/AddLine2.png");
-    Icon TEST_ICON3 = new ImageIcon("./res/icons/toolbar/ppdst1.png");
-    Icon TEST_ICON4 = new ImageIcon("./res/icons/toolbar/pset1.png");
+    Icon ADDPOINT_ICON = new ImageIcon("./res/icons/toolbar/AddPoint3.png");
+    Icon ADDLINE_ICON = new ImageIcon("./res/icons/toolbar/AddLine2.png");
+    Icon PPDST_ICON = new ImageIcon("./res/icons/toolbar/ppdst1.png");
+    Icon PPCOINC_ICON = new ImageIcon("./res/icons/toolbar/pset1.png");
+    Icon PPVERT_ICON = new ImageIcon("./res/icons/toolbar/ppvert.png");
+    Icon PPHORIZ_ICON = new ImageIcon("./res/icons/toolbar/pphoriz.png");
+    Icon PSETX_ICON = new ImageIcon("./res/icons/toolbar/psetx.png");
+    Icon PSETY_ICON = new ImageIcon("./res/icons/toolbar/psety.png");
 
     // BACKGROUND IMAGE
     File backgroundImageFile = new File("./res/210Background3.png");
