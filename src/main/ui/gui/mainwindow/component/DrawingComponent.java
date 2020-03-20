@@ -113,6 +113,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(ll1);
         ConstraintVerticalLineLabel lv1 = new ConstraintVerticalLineLabel(gl3);
         components.add(lv1);
+        ConstraintDistanceLabel cd1 = new ConstraintDistanceLabel(gl2, 5.0);
+        components.add(cd1);
     }
 
 
@@ -457,12 +459,20 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     // EFFECTS: Creates new vertical constraint component from line, adds to list of componets
+    // MODIFIES: this
     private void createNewVert(GraphicalLine gl) {
         ConstraintVerticalLineLabel output = new ConstraintVerticalLineLabel(gl);
         output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
         components.add(output);
     }
 
+    // EFFECTS: Creates new distance constraint, adds to list of components
+    // MODIFIES: this
+    private void createNewDist(GraphicalLine gl, double dist) {
+        ConstraintDistanceLabel output = new ConstraintDistanceLabel(gl, dist);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
 
     // EFFECTS: Creates new line form selected components if those components can create a line
     //              That is, they are the two endpoints (for now)
@@ -489,7 +499,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     // EFFECTS: Creates new vertical constraint from selected components if it is exactly one line
-    //              and if it doesn't already have a horizontal constraint
+    //              and if it doesn't already have a vertical constraint
     //              throws incorrectSelectionException with message otherwise
     //          repaints when done
     // MODIFIES: this
@@ -501,6 +511,21 @@ public class DrawingComponent extends JPanel implements MouseListener {
         repaint();
     }
 
+    // EFFECTS: Creates new distance constraint from selected components if it is exactly one line
+    //              and if it doesn't already have a distance constraint
+    //              throws incorrectSelectionException with message otherwise
+    //          repaints when done
+    // MODIFIES: this
+    public void createNewDistFromSelected(double dist) throws IncorrectSelectionException {
+        isOneLineSelected();
+        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
+        checkLineForLabelType(selectedLine, Constraint.PP_DISTANCE_TYPE);
+        createNewDist(selectedLine, dist);
+        repaint();
+    }
+
+
+    // TODO: refactor to actually return a tuple of points
     // EFFECTS: Does nothing if exactly two points are selected,
     //              throws an exception with instructions to the user if not
     private void isTwoPointsSelected() throws IncorrectSelectionException {
@@ -511,6 +536,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         }
     }
 
+    // TODO: Refactor to actually return a line
     // EFFECTS: Does nothing if exactly one line is selected
     //              throws exception with user instructions otherwise
     private void isOneLineSelected() throws IncorrectSelectionException {

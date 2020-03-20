@@ -108,6 +108,16 @@ public class DrawingEditorPanel extends JPanel {
     // EFFECTS: returns new addDistancebutton
     private JButton makeAddDistButton() {
         JButton output = makeToolbarButton(DataGUI.PPDST_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dc.createNewDistFromSelected(5.0);
+                } catch (IncorrectSelectionException ex) {
+                    showIncorrectSelectionError(ex);
+                }
+            }
+        });
         return output;
     }
 

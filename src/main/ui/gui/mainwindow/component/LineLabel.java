@@ -21,5 +21,7 @@ public abstract class LineLabel extends Drawable {
         return false;
     }
 
+    protected abstract boolean isAbove();
+
 
 }

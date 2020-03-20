@@ -19,6 +19,11 @@ public abstract class SquareLineLabel extends LineLabel {
         this.boundingY = DataGUI.CONSTRAINT_SIZE;
     }
 
+    @Override
+    protected boolean isAbove() {
+        return false;
+    }
+
 
     // Simple square hitbox
     @Override
@@ -65,7 +70,11 @@ public abstract class SquareLineLabel extends LineLabel {
 
     // Gets the y coordinate (screen) of the top-middle part of the box
     protected  int getTopCenterY() {
-        return line.getMidpointY(percentage) + DataGUI.CONSTRAINT_OFFSET;
+        if (isAbove()) {
+            return line.getMidpointY(percentage) - DataGUI.CONSTRAINT_OFFSET - DataGUI.CONSTRAINT_SIZE;
+        } else {
+            return line.getMidpointY(percentage) + DataGUI.CONSTRAINT_OFFSET;
+        }
     }
 
     // TODO: In the next big refactor, I can get rid of these functions. They (should) be replaced with coordX, coordY
@@ -83,5 +92,9 @@ public abstract class SquareLineLabel extends LineLabel {
         this.coordX = getTopLeftX();
         this.coordY = getTopLeftY();
     }
+
+
+    // TODO: A lot of the icon drawing stuff can be abstracted here. Icon-coords are essentially just percentages
+    //          within the icon, implement some iconx(origin, percentage) here.
 
 }

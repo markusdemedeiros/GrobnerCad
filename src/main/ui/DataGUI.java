@@ -37,6 +37,8 @@ public interface DataGUI {
     // CONSTRAINT DRAWING
     int CONSTRAINT_SIZE = 10;       // Size of constraint (square of size length 20)
     int CONSTRAINT_OFFSET = 8;      // Offset from line to constraint
+    int CONSTRAINT_INSET = 2;       // Inset from constraint bounding box to draw icon
+    int CONSTRAINT_TEXT_SPACE = 5;  // Space between constraint label and text, if applicible
 
     // HORIZONTAL
 
@@ -46,5 +48,6 @@ public interface DataGUI {
     int CLICK_SENS_TOLERANCE = 1;
 
     int ORIGIN_SIZE = 5;
+
 
 }
