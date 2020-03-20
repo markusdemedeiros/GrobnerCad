@@ -398,7 +398,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
     // EFFETCS: Creates a new line from two points, and adds it to components
     // MODIFIES: this
-    public void createNewLine(GraphicalPoint p1, GraphicalPoint p2) {
+    private void createNewLine(GraphicalPoint p1, GraphicalPoint p2) {
         GraphicalLine output = new GraphicalLine(p1, p2);
         output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
         components.add(output);
@@ -406,8 +406,15 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
     // EFFECTS: Creates new horizontal constraint component from line, adds to list of components
     // MODIFIES: this
-    public void createNewHoriz(GraphicalLine g1) {
+    private void createNewHoriz(GraphicalLine g1) {
         ConstraintHorizontalLineLabel output = new ConstraintHorizontalLineLabel(g1);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
+    // EFFECTS: Creates new vertical constraint component from line, adds to list of componets
+    private void createNewVert(GraphicalLine gl) {
+        ConstraintVerticalLineLabel output = new ConstraintVerticalLineLabel(gl);
         output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
         components.add(output);
     }
@@ -425,12 +432,28 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     // EFFECTS: Creates new horizontal constraint from selected components if it is exactly one line
-    //              throws incorrectSelectionException if not
+    //              and if it doesn't already have a horizontal constraint
+    //              throws incorrectSelectionException with message otherwise
+    //          repaints when done
+    // MODIFIES: this
     public void createNewHorizFromSelected() throws IncorrectSelectionException {
         isOneLineSelected();
         GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
         checkLineForLabelType(selectedLine, Constraint.PP_HORIZONTAL_TYPE);
         createNewHoriz(selectedLine);
+        repaint();
+    }
+
+    // EFFECTS: Creates new vertical constraint from selected components if it is exactly one line
+    //              and if it doesn't already have a horizontal constraint
+    //              throws incorrectSelectionException with message otherwise
+    //          repaints when done
+    // MODIFIES: this
+    public void createNewVertFromSelected() throws IncorrectSelectionException {
+        isOneLineSelected();
+        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
+        checkLineForLabelType(selectedLine, Constraint.PP_VERTICAL_TYPE);
+        createNewVert(selectedLine);
         repaint();
     }
 

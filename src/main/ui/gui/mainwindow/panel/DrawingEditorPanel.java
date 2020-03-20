@@ -130,6 +130,16 @@ public class DrawingEditorPanel extends JPanel {
     // EFFECTS: returns new addVert button
     private JButton makeAddVertButton() {
         JButton output = makeToolbarButton(DataGUI.PPVERT_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dc.createNewVertFromSelected();
+                } catch (IncorrectSelectionException ex) {
+                    showIncorrectSelectionError(ex);
+                }
+            }
+        });
         return output;
     }
 
