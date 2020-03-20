@@ -1,9 +1,5 @@
 package ui.gui.mainwindow.component;
 
-import model.exceptions.ZeroSlopeException;
-
-import java.awt.*;
-
 // Represents a label on a line
 public abstract class LineLabel extends Drawable {
 

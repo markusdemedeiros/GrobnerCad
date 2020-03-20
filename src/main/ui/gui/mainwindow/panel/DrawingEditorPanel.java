@@ -1,6 +1,8 @@
 package ui.gui.mainwindow.panel;
 
-import model.exceptions.IncorrectSelectionException;
+import ui.gui.mainwindow.exceptions.BadActionException;
+import ui.gui.mainwindow.exceptions.BadDistanceException;
+import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import ui.DataGUI;
 import ui.gui.mainwindow.component.DrawingComponent;
 import ui.gui.mainwindow.component.GraphicalPoint;
@@ -92,7 +94,7 @@ public class DrawingEditorPanel extends JPanel {
                 try {
                     dc.createNewLineFromSelected();
                 } catch (IncorrectSelectionException ex) {
-                    showIncorrectSelectionError(ex);
+                    showBadActionError(ex);
                 }
             }
         });
@@ -111,10 +113,12 @@ public class DrawingEditorPanel extends JPanel {
         output.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                double dist = 0;
                 try {
-                    dc.createNewDistFromSelected(5.0);
-                } catch (IncorrectSelectionException ex) {
-                    showIncorrectSelectionError(ex);
+                    dist = promptForDistance();
+                    dc.createNewDistFromSelected(dist);
+                } catch (BadActionException ex) {
+                    showBadActionError(ex);
                 }
             }
         });
@@ -130,7 +134,7 @@ public class DrawingEditorPanel extends JPanel {
                 try {
                     dc.createNewHorizFromSelected();
                 } catch (IncorrectSelectionException ex) {
-                    showIncorrectSelectionError(ex);
+                    showBadActionError(ex);
                 }
             }
         });
@@ -146,7 +150,7 @@ public class DrawingEditorPanel extends JPanel {
                 try {
                     dc.createNewVertFromSelected();
                 } catch (IncorrectSelectionException ex) {
-                    showIncorrectSelectionError(ex);
+                    showBadActionError(ex);
                 }
             }
         });
@@ -165,10 +169,24 @@ public class DrawingEditorPanel extends JPanel {
         return output;
     }
 
-    private void showIncorrectSelectionError(IncorrectSelectionException ex) {
-        JFrame f = new JFrame("Incorrect selection");
+    private void showBadActionError(BadActionException ex) {
+        JFrame f = new JFrame("Action could not be preformed");
         JOptionPane.showMessageDialog(f, ex.getMessage());
         f.dispose();
+    }
+
+    // EFFECTS: Prompts user for a Euclidean distance
+    private Double promptForDistance() throws BadDistanceException {
+        String userInput = JOptionPane.showInputDialog("Please enter the Euclidean distance");
+        try {
+            Double output = Double.parseDouble(userInput);
+            if (output < 0) {
+                throw new BadDistanceException();
+            }
+            return output;
+        } catch (NumberFormatException e) {
+            throw new BadDistanceException();
+        }
     }
 
     // =================================================================================================================

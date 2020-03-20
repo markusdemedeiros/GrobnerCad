@@ -1,7 +1,6 @@
 package ui.gui.mainwindow.component;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import model.exceptions.ZeroSlopeException;
+import ui.gui.mainwindow.exceptions.ZeroSlopeException;
 import model.geometric.Geometry;
 import ui.DataGUI;
 

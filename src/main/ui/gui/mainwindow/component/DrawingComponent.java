@@ -1,7 +1,7 @@
 package ui.gui.mainwindow.component;
 
 import model.algebraic.Constraint;
-import model.exceptions.IncorrectSelectionException;
+import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import model.geometric.Geometry;
 import ui.DataGUI;
 
