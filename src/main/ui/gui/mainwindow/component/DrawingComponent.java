@@ -5,6 +5,7 @@ import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
 import ui.gui.mainwindow.component.pointlabels.ConstraintSetXLabel;
+import ui.gui.mainwindow.component.pointlabels.ConstraintSetYLabel;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import model.geometric.Geometry;
 import ui.DataGUI;
@@ -448,6 +449,15 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // =================================================================================================================
     // OBJECT ADDITION
 
+    // Creates new point in the center of the screen and redraws
+    public void createNewPoint() {
+        GraphicalPoint output = new GraphicalPoint();
+        output.addOffset((getWidth() / 2) - voriginX, getHeight() / 2- voriginY);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+        repaint();
+    }
+
     // EFFETCS: Creates a new line from two points, and adds it to components
     // MODIFIES: this
     private void createNewLine(GraphicalPoint p1, GraphicalPoint p2) {
@@ -482,6 +492,13 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
     private void createNewSetX(GraphicalPoint gp, double xval) {
         ConstraintSetXLabel output = new ConstraintSetXLabel(gp, xval);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
+
+    private void createNewSetY(GraphicalPoint gp, double yval) {
+        ConstraintSetYLabel output = new ConstraintSetYLabel(gp, yval);
         output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
         components.add(output);
     }
@@ -536,16 +553,29 @@ public class DrawingComponent extends JPanel implements MouseListener {
         repaint();
     }
 
-    // EFFECTS: Creates new distance constraint from selected components if it is exactly one line
-    //              and if it doesn't already have a distance constraint
+    // EFFECTS: Creates new setx constraint from selected components if it is exactly one point
+    //              and if it doesn't already have a setx constraint
     //              throws incorrectSelectionException with message otherwise
     //          repaints when done
     // MODIFIES: this
     public void createNewSetXFromSelected(double dist) throws IncorrectSelectionException {
         isOnePointSelected();
         GraphicalPoint point = (GraphicalPoint) selected.get(0);
-        checkDrawableForLabelType(point, Constraint.PP_DISTANCE_TYPE);
+        checkDrawableForLabelType(point, Constraint.P_SETX_CONSTRAINT);
         createNewSetX(point, dist);
+        repaint();
+    }
+
+    // EFFECTS: Creates new sety constraint from selected components if it is exactly one point
+    //              and if it doesn't already have a sety constraint
+    //              throws incorrectSelectionException with message otherwise
+    //          repaints when done
+    // MODIFIES: this
+    public void createNewSetYFromSelected(double dist) throws IncorrectSelectionException {
+        isOnePointSelected();
+        GraphicalPoint point = (GraphicalPoint) selected.get(0);
+        checkDrawableForLabelType(point, Constraint.P_SETY_CONSTRAINT);
+        createNewSetY(point, dist);
         repaint();
     }
 

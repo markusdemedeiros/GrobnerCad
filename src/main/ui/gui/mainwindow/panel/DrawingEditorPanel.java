@@ -80,7 +80,7 @@ public class DrawingEditorPanel extends JPanel {
             // Places point at (50, 50) for testing purposes
             @Override
             public void actionPerformed(ActionEvent e) {
-                dc.addDrawable(new GraphicalPoint(), 50, 50);
+                dc.createNewPoint();
             }
         });
         return addPoint;
@@ -177,6 +177,17 @@ public class DrawingEditorPanel extends JPanel {
     // EFFECTS: returns new setY button
     private JButton makeAddSetYButton() {
         JButton output = makeToolbarButton(DataGUI.PSETY_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double dist = promptForPosition();
+                    dc.createNewSetYFromSelected(dist);
+                } catch (BadCreationActionException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         return output;
     }
 
