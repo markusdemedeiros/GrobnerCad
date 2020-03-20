@@ -8,6 +8,8 @@ import ui.DataGUI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -236,8 +238,16 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
     // EFFECTS: Generates a list of all objects at the position (x,y) in virtual coordinates
     private List<Drawable> getAllObjectsAtPosition(int x, int y) {
-        return null;
+        List<Drawable> output = new ArrayList<>();
+        for (Drawable c : components) {
+            if (c.inHitbox(x, y)) {
+                output.add(c);
+            }
+        }
+        return output;
     }
+
+
 
 
     // EFFECTS: Gets the top object at the position (x,y) in virtual coordinates,
@@ -262,24 +272,58 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     // EFFECTS: On a mouse click
-    //              * toggle the selection of an item which is clicked on
-    //              * deselect all items if background is clicked on
-    //              * repaint the screen
+    //              * If there is no object underneath mouse, deselect all items
+    //              * If there is one object underneath mouse, toggle selection of that item
+    //              * If there are many objects underneath the screen, prompt user for single item via popup
+    //                      and toggle that item
+    //              * Then repaint the screen
     // MODIFIES: this, objects in selected and components
     private void doClick(MouseEvent e) {
-        Drawable clicked = getObjectAtPosition(screenToOriginX(e.getX()),
+        // If there is one or zero clicked then proceed with behavior immediately
+        List<Drawable> clicked = getAllObjectsAtPosition(screenToOriginX(e.getX()),
                 screenToOriginY(e.getY()));
 
-        if (clicked == null) {
+        if (clicked.size() == 0) {
             deselectAll();
-        } else if (selected.contains(clicked)) {
+            repaint();
+        } else if (clicked.size() == 1) {
+            processClickOnItem(clicked.get(0));
+            repaint();
+        } else {
+            JPopupMenu popup = createItemSelector(clicked);
+            popup.show(e.getComponent(), e.getX(), e.getY());
+        }
+    }
+
+    // EFFECTS: Creates a popup menu for the user to select a single item from a list of candidate items
+    //              When the user selects an item, it will process a click on that item and repaint the screen
+    // MODIFIES: this
+    private JPopupMenu createItemSelector(List<Drawable> candidates) {
+        JPopupMenu popup = new JPopupMenu();
+        for (Drawable d : candidates) {
+            JMenuItem menuItem = new JMenuItem(d.getType());
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    processClickOnItem(d);
+                    repaint();
+                }
+            });
+            popup.add(menuItem);
+        }
+        return popup;
+    }
+
+    // EFFECTS: Toggles the selectable of the clicked item, and adds or removes it to local list of selected objects
+    // MODIFIES: this
+    private void processClickOnItem(Drawable clicked) {
+        if (selected.contains(clicked)) {
             clicked.toggleSelected();
             selected.remove(clicked);
         } else {
             clicked.toggleSelected();
             selected.add(clicked);
         }
-        repaint();
     }
 
     // EFFECTS: Toggles all selected back to deselected, resets the list of selected items, and repaints screen
