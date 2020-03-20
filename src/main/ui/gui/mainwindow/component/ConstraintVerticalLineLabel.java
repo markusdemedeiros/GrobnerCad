@@ -21,6 +21,6 @@ public class ConstraintVerticalLineLabel extends SquareLineLabel {
 
     @Override
     public String getType() {
-        return Constraint.PP_HORIZONTAL_TYPE;
+        return Constraint.PP_VERTICAL_TYPE;
     }
 }

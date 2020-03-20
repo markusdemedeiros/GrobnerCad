@@ -1,5 +1,7 @@
 package model.geometric;
 
+import java.awt.*;
+
 // Abstract class to specify a geometric object in space
 public abstract class Geometry {
 
@@ -17,6 +19,8 @@ public abstract class Geometry {
     //      2: y-co-ordinate
     public static final String TYPE_POINT = "PT";
     public static final int VARS_POINT = 2;
+
+    public static final String TYPE_LINE = "LN";
 
     // ==========================================================
     // UI RELATED COMMANDS

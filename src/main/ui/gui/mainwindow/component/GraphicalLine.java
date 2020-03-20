@@ -2,6 +2,7 @@ package ui.gui.mainwindow.component;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 import model.exceptions.ZeroSlopeException;
+import model.geometric.Geometry;
 import ui.DataGUI;
 
 import java.awt.*;
@@ -64,7 +65,7 @@ public class GraphicalLine extends Drawable {
 
     @Override
     public String getType() {
-        return LINE_ID;
+        return Geometry.TYPE_LINE;
     }
 
 
@@ -91,8 +92,6 @@ public class GraphicalLine extends Drawable {
         slope = Double.valueOf(p2y - p1y) / Double.valueOf(p2x - p1x);
         lineYIntercept = p1y - slope * p1x;
     }
-
-
 
     // Gets a midpoint of x% of the way through the line measured from the left
     public int getMidpointX(double percentage) {

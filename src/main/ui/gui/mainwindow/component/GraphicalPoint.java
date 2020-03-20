@@ -1,6 +1,7 @@
 package ui.gui.mainwindow.component;
 
 import javafx.scene.shape.Circle;
+import model.geometric.Geometry;
 import ui.DataGUI;
 
 import java.awt.*;
@@ -44,7 +45,7 @@ public class GraphicalPoint extends Drawable {
 
     @Override
     public String getType() {
-       return POINT_ID;
+       return Geometry.TYPE_POINT;
     }
 
     public int getVirtualCenterX() {

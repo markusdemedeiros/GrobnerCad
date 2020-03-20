@@ -35,24 +35,17 @@ public class DrawingEditorPanel extends JPanel {
         jt.addSeparator();
 
         // LINE-BASED CONSTRAINT BUTTONS
-        JButton coinc = makeToolbarButton(DataGUI.PPCOINC_ICON);
-        jt.add(coinc);
-        JButton distance = makeToolbarButton(DataGUI.PPDST_ICON);
-        jt.add(distance);
-        JButton horiz = makeToolbarButton(DataGUI.PPHORIZ_ICON);
-        jt.add(horiz);
-        JButton vert = makeToolbarButton(DataGUI.PPVERT_ICON);
-        jt.add(vert);
+        jt.add(makeAddCoincButton());
+        jt.add(makeAddDistButton());
+        jt.add(makeAddHorizButton());
+        jt.add(makeAddVertButton());
         jt.addSeparator();
 
         // POINT BASED CONSTRAINT BUTTONS
-        JButton setx = makeToolbarButton(DataGUI.PSETX_ICON);
-        jt.add(setx);
-        JButton sety = makeToolbarButton(DataGUI.PSETY_ICON);
-        jt.add(sety);
+        jt.add(makeAddSetXButton());
+        jt.add(makeAddSetYButton());
 
-
-        // Drawing Panel
+        // DRAWING PANEL SETUP
         drawing = new JPanel();
         dc = new DrawingComponent();
         drawing.setLayout(new GridBagLayout());
@@ -99,11 +92,63 @@ public class DrawingEditorPanel extends JPanel {
                 try {
                     dc.createNewLineFromSelected();
                 } catch (IncorrectSelectionException ex) {
-                    System.out.println(ex.getMessage());
+                    showIncorrectSelectionError(ex);
                 }
             }
         });
         return newLineButton;
+    }
+
+    // EFFECTS: returns new addCoincident button
+    private JButton makeAddCoincButton() {
+        JButton output = makeToolbarButton(DataGUI.PPCOINC_ICON);
+        return output;
+    }
+
+    // EFFECTS: returns new addDistancebutton
+    private JButton makeAddDistButton() {
+        JButton output = makeToolbarButton(DataGUI.PPDST_ICON);
+        return output;
+    }
+
+    // EFFECTS: returns new addHoriz button
+    private JButton makeAddHorizButton() {
+        JButton output = makeToolbarButton(DataGUI.PPHORIZ_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dc.createNewHorizFromSelected();
+                } catch (IncorrectSelectionException ex) {
+                    showIncorrectSelectionError(ex);
+                }
+            }
+        });
+        return output;
+    }
+
+    // EFFECTS: returns new addVert button
+    private JButton makeAddVertButton() {
+        JButton output = makeToolbarButton(DataGUI.PPVERT_ICON);
+        return output;
+    }
+
+    // EFFECTS: returns new setX button
+    private JButton makeAddSetXButton() {
+        JButton output = makeToolbarButton(DataGUI.PSETX_ICON);
+        return output;
+    }
+
+    // EFFECTS: returns new setY button
+    private JButton makeAddSetYButton() {
+        JButton output = makeToolbarButton(DataGUI.PSETY_ICON);
+        return output;
+    }
+
+    private void showIncorrectSelectionError(IncorrectSelectionException ex) {
+        JFrame f = new JFrame("Incorrect selection");
+        JOptionPane.showMessageDialog(f, ex.getMessage());
+        f.dispose();
     }
 
     // =================================================================================================================

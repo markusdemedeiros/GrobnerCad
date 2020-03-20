@@ -1,6 +1,8 @@
 package ui.gui.mainwindow.component;
 
+import model.algebraic.Constraint;
 import model.exceptions.IncorrectSelectionException;
+import model.geometric.Geometry;
 import ui.DataGUI;
 
 import javax.imageio.ImageIO;
@@ -402,23 +404,63 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(output);
     }
 
+    // EFFECTS: Creates new horizontal constraint component from line, adds to list of components
+    // MODIFIES: this
+    public void createNewHoriz(GraphicalLine g1) {
+        ConstraintHorizontalLineLabel output = new ConstraintHorizontalLineLabel(g1);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
 
     // EFFECTS: Creates new line form selected components if those components can create a line
     //              That is, they are the two endpoints (for now)
     //          If no line can be created from selected, throw IncorrectSelectionException with message to user.
     // MODIFIES: this
     public void createNewLineFromSelected() throws IncorrectSelectionException {
-        if ((selected.size() != 2)
-                || (selected.get(0).getType() != Drawable.POINT_ID)
-                || (selected.get(1).getType() != Drawable.POINT_ID)) {
-            throw new IncorrectSelectionException("Please select two points");
-        } else {
-            createNewLine((GraphicalPoint) selected.get(0),
-                    (GraphicalPoint) selected.get(1));
-        }
+        isTwoPointsSelected();
+        createNewLine((GraphicalPoint) selected.get(0),
+                (GraphicalPoint) selected.get(1));
         repaint();
     }
 
+    // EFFECTS: Creates new horizontal constraint from selected components if it is exactly one line
+    //              throws incorrectSelectionException if not
+    public void createNewHorizFromSelected() throws IncorrectSelectionException {
+        isOneLineSelected();
+        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
+        checkLineForLabelType(selectedLine, Constraint.PP_HORIZONTAL_TYPE);
+        createNewHoriz(selectedLine);
+        repaint();
+    }
+
+    // EFFECTS: Does nothing if exactly two points are selected,
+    //              throws an exception with instructions to the user if not
+    private void isTwoPointsSelected() throws IncorrectSelectionException {
+        if ((selected.size() != 2)
+                || (selected.get(0).getType() != Geometry.TYPE_POINT)
+                || (selected.get(1).getType() != Geometry.TYPE_POINT)) {
+            throw new IncorrectSelectionException("Please select two points");
+        }
+    }
+
+    // EFFECTS: Does nothing if exactly one line is selected
+    //              throws exception with user instructions otherwise
+    private void isOneLineSelected() throws IncorrectSelectionException {
+        if ((selected.size() != 1)
+                || (selected.get(0).getType() != Geometry.TYPE_LINE)) {
+            throw new IncorrectSelectionException("Please select one line");
+        }
+    }
+
+    // EFFECTS: throws incorrectselectionexception if gl has a label of type type
+    private void checkLineForLabelType(GraphicalLine gl, String type) throws IncorrectSelectionException {
+        for (Drawable d : gl.getDependencies()) {
+            if (d.getType() == type) {
+                throw new IncorrectSelectionException("That object already has that type of constraint");
+            }
+        }
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) {

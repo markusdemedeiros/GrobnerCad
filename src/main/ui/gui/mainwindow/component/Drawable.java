@@ -68,8 +68,7 @@ public abstract class Drawable {
         isSelected = !isSelected;
     }
 
-    public static final String POINT_ID = "PT";
-    public static final String LINE_ID = "LN";
+    // Gets the type of the component, as specified in model
     public abstract String getType();
 
     // Drag variables
