@@ -1,6 +1,10 @@
 package ui.gui.mainwindow.component;
 
 import model.algebraic.Constraint;
+import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
+import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
+import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
+import ui.gui.mainwindow.component.pointlabels.ConstraintSetXLabel;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import model.geometric.Geometry;
 import ui.DataGUI;
@@ -115,6 +119,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(lv1);
         ConstraintDistanceLabel cd1 = new ConstraintDistanceLabel(gl2, 5.0);
         components.add(cd1);
+        ConstraintSetXLabel tp1 = new ConstraintSetXLabel(circ4, 10.20);
+        components.add(tp1);
     }
 
 
@@ -474,6 +480,12 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(output);
     }
 
+    private void createNewSetX(GraphicalPoint gp, double xval) {
+        ConstraintSetXLabel output = new ConstraintSetXLabel(gp, xval);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
     // EFFECTS: Creates new line form selected components if those components can create a line
     //              That is, they are the two endpoints (for now)
     //          If no line can be created from selected, throw IncorrectSelectionException with message to user.
@@ -493,7 +505,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void createNewHorizFromSelected() throws IncorrectSelectionException {
         isOneLineSelected();
         GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkLineForLabelType(selectedLine, Constraint.PP_HORIZONTAL_TYPE);
+        checkDrawableForLabelType(selectedLine, Constraint.PP_HORIZONTAL_TYPE);
         createNewHoriz(selectedLine);
         repaint();
     }
@@ -506,7 +518,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void createNewVertFromSelected() throws IncorrectSelectionException {
         isOneLineSelected();
         GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkLineForLabelType(selectedLine, Constraint.PP_VERTICAL_TYPE);
+        checkDrawableForLabelType(selectedLine, Constraint.PP_VERTICAL_TYPE);
         createNewVert(selectedLine);
         repaint();
     }
@@ -519,8 +531,21 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void createNewDistFromSelected(double dist) throws IncorrectSelectionException {
         isOneLineSelected();
         GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkLineForLabelType(selectedLine, Constraint.PP_DISTANCE_TYPE);
+        checkDrawableForLabelType(selectedLine, Constraint.PP_DISTANCE_TYPE);
         createNewDist(selectedLine, dist);
+        repaint();
+    }
+
+    // EFFECTS: Creates new distance constraint from selected components if it is exactly one line
+    //              and if it doesn't already have a distance constraint
+    //              throws incorrectSelectionException with message otherwise
+    //          repaints when done
+    // MODIFIES: this
+    public void createNewSetXFromSelected(double dist) throws IncorrectSelectionException {
+        isOnePointSelected();
+        GraphicalPoint point = (GraphicalPoint) selected.get(0);
+        checkDrawableForLabelType(point, Constraint.PP_DISTANCE_TYPE);
+        createNewSetX(point, dist);
         repaint();
     }
 
@@ -536,6 +561,16 @@ public class DrawingComponent extends JPanel implements MouseListener {
         }
     }
 
+    // TODO: refactor to actually return a tuple of points
+    // EFFECTS: Does nothing if exactly two points are selected,
+    //              throws an exception with instructions to the user if not
+    private void isOnePointSelected() throws IncorrectSelectionException {
+        if ((selected.size() != 1)
+                || (selected.get(0).getType() != Geometry.TYPE_POINT)) {
+            throw new IncorrectSelectionException("Please select one point");
+        }
+    }
+
     // TODO: Refactor to actually return a line
     // EFFECTS: Does nothing if exactly one line is selected
     //              throws exception with user instructions otherwise
@@ -547,13 +582,15 @@ public class DrawingComponent extends JPanel implements MouseListener {
     }
 
     // EFFECTS: throws incorrectselectionexception if gl has a label of type type
-    private void checkLineForLabelType(GraphicalLine gl, String type) throws IncorrectSelectionException {
+    private void checkDrawableForLabelType(Drawable gl, String type) throws IncorrectSelectionException {
         for (Drawable d : gl.getDependencies()) {
             if (d.getType() == type) {
                 throw new IncorrectSelectionException("That object already has that type of constraint");
             }
         }
     }
+
+    // EFFECTS: throws incorrect
 
     @Override
     public void mouseEntered(MouseEvent e) {

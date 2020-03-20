@@ -1,10 +1,8 @@
-package ui.gui.mainwindow.component;
+package ui.gui.mainwindow.component.linelabels;
 
-import model.algebraic.Constraint;
-import org.omg.CORBA.DATA_CONVERSION;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.GraphicalLine;
 
-import javax.xml.crypto.Data;
 import java.awt.*;
 
 // A linelabel, below the line, which is a square icon, which is (percentage) along the line, and is drawn

@@ -1,7 +1,8 @@
-package ui.gui.mainwindow.component;
+package ui.gui.mainwindow.component.linelabels;
 
 import model.algebraic.Constraint;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.GraphicalLine;
 
 import java.awt.*;
 

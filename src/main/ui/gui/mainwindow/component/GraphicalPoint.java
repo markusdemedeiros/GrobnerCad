@@ -4,6 +4,7 @@ import javafx.scene.shape.Circle;
 import model.geometric.Geometry;
 import ui.DataGUI;
 
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
@@ -11,7 +12,7 @@ import static java.lang.StrictMath.pow;
 
 public class GraphicalPoint extends Drawable {
 
-    int radius = 5;
+    int radius = DataGUI.POINT_RADIUS;
     int clickableRadius = radius + DataGUI.CLICK_TOLERANCE;
 
     public GraphicalPoint() {

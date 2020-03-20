@@ -39,8 +39,7 @@ public interface DataGUI {
     int CONSTRAINT_OFFSET = 8;      // Offset from line to constraint
     int CONSTRAINT_INSET = 2;       // Inset from constraint bounding box to draw icon
     int CONSTRAINT_TEXT_SPACE = 5;  // Space between constraint label and text, if applicible
-
-    // HORIZONTAL
+    int CONSTRAINT_OFFSET_POINT = 6;      // Offset from line to constraint
 
 
     // CLICK SENSITIVITY
@@ -48,6 +47,8 @@ public interface DataGUI {
     int CLICK_SENS_TOLERANCE = 1;
 
     int ORIGIN_SIZE = 5;
+
+    int POINT_RADIUS = 5;
 
 
 }

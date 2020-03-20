@@ -1,7 +1,8 @@
 package ui.gui.mainwindow.panel;
 
-import ui.gui.mainwindow.exceptions.BadActionException;
+import ui.gui.mainwindow.exceptions.BadCreationActionException;
 import ui.gui.mainwindow.exceptions.BadDistanceException;
+import ui.gui.mainwindow.exceptions.BadPositionException;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import ui.DataGUI;
 import ui.gui.mainwindow.component.DrawingComponent;
@@ -113,11 +114,10 @@ public class DrawingEditorPanel extends JPanel {
         output.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double dist = 0;
                 try {
-                    dist = promptForDistance();
+                    double dist = promptForDistance();
                     dc.createNewDistFromSelected(dist);
-                } catch (BadActionException ex) {
+                } catch (BadCreationActionException ex) {
                     showBadActionError(ex);
                 }
             }
@@ -160,6 +160,17 @@ public class DrawingEditorPanel extends JPanel {
     // EFFECTS: returns new setX button
     private JButton makeAddSetXButton() {
         JButton output = makeToolbarButton(DataGUI.PSETX_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double dist = promptForPosition();
+                    dc.createNewSetXFromSelected(dist);
+                } catch (BadCreationActionException ex) {
+                    showBadActionError(ex);
+                }
+            }
+        });
         return output;
     }
 
@@ -169,7 +180,7 @@ public class DrawingEditorPanel extends JPanel {
         return output;
     }
 
-    private void showBadActionError(BadActionException ex) {
+    private void showBadActionError(BadCreationActionException ex) {
         JFrame f = new JFrame("Action could not be preformed");
         JOptionPane.showMessageDialog(f, ex.getMessage());
         f.dispose();
@@ -186,6 +197,15 @@ public class DrawingEditorPanel extends JPanel {
             return output;
         } catch (NumberFormatException e) {
             throw new BadDistanceException();
+        }
+    }
+
+    private double promptForPosition() throws BadPositionException {
+        String userInput = JOptionPane.showInputDialog("Please enter a position");
+        try {
+            return Double.parseDouble(userInput);
+        } catch (NumberFormatException e) {
+            throw new BadPositionException();
         }
     }
 

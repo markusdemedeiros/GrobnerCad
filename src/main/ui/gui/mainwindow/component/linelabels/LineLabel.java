@@ -1,4 +1,7 @@
-package ui.gui.mainwindow.component;
+package ui.gui.mainwindow.component.linelabels;
+
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.GraphicalLine;
 
 // Represents a label on a line
 public abstract class LineLabel extends Drawable {
