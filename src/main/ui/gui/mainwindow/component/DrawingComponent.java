@@ -1,5 +1,7 @@
 package ui.gui.mainwindow.component;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.algebraic.Constraint;
 import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
@@ -122,6 +124,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(cd1);
         ConstraintSetXLabel tp1 = new ConstraintSetXLabel(circ4, 10.20);
         components.add(tp1);
+        ConstraintCoincidentLabel cc1 = new ConstraintCoincidentLabel(circ2, circ4);
+        components.add(cc1);
     }
 
 
@@ -372,8 +376,11 @@ public class DrawingComponent extends JPanel implements MouseListener {
             // Don't do zero length drags, a zero length drag should be registered as a click
             if (Math.abs(dx) > DataGUI.CLICK_SENS_TOLERANCE && Math.abs(dy) > DataGUI.CLICK_SENS_TOLERANCE) {
                 // True drag has been detected. Move the items if the drag started on a selected object
-                if ((selected.size() == 0) || !selected.contains(getObjectAtPosition(screenToOriginX(dragBeginX),
-                        screenToOriginY(dragBeginY)))) {
+                boolean startedOnSelected = false;
+                for (Drawable d : getAllObjectsAtPosition(screenToOriginX(dragBeginX), screenToOriginY(dragBeginY))) {
+                    startedOnSelected = startedOnSelected || selected.contains(d);
+                }
+                if (!startedOnSelected) {
                     dragPlane(dx, dy);
                 } else {
                     // Move all selected points
@@ -503,6 +510,12 @@ public class DrawingComponent extends JPanel implements MouseListener {
         components.add(output);
     }
 
+    private void createNewCoincident(GraphicalPoint gp1, GraphicalPoint gp2) {
+        ConstraintCoincidentLabel output = new ConstraintCoincidentLabel(gp1, gp2);
+        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        components.add(output);
+    }
+
     // EFFECTS: Creates new line form selected components if those components can create a line
     //              That is, they are the two endpoints (for now)
     //          If no line can be created from selected, throw IncorrectSelectionException with message to user.
@@ -576,6 +589,22 @@ public class DrawingComponent extends JPanel implements MouseListener {
         GraphicalPoint point = (GraphicalPoint) selected.get(0);
         checkDrawableForLabelType(point, Constraint.P_SETY_CONSTRAINT);
         createNewSetY(point, dist);
+        repaint();
+    }
+
+    public void createNewCoincidentFromSelected() throws IncorrectSelectionException {
+        isTwoPointsSelected();
+        GraphicalPoint p0 = (GraphicalPoint) selected.get(0);
+        GraphicalPoint p1 = (GraphicalPoint) selected.get(1);
+        for (Drawable d : p0.getDependencies()) {
+            if (d.getType() == Constraint.PP_COINCIDENT_TYPE
+                    && d.getDependencies().contains(p1)) {
+                // If p0 has a dependency which is a PP Coincident constraint which also has p1 as a dependency,
+                //      the two points are coincident by definition. No dupicates.
+                throw new IncorrectSelectionException("Those two points are already coincident");
+            }
+        }
+        createNewCoincident(p0, p1);
         repaint();
     }
 

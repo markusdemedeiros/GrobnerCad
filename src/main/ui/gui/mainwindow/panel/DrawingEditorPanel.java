@@ -105,6 +105,16 @@ public class DrawingEditorPanel extends JPanel {
     // EFFECTS: returns new addCoincident button
     private JButton makeAddCoincButton() {
         JButton output = makeToolbarButton(DataGUI.PPCOINC_ICON);
+        output.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    dc.createNewCoincidentFromSelected();
+                } catch (IncorrectSelectionException ex) {
+                    showBadActionError(ex);
+                }
+            }
+        });
         return output;
     }
 

@@ -33,6 +33,7 @@ public interface DataGUI {
     int BIG_STROKE_WIDTH = 3;
     Stroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10, new float[]{9}, 0);
     Stroke bigStroke = new BasicStroke(BIG_STROKE_WIDTH, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
+    Stroke bigDashedStroke =  new BasicStroke(3, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10, new float[]{9}, 0);
 
     // CONSTRAINT DRAWING
     int CONSTRAINT_SIZE = 10;       // Size of constraint (square of size length 20)

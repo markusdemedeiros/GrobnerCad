@@ -9,8 +9,8 @@ import java.awt.*;
 // Represents a graphical line from coordinates (ax, ay) to (bx, by)
 public class GraphicalLine extends Drawable {
 
-    private GraphicalPoint p1;
-    private GraphicalPoint p2;
+    protected GraphicalPoint p1;
+    protected GraphicalPoint p2;
 
     private double lineYIntercept;
     private double slope;
