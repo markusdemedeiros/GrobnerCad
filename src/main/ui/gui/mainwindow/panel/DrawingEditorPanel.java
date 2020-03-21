@@ -1,5 +1,6 @@
 package ui.gui.mainwindow.panel;
 
+import ui.gui.mainwindow.component.Drawable;
 import ui.gui.mainwindow.exceptions.BadCreationActionException;
 import ui.gui.mainwindow.exceptions.BadDistanceException;
 import ui.gui.mainwindow.exceptions.BadPositionException;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class DrawingEditorPanel extends JPanel {
     private DrawingComponent dc;
@@ -61,6 +63,7 @@ public class DrawingEditorPanel extends JPanel {
         add(drawing, BorderLayout.CENTER);
         add(jt, BorderLayout.WEST);
     }
+
 
     // =================================================================================================================
     // TOOLBAR GENERATION FUNCTIONS
@@ -246,6 +249,22 @@ public class DrawingEditorPanel extends JPanel {
     public void recomputeAll() {
         dc.recomputeAll();
     }
+
+    // MODIFIES: dc
+    // EFFECTS: Clears the drawing
+    public void clearScreen() {
+        dc.blankInit();
+        dc.updateAndRedrawAll();
+        // Not really sure why the screen doesn't clear here. There's something wrong in repaint().
+    }
+
+    public void loadSystem(ArrayList<Drawable> elementsToLoad) {
+        dc.loadComponents(elementsToLoad);
+        dc.updateAndRedrawAll();
+    }
+
+
+
 
 
 

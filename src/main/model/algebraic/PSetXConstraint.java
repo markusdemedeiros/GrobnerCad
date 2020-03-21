@@ -26,4 +26,12 @@ public class PSetXConstraint extends Constraint {
     public String showHuman() {
         return String.format("<%s %s : %s(x) = %s>", type, name, p0.showShort(), xval);
     }
+
+    public Point getPoint() {
+        return p0;
+    }
+
+    public double getxval() {
+        return xval;
+    }
 }

@@ -5,6 +5,7 @@ import model.geometric.Geometry;
 import ui.DataGUI;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 // Represents a graphical line from coordinates (ax, ay) to (bx, by)
 public class GraphicalLine extends Drawable {
@@ -130,5 +131,12 @@ public class GraphicalLine extends Drawable {
             throw new ZeroSlopeException();
         }
         return -1 / slope;
+    }
+
+    public ArrayList<GraphicalPoint> getEndpoints() {
+        ArrayList<GraphicalPoint> output = new ArrayList<GraphicalPoint>();
+        output.add(p1);
+        output.add(p2);
+        return output;
     }
 }

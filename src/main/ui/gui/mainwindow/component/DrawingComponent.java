@@ -59,20 +59,15 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // Dragging flags
     //      validDrag is true iff the drag begins in the component
     //      dragBeginx and dragBeginy are measured in screen coordinates (relative to component)
-    private boolean validDrag = false;
+    private boolean validDrag;
     private int dragBeginX;
     private int dragBeginY;
 
 
     // TODO: Fix component drawing (or rather, lack thereof) for resizes and component init
     public DrawingComponent() {
-        // Coordinate systems init
-        voriginX = 0;
-        voriginY = 0;
-
-        // Drawable component list init
-        components = new ArrayList<>();
-        selected = new LinkedList<>();
+        // Setup variables to blank slate
+        blankInit();
 
         // Background init
         try {
@@ -91,6 +86,26 @@ public class DrawingComponent extends JPanel implements MouseListener {
         addMouseListener(this);
         recomputeAll();
     }
+
+
+    // MODIFIES: this
+    // EFFECTS: Removes EVERYTHING!!!! Can be called to clear the screen.
+    public void blankInit() {
+        voriginX = 0;
+        voriginY = 0;
+
+        validDrag = false;
+
+        // Drawable component list init
+        components = new ArrayList<>();
+        selected = new LinkedList<>();
+
+    }
+
+    public void loadComponents(ArrayList<Drawable> components) {
+        this.components = components;
+    }
+
 
 
     // EFFECTS: Puts some test geometry to the screen.

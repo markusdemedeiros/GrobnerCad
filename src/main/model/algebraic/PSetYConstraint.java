@@ -26,4 +26,12 @@ public class PSetYConstraint extends Constraint {
     public String showHuman() {
         return String.format("<%s %s : %s(y) = %s>", type, name, p0.showShort(), yval);
     }
+
+    public Point getPoint() {
+        return p0;
+    }
+
+    public double getYval() {
+        return yval;
+    }
 }

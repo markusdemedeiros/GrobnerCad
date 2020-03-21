@@ -5,6 +5,9 @@ import model.calculational.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
+import ui.gui.mainwindow.GraphicInfo;
+import ui.gui.mainwindow.PointGraphicInfo;
+import ui.gui.mainwindow.exceptions.NoGraphicsException;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,19 +32,32 @@ public class Reader {
     // REQUIRES: Correctly formatted .sys file
     public static FullSystem readSystem(File file) throws IOException {
         List<String> fileContent = Files.readAllLines(file.toPath());
-        /* I throw out line 1 assuming it the file is correct. Check and use excpetions instead. */
+        if (fileContent.contains("{GFX}")) {
+            // Ignore the new graphic information, if there is any in the file at at all
+            fileContent = fileContent.subList(fileContent.indexOf("{GEO}"), fileContent.size());
+        }
         List<String> geoStrings = fileContent.subList(fileContent.indexOf("{GEO}"),
                 fileContent.indexOf("{ALG}"));
-        //System.out.println(geoStrings.toString());
         List<String> algStrings = fileContent.subList(fileContent.indexOf("{ALG}"),
                 fileContent.size());
-        //System.out.println(algStrings.toString());
 
         List<Geometry> geometery = parseGeometry(geoStrings);
         List<Constraint> constraints = parseConstraints(algStrings, geometery);
 
-
         return (new FullSystem(geometery, constraints));
+    }
+
+    public static List<GraphicInfo> readGraphics(File file) throws IOException, NoGraphicsException {
+        List<String> fileContent = Files.readAllLines(file.toPath());
+        if (!fileContent.contains("{GFX}")) {
+            throw new NoGraphicsException();
+        }
+        List<String> graphicsContent = fileContent.subList(fileContent.indexOf("{GFX}"), fileContent.indexOf("{GEO}"));
+        List<GraphicInfo> output = new ArrayList<>();
+        for (String current : graphicsContent.subList(1, graphicsContent.size())) {
+            output.add(GraphicInfo.getGraphicFromLine(current));
+        }
+        return output;
     }
 
     // EFFECTS: Creates list of geometric elements from read strings

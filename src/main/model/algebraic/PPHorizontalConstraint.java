@@ -27,4 +27,13 @@ public class PPHorizontalConstraint extends Constraint {
     public String showHuman() {
         return String.format("<%s %s : %s - H - %s>", type, name, p1.showShort(), p2.showShort());
     }
+
+
+    public Point getP2() {
+        return p2;
+    }
+
+    public Point getP1() {
+        return p1;
+    }
 }

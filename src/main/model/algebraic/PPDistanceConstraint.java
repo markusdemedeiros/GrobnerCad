@@ -43,4 +43,16 @@ public class PPDistanceConstraint extends Constraint {
     public String showHuman() {
         return String.format("<%s %s : %s - %s - %s>", type, name, p1.showShort(), distance, p2.showShort());
     }
+
+    public Point getP2() {
+        return p2;
+    }
+
+    public Point getP1() {
+        return p1;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
 }
