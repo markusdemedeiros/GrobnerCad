@@ -29,6 +29,7 @@ public abstract class PointLabel extends Drawable {
 
 
     protected abstract int positionalOffsetY();
+
     protected abstract int positionalOffsetX();
 
 

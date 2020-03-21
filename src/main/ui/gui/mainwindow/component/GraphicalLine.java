@@ -58,7 +58,7 @@ public class GraphicalLine extends Drawable {
     @Override
     public boolean inHitbox(int x, int y) {
         // This is true iff the click is betwen point edges, up to error
-       return ((coordX - DataGUI.CLICK_TOLERANCE <= x)
+        return ((coordX - DataGUI.CLICK_TOLERANCE <= x)
                && (x <= coordX + boundingX + DataGUI.CLICK_TOLERANCE)
                && (Math.abs(slope * x + lineYIntercept - y) <= DataGUI.CLICK_TOLERANCE));
     }

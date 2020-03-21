@@ -46,7 +46,7 @@ public class GraphicalPoint extends Drawable {
 
     @Override
     public String getType() {
-       return Geometry.TYPE_POINT;
+        return Geometry.TYPE_POINT;
     }
 
     public int getVirtualCenterX() {

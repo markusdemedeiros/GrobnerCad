@@ -15,10 +15,10 @@ public abstract class SquarePointLabel extends PointLabel {
     // Simple square hitbox
     @Override
     public boolean inHitbox(int x, int y) {
-        return  (x >= getTopCenterX() - DataGUI.CONSTRAINT_SIZE / 2 - DataGUI.CLICK_TOLERANCE) &&
-                (x <= getTopCenterX() + DataGUI.CONSTRAINT_SIZE / 2 + DataGUI.CLICK_TOLERANCE) &&
-                (y >= getTopCenterY() - DataGUI.CLICK_TOLERANCE) &&
-                (y <= getTopCenterY() + DataGUI.CONSTRAINT_SIZE + DataGUI.CLICK_TOLERANCE);
+        return  (x >= getTopCenterX() - DataGUI.CONSTRAINT_SIZE / 2 - DataGUI.CLICK_TOLERANCE)
+                && (x <= getTopCenterX() + DataGUI.CONSTRAINT_SIZE / 2 + DataGUI.CLICK_TOLERANCE)
+                && (y >= getTopCenterY() - DataGUI.CLICK_TOLERANCE)
+                && (y <= getTopCenterY() + DataGUI.CONSTRAINT_SIZE + DataGUI.CLICK_TOLERANCE);
     }
 
     @Override

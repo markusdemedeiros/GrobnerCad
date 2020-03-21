@@ -79,9 +79,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
         backgroundWidth = backgroundImage.getWidth();
         backgroundHeight = backgroundImage.getHeight();
 
-        // This is just example code for now. Usually, components is populated by load operations or button
-        setupTestComponents();
-
         // JComponent init (final operations)
         addMouseListener(this);
         recomputeAll();
@@ -105,44 +102,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void loadComponents(ArrayList<Drawable> components) {
         this.components = components;
     }
-
-
-
-    // EFFECTS: Puts some test geometry to the screen.
-    // MODIFIES: this
-    private void setupTestComponents() {
-        GraphicalPoint circ = new GraphicalPoint();
-        circ.setOffset(80, 220);
-        components.add(circ);
-        GraphicalPoint circ2 = new GraphicalPoint();
-        circ2.setOffset(250, 0);
-        components.add(circ2);
-        GraphicalPoint circ3 = new GraphicalPoint();
-        circ3.setOffset(300, 100);
-        components.add(circ3);
-        GraphicalPoint circ4 = new GraphicalPoint();
-        circ4.setOffset(10, 10);
-        components.add(circ4);
-        GraphicalLine gl = new GraphicalLine(circ, circ2);
-        components.add(gl);
-        GraphicalLine gl2 = new GraphicalLine(circ2, circ3);
-        components.add(gl2);
-        GraphicalLine gl4 = new GraphicalLine(circ, circ3);
-        components.add(gl4);
-        GraphicalLine gl3 = new GraphicalLine(circ, circ4);
-        components.add(gl3);
-        ConstraintHorizontalLineLabel ll1 = new ConstraintHorizontalLineLabel(gl3);
-        components.add(ll1);
-        ConstraintVerticalLineLabel lv1 = new ConstraintVerticalLineLabel(gl3);
-        components.add(lv1);
-        ConstraintDistanceLabel cd1 = new ConstraintDistanceLabel(gl2, 5.0);
-        components.add(cd1);
-        ConstraintSetXLabel tp1 = new ConstraintSetXLabel(circ4, 10.20);
-        components.add(tp1);
-        ConstraintCoincidentLabel cc1 = new ConstraintCoincidentLabel(circ2, circ4);
-        components.add(cc1);
-    }
-
 
     // TODO: Look into docs, paintcomponet might not be the best place to but this (bug at init)
     // NOTE: this method is called every time repaint() is called
@@ -474,7 +433,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // Creates new point in the center of the screen and redraws
     public void createNewPoint() {
         GraphicalPoint output = new GraphicalPoint();
-        output.addOffset((getWidth() / 2) - voriginX, getHeight() / 2- voriginY);
+        output.addOffset((getWidth() / 2) - voriginX, getHeight() / 2 - voriginY);
         output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
         components.add(output);
         repaint();

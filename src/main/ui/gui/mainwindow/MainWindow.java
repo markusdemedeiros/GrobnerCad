@@ -1,7 +1,6 @@
 package ui.gui.mainwindow;
 
 import com.formdev.flatlaf.*;
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import model.algebraic.*;
 import model.calculational.FullSystem;
 import model.geometric.Geometry;
@@ -43,7 +42,6 @@ public class MainWindow extends JFrame {
     private DrawingEditorPanel dep;
 
     // Adds components to main UI
-    @SuppressWarnings("checkstyle:MethodLength")
     private void initUI() {
         setLayout(new GridBagLayout());
         try {
@@ -61,16 +59,6 @@ public class MainWindow extends JFrame {
                 GridBagConstraints.LINE_START, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
 
-        /*  Constraint panels are not used in this build.
-                I need to focus on implementing all the functionality before providing alternate ways to use it :S
-        // Panels
-        DataPanel cp = new DataPanel(currentSystem);
-        add(cp, new GridBagConstraints(1, 0, 1, 1,
-                0, 1,
-                GridBagConstraints.LINE_END, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
-        */
-
         // ================================
         // WINDOW PARAMATERS
         setTitle("Drawing");
@@ -83,56 +71,34 @@ public class MainWindow extends JFrame {
     // Returns a JMenubar for the GUI Menu
     private JMenuBar menubar() {
         JMenuBar menubar = new JMenuBar();
-
         JMenu fileMenu = new JMenu("File");
         JMenuItem writeItem = new JMenuItem("Save");
         JMenuItem readItem = new JMenuItem("Open");
         JMenuItem quitItem = new JMenuItem("Quit");
-
         JMenu graphicMenu = new JMenu("Graphics");
         JMenuItem repaintItem = new JMenuItem("Repaint");
         JMenuItem recomputeItem = new JMenuItem("Recompute All");
-
-
         fileMenu.add(writeItem);
         fileMenu.add(readItem);
         fileMenu.add(quitItem);
-
         graphicMenu.add(repaintItem);
         graphicMenu.add(recomputeItem);
-
         menubar.add(fileMenu);
         menubar.add(graphicMenu);
+        quitItem.addActionListener(quitActionListener());
+        repaintItem.addActionListener(repaintActionListener());
+        recomputeItem.addActionListener(recomputeActionListener());
+        readItem.addActionListener(readActionListener());
+        return menubar;
+    }
 
-        quitItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Default close operation from JFrame attached to MainWindow
-                MainWindow.super.dispose();
-            }
-        });
-
-        repaintItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Do nothing else for now
-                dep.redrawAll();
-            }
-        });
-
-        recomputeItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dep.recomputeAll();
-            }
-        });
-
-        readItem.addActionListener(new ActionListener() {
+    private ActionListener readActionListener() {
+        return (new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String filename = JOptionPane.showInputDialog("Which system would you like to load?");
                 if (filename != null) {
-                    File toRead = new File ("./data/" + filename + ".sys");
+                    File toRead = new File("./data/" + filename + ".sys");
                     try {
                         loadSystem(toRead);
                     } catch (IOException ex) {
@@ -141,9 +107,38 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-
-        return menubar;
     }
+
+    private ActionListener recomputeActionListener() {
+        return (new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dep.recomputeAll();
+            }
+        });
+    }
+
+    private ActionListener repaintActionListener() {
+        return (new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Do nothing else for now
+                dep.redrawAll();
+            }
+        });
+    }
+
+
+    private ActionListener quitActionListener() {
+        return (new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Default close operation from JFrame attached to MainWindow
+                MainWindow.super.dispose();
+            }
+        });
+    }
+
 
     // The load system is kinda (okay super) hacky, but I need a functional product to test other parts of the system
     private void loadSystem(File toRead) throws IOException {
@@ -154,78 +149,120 @@ public class MainWindow extends JFrame {
             HashMap<String, Drawable> elementsToLoad = new HashMap<String, Drawable>();
 
             // First we load in the points
-            for (GraphicInfo g : gfx) {
-                if (g.type.equals(Geometry.TYPE_POINT)) {
-                    int ox = ((PointGraphicInfo) g).getCoordx();
-                    int oy = ((PointGraphicInfo) g).getCoordy();
-                    GraphicalPoint output = new GraphicalPoint();
-                    output.setOffset(ox, oy);
-                    elementsToLoad.put(g.name, output);
-                }
-            }
+            loadPoints(gfx, elementsToLoad);
+
             // Now we have all the information to add the lines
-            for (GraphicInfo g : gfx) {
-                if (!g.type.equals(Geometry.TYPE_POINT)) {
-                    // It works but it hurts
-                    elementsToLoad.put(g.name,
-                            new GraphicalLine((GraphicalPoint) elementsToLoad.get(((LineGraphicInfo) g).getp0()),
-                                    (GraphicalPoint) elementsToLoad.get(((LineGraphicInfo) g).getp1())));
-                }
-            }
+            loadNonPoints(gfx, elementsToLoad);
+
             // Now we have the information to load in the constraints
-            // Welcome to hell. This URGENTLY needs to be made not-temporary with a big boy type hierarchy
-            for (Constraint c : fs.getAlgebra()) {
-                if (c.getType().equals(Constraint.P_SETY_CONSTRAINT)) {
-                    GraphicalPoint pt = (GraphicalPoint) elementsToLoad.get(((PSetYConstraint) c).getPoint().getName());
-                    double yv = ((PSetYConstraint) c).getYval();
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintSetYLabel(pt, yv));
-                } else if (c.getType().equals(Constraint.P_SETX_CONSTRAINT)) {
-                    GraphicalPoint pt = (GraphicalPoint) elementsToLoad.get(((PSetXConstraint) c).getPoint().getName());
-                    double xv = ((PSetXConstraint) c).getxval();
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintSetXLabel(pt, xv));
-                } else if (c.getType().equals(Constraint.PP_DISTANCE_TYPE)) {
-                    GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(((PPDistanceConstraint) c).getP1().getName());
-                    GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(((PPDistanceConstraint) c).getP2().getName());
-                    double dist = ((PPDistanceConstraint) c).getDistance();
-                    GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintDistanceLabel(ln, dist));
-                } else if (c.getType().equals(Constraint.PP_COINCIDENT_TYPE)) {
-                    GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(((PPCoincidentConstraint) c).getP1().getName());
-                    GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(((PPCoincidentConstraint) c).getP2().getName());
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintCoincidentLabel(p1, p2));
-                } else if (c.getType().equals(Constraint.PP_HORIZONTAL_TYPE)) {
-                    GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(((PPHorizontalConstraint) c).getP1().getName());
-                    GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(((PPHorizontalConstraint) c).getP2().getName());
-                    GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintHorizontalLineLabel(ln));
-                } else if (c.getType().equals(Constraint.PP_VERTICAL_TYPE)) {
-                    GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(((PPVerticalConstraint) c).getP1().getName());
-                    GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(((PPVerticalConstraint) c).getP2().getName());
-                    GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
-                    elementsToLoad.put(Integer.toString(elementsToLoad.size()),
-                            new ConstraintVerticalLineLabel(ln));
-                } else {
-                    // Programming error, for now
-                }
-            }
+            // Welcome to hell. Add this to the lis of stuff to refactor in PHASE 4- the cohesion is TERRIBLE
+            loadAlgebra(elementsToLoad, fs.getAlgebra());
 
             // All the graphics are now loaded :)
-            dep.loadSystem(new ArrayList<Drawable>(elementsToLoad.values()));
+            dep.loadSystem(new ArrayList(elementsToLoad.values()));
 
         } catch (NoGraphicsException e) {
             // TODO: loading of old or CLI generated systems by having placement subroutine
-            noGFXDisplay();
+            noGraphicsDisplay();
         }
     }
 
+    private void loadPoints(List<GraphicInfo> gfx, HashMap<String, Drawable> elementsToLoad) {
+        for (GraphicInfo g : gfx) {
+            if (g.type.equals(Geometry.TYPE_POINT)) {
+                int ox = ((PointGraphicInfo) g).getCoordx();
+                int oy = ((PointGraphicInfo) g).getCoordy();
+                GraphicalPoint output = new GraphicalPoint();
+                output.setOffset(ox, oy);
+                elementsToLoad.put(g.name, output);
+            }
+        }
+    }
+
+    private void loadNonPoints(List<GraphicInfo> gfx, HashMap<String, Drawable> elementsToLoad) {
+        for (GraphicInfo g : gfx) {
+            if (!g.type.equals(Geometry.TYPE_POINT)) {
+                // It works but it hurts
+                elementsToLoad.put(g.name,
+                        new GraphicalLine((GraphicalPoint) elementsToLoad.get(((LineGraphicInfo) g).getp0()),
+                                (GraphicalPoint) elementsToLoad.get(((LineGraphicInfo) g).getp1())));
+            }
+        }
+    }
+
+
+    private void loadAlgebra(HashMap<String, Drawable> elementsToLoad, List<Constraint> constraints) {
+        for (Constraint c : constraints) {
+            if (c.getType().equals(Constraint.P_SETY_CONSTRAINT)) {
+                loadSetY(elementsToLoad, (PSetYConstraint) c);
+            } else if (c.getType().equals(Constraint.P_SETX_CONSTRAINT)) {
+                loadSetX(elementsToLoad, (PSetXConstraint) c);
+            } else if (c.getType().equals(Constraint.PP_DISTANCE_TYPE)) {
+                loadDistance(elementsToLoad, (PPDistanceConstraint) c);
+            } else if (c.getType().equals(Constraint.PP_COINCIDENT_TYPE)) {
+                loadCoincident(elementsToLoad, (PPCoincidentConstraint) c);
+            } else if (c.getType().equals(Constraint.PP_HORIZONTAL_TYPE)) {
+                loadHorizontal(elementsToLoad, (PPHorizontalConstraint) c);
+            } else if (c.getType().equals(Constraint.PP_VERTICAL_TYPE)) {
+                loadVertical(elementsToLoad, (PPVerticalConstraint) c);
+            }
+        }
+    }
+
+    private void loadVertical(HashMap<String, Drawable> elementsToLoad, PPVerticalConstraint c) {
+        GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(c.getP1().getName());
+        GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(c.getP2().getName());
+        GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintVerticalLineLabel(ln));
+    }
+
+    private void loadHorizontal(HashMap<String, Drawable> elementsToLoad, PPHorizontalConstraint c) {
+        GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(c.getP1().getName());
+        GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(c.getP2().getName());
+        GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintHorizontalLineLabel(ln));
+    }
+
+    private void loadCoincident(HashMap<String, Drawable> elementsToLoad, PPCoincidentConstraint c) {
+        GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(c.getP1().getName());
+        GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(c.getP2().getName());
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintCoincidentLabel(p1, p2));
+    }
+
+    private void loadDistance(HashMap<String, Drawable> elementsToLoad, PPDistanceConstraint c) {
+        GraphicalPoint p1 = (GraphicalPoint) elementsToLoad.get(c.getP1().getName());
+        GraphicalPoint p2 = (GraphicalPoint) elementsToLoad.get(c.getP2().getName());
+        double dist = c.getDistance();
+        GraphicalLine ln = linefromPointsInList(p1, p2, elementsToLoad.values());
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintDistanceLabel(ln, dist));
+    }
+
+
+    private void loadSetY(HashMap<String, Drawable> elementsToLoad, PSetYConstraint c) {
+        GraphicalPoint pt = (GraphicalPoint) elementsToLoad.get(c.getPoint().getName());
+        double yv = c.getYval();
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintSetYLabel(pt, yv));
+    }
+
+    private void loadSetX(HashMap<String, Drawable> elementsToLoad, PSetXConstraint c) {
+        GraphicalPoint pt = (GraphicalPoint) elementsToLoad.get(c.getPoint().getName());
+        double xv = c.getxval();
+        elementsToLoad.put(Integer.toString(elementsToLoad.size()),
+                new ConstraintSetXLabel(pt, xv));
+    }
+
+
+
     private GraphicalLine linefromPointsInList(GraphicalPoint p0, GraphicalPoint p1, Collection<Drawable> toDraw) {
         for (Drawable d : toDraw) {
-            if ((d.getType().equals(Geometry.TYPE_LINE)) && (((GraphicalLine)d).getEndpoints().contains(p0)) && (((GraphicalLine)d).getEndpoints().contains(p1))) {
+            if ((d.getType().equals(Geometry.TYPE_LINE))
+                    && (((GraphicalLine)d).getEndpoints().contains(p0))
+                    && (((GraphicalLine)d).getEndpoints().contains(p1))) {
                 return ((GraphicalLine) d);
             }
         }
@@ -234,7 +271,8 @@ public class MainWindow extends JFrame {
     }
 
 
-    private void noGFXDisplay() {
+
+    private void noGraphicsDisplay() {
         JFrame f = new JFrame("No graphics info");
         JOptionPane.showMessageDialog(f, "Selected file has no graphic info, placement not implemented. Aborting.");
         f.dispose();

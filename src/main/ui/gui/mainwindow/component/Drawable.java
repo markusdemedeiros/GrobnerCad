@@ -75,6 +75,7 @@ public abstract class Drawable {
     private boolean isBeingDragged = false;
     private int dragStartX;
     private int dragStartY;
+
     public abstract boolean isMoveable();
 
     // Update position relative to plane origin

@@ -16,9 +16,18 @@ public class ConstraintHorizontalLineLabel extends SquareLineLabel {
 
     @Override
     public void drawIcon(Graphics2D g, int topLeftX, int topLeftY) {
-        g.drawLine(topLeftX + DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_INSET, topLeftX + DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET);
-        g.drawLine(topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_INSET, topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET);
-        g.drawLine(topLeftX + DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_SIZE / 2, topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET, topLeftY + DataGUI.CONSTRAINT_SIZE / 2);
+        g.drawLine(topLeftX + DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_INSET,
+                topLeftX + DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET);
+        g.drawLine(topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_INSET,
+                topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET);
+        g.drawLine(topLeftX + DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_SIZE / 2,
+                topLeftX + DataGUI.CONSTRAINT_SIZE - DataGUI.CONSTRAINT_INSET,
+                topLeftY + DataGUI.CONSTRAINT_SIZE / 2);
     }
 
     @Override
