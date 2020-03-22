@@ -19,6 +19,8 @@ public abstract class Drawable {
     private boolean toDraw;
     private boolean isSelected;
 
+
+
     // These are the objects that must be recalculated if the object changes in position
     protected ArrayList<Drawable> dependencies = new ArrayList<Drawable>();
 
@@ -108,7 +110,6 @@ public abstract class Drawable {
 
     // Recalculates position
     public abstract void recompute();
-
 
     // Useful coord functions
     // TODO: oroginx, originy virtual to screen

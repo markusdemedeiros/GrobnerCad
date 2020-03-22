@@ -1,6 +1,7 @@
 package ui.gui.mainwindow;
 
 import model.geometric.Geometry;
+import ui.gui.mainwindow.component.Drawable;
 
 public class LineGraphicInfo extends GraphicInfo {
     private String p0;
@@ -20,6 +21,7 @@ public class LineGraphicInfo extends GraphicInfo {
     protected String getContentString() {
         return p0 + "," + p1;
     }
+
 
     private static String readp0(String content) {
         return content.substring(1, content.indexOf(","));

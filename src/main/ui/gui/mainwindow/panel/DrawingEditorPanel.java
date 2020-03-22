@@ -1,5 +1,6 @@
 package ui.gui.mainwindow.panel;
 
+import model.persistence.Saveable;
 import ui.gui.mainwindow.component.Drawable;
 import ui.gui.mainwindow.exceptions.BadCreationActionException;
 import ui.gui.mainwindow.exceptions.BadDistanceException;
@@ -13,9 +14,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public class DrawingEditorPanel extends JPanel {
+public class DrawingEditorPanel extends JPanel implements Saveable {
     private DrawingComponent dc;
     private JToolBar jt;
     private JPanel drawing; // Contains DrawingComponent and any related static components. Uses a gridBagLayout.
@@ -264,9 +266,9 @@ public class DrawingEditorPanel extends JPanel {
     }
 
 
+    // Saves the system to disk (graphically)
+    @Override
+    public void save(PrintWriter printWriter) {
 
-
-
-
-
+    }
 }

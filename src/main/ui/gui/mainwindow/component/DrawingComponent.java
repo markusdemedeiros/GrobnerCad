@@ -3,6 +3,8 @@ package ui.gui.mainwindow.component;
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.algebraic.Constraint;
+import model.calculational.FullSystem;
+import model.geometric.Point;
 import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
@@ -23,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -701,6 +704,18 @@ public class DrawingComponent extends JPanel implements MouseListener {
         voriginX = offsetX;
         voriginY = offsetY;
     }
+
+
+
+    // =================================================================================================================
+    // GRABBING DATA AS OTHER DATA FORMATS
+
+    // Takes the graphical elements that user can edit and generates a system of pure geometric elements the
+    // solver can use
+    public FullSystem getFullSystem() {
+        return null;
+    }
+
 
 
 

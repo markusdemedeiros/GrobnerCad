@@ -1,6 +1,10 @@
 package ui.gui.mainwindow;
 
 import model.geometric.Geometry;
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.GraphicalPoint;
+
+import java.awt.*;
 
 // Represents a named Point with graphic information
 public class PointGraphicInfo extends GraphicInfo  {
@@ -30,6 +34,12 @@ public class PointGraphicInfo extends GraphicInfo  {
         return coordx + "," + coordy;
     }
 
+    public Drawable generate() {
+        GraphicalPoint output = new GraphicalPoint();
+        output.setOffset(coordx, coordy);
+        return output;
+    }
+
     private static int readx(String content) {
         return Integer.parseInt(content.substring(1, content.indexOf(",")));
     }
@@ -37,4 +47,6 @@ public class PointGraphicInfo extends GraphicInfo  {
     private static int ready(String content) {
         return Integer.parseInt(content.substring(content.indexOf(",") + 1));
     }
+
+
 }

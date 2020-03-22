@@ -1,6 +1,7 @@
 package ui.gui.mainwindow;
 
 import model.geometric.Geometry;
+import ui.gui.mainwindow.component.Drawable;
 
 public abstract class GraphicInfo {
     protected String name;
@@ -41,11 +42,8 @@ public abstract class GraphicInfo {
 
     protected abstract String getContentString();
 
-
-
     public String getName() {
         return name;
     }
-
 
 }

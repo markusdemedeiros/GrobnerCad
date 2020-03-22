@@ -66,4 +66,5 @@ public class GraphicalPoint extends Drawable {
     public boolean isMoveable() {
         return true;
     }
+
 }
