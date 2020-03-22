@@ -2,6 +2,9 @@ package model.algebraic;
 
 import model.calculational.PolynomialForm;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // Describes a general constraint one some geometric objects
@@ -13,6 +16,13 @@ public abstract class Constraint {
     public static final String PP_VERTICAL_TYPE = "pp-VER";
     public static final String P_SETX_CONSTRAINT = "p-STX";
     public static final String P_SETY_CONSTRAINT = "p-STY";
+
+    public static final List<String> TYPES = new ArrayList<>(Arrays.asList(PP_DISTANCE_TYPE,
+            PP_COINCIDENT_TYPE,
+            PP_HORIZONTAL_TYPE,
+            PP_VERTICAL_TYPE,
+            P_SETX_CONSTRAINT,
+            P_SETY_CONSTRAINT));
 
     protected String type;  // Individual constraint type, from above
     protected String name;  // Individual constraint name

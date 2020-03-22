@@ -1,12 +1,18 @@
 package ui.gui.mainwindow.component.pointlabels;
 
 import model.algebraic.Constraint;
+import model.algebraic.PSetXConstraint;
+import model.algebraic.PSetYConstraint;
+import model.geometric.Point;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.DrawableConstraint;
 import ui.gui.mainwindow.component.GraphicalPoint;
 
 import java.awt.*;
+import java.util.HashMap;
 
-public class ConstraintSetYLabel extends SquarePointLabel {
+public class ConstraintSetYLabel extends SquarePointLabel implements DrawableConstraint {
     private double yval;
 
     public ConstraintSetYLabel(GraphicalPoint point, double yval) {
@@ -35,5 +41,8 @@ public class ConstraintSetYLabel extends SquarePointLabel {
     }
 
 
-
+    @Override
+    public Constraint makePure(HashMap<Drawable, Point> pointDict, String name) {
+        return new PSetYConstraint(name, pointDict.get(point), yval);
+    }
 }

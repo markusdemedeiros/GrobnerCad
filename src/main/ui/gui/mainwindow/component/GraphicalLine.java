@@ -139,4 +139,12 @@ public class GraphicalLine extends Drawable {
         output.add(p2);
         return output;
     }
+
+    public GraphicalPoint getP1() {
+        return p1;
+    }
+
+    public GraphicalPoint getP2() {
+        return p2;
+    }
 }

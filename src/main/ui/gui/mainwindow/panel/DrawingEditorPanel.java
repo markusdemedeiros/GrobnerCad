@@ -265,10 +265,8 @@ public class DrawingEditorPanel extends JPanel implements Saveable {
         dc.updateAndRedrawAll();
     }
 
-
-    // Saves the system to disk (graphically)
     @Override
     public void save(PrintWriter printWriter) {
-
+        printWriter.write(dc.getAsString());
     }
 }

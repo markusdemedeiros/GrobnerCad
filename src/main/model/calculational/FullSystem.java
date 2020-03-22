@@ -50,14 +50,20 @@ public class FullSystem implements Saveable {
 
     @Override
     public void save(PrintWriter printWriter) {
-        printWriter.println("{GEO}");
+        printWriter.println(getStringToPrint());
+    }
+
+    public String getStringToPrint() {
+        String output = "";
+        output += "{GEO}\n";
         for (Geometry geo : geometery) {
-            printWriter.println(geo.show());
+            output += geo.show() + "\n";
         }
-        printWriter.println("{ALG}");
+        output += "{ALG}\n";
         for (Constraint con : algebra) {
-            printWriter.println(con.show());
+            output += con.show() + "\n";
         }
+        return output;
     }
 
 }

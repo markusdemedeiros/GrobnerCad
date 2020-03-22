@@ -1,12 +1,17 @@
 package ui.gui.mainwindow.component.linelabels;
 
 import model.algebraic.Constraint;
+import model.algebraic.PPDistanceConstraint;
+import model.geometric.Point;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.DrawableConstraint;
 import ui.gui.mainwindow.component.GraphicalLine;
 
 import java.awt.*;
+import java.util.HashMap;
 
-public class ConstraintDistanceLabel extends SquareLineLabel {
+public class ConstraintDistanceLabel extends SquareLineLabel implements DrawableConstraint {
     private double dist;
 
     public ConstraintDistanceLabel(GraphicalLine line, double dist) {
@@ -48,4 +53,8 @@ public class ConstraintDistanceLabel extends SquareLineLabel {
         return true;
     }
 
+    @Override
+    public Constraint makePure(HashMap<Drawable, Point> pointDict, String name) {
+        return new PPDistanceConstraint(name, pointDict.get(line.getP1()), pointDict.get(line.getP2()), dist);
+    }
 }

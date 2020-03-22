@@ -1,4 +1,4 @@
-package ui.gui.mainwindow;
+package ui.gui.mainwindow.graphicalPersistence;
 
 import model.algebraic.*;
 import model.calculational.FullSystem;

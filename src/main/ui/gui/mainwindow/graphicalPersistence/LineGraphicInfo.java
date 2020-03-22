@@ -1,7 +1,6 @@
-package ui.gui.mainwindow;
+package ui.gui.mainwindow.graphicalPersistence;
 
 import model.geometric.Geometry;
-import ui.gui.mainwindow.component.Drawable;
 
 public class LineGraphicInfo extends GraphicInfo {
     private String p0;

@@ -1,12 +1,17 @@
 package ui.gui.mainwindow.component.pointlabels;
 
 import model.algebraic.Constraint;
+import model.algebraic.PSetXConstraint;
+import model.geometric.Point;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.DrawableConstraint;
 import ui.gui.mainwindow.component.GraphicalPoint;
 
 import java.awt.*;
+import java.util.HashMap;
 
-public class ConstraintSetXLabel extends SquarePointLabel {
+public class ConstraintSetXLabel extends SquarePointLabel implements DrawableConstraint {
     private double xval;
 
     public ConstraintSetXLabel(GraphicalPoint point, double xval) {
@@ -34,4 +39,8 @@ public class ConstraintSetXLabel extends SquarePointLabel {
     }
 
 
+    @Override
+    public Constraint makePure(HashMap<Drawable, Point> pointDict, String name) {
+        return new PSetXConstraint(name, pointDict.get(point), xval);
+    }
 }

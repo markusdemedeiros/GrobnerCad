@@ -1,12 +1,17 @@
 package ui.gui.mainwindow.component.linelabels;
 
 import model.algebraic.Constraint;
+import model.algebraic.PPHorizontalConstraint;
+import model.geometric.Point;
 import ui.DataGUI;
+import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.DrawableConstraint;
 import ui.gui.mainwindow.component.GraphicalLine;
 
 import java.awt.*;
+import java.util.HashMap;
 
-public class ConstraintHorizontalLineLabel extends SquareLineLabel {
+public class ConstraintHorizontalLineLabel extends SquareLineLabel implements DrawableConstraint {
 
     public static final double POSITION_PERCENTAGE = 0.33;
 
@@ -33,5 +38,10 @@ public class ConstraintHorizontalLineLabel extends SquareLineLabel {
     @Override
     public String getType() {
         return Constraint.PP_HORIZONTAL_TYPE;
+    }
+
+    @Override
+    public Constraint makePure(HashMap<Drawable, Point> pointDict, String name) {
+        return new PPHorizontalConstraint(name, pointDict.get(line.getP1()), pointDict.get(line.getP2()));
     }
 }

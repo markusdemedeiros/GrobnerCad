@@ -5,8 +5,7 @@ import model.calculational.FullSystem;
 import model.algebraic.*;
 import model.geometric.Geometry;
 import model.geometric.Point;
-import ui.gui.mainwindow.GraphicInfo;
-import ui.gui.mainwindow.PointGraphicInfo;
+import ui.gui.mainwindow.graphicalPersistence.GraphicInfo;
 import ui.gui.mainwindow.exceptions.NoGraphicsException;
 
 import java.io.File;

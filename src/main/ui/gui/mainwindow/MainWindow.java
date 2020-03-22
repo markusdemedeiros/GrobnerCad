@@ -1,19 +1,9 @@
 package ui.gui.mainwindow;
 
 import com.formdev.flatlaf.*;
-import model.algebraic.*;
 import model.calculational.FullSystem;
-import model.geometric.Geometry;
 import model.persistence.Reader;
-import ui.gui.mainwindow.component.ConstraintCoincidentLabel;
-import ui.gui.mainwindow.component.Drawable;
-import ui.gui.mainwindow.component.GraphicalLine;
-import ui.gui.mainwindow.component.GraphicalPoint;
-import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
-import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
-import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
-import ui.gui.mainwindow.component.pointlabels.ConstraintSetXLabel;
-import ui.gui.mainwindow.component.pointlabels.ConstraintSetYLabel;
+import ui.gui.mainwindow.graphicalPersistence.GraphicalLoader;
 import ui.gui.mainwindow.exceptions.NoGraphicsException;
 import ui.gui.mainwindow.panel.DrawingEditorPanel;
 
@@ -23,11 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
 
 // Handles layout of components for main drawing window
@@ -165,10 +152,13 @@ public class MainWindow extends JFrame {
         String filename = JOptionPane.showInputDialog("What would you like to name the system?");
         if (filename != null) {
             File toWrite = new File("./data/" + filename + ".sys");
-            /*try {
+            try {
+                PrintWriter writer = new PrintWriter(toWrite);
+                dep.save(writer);
+                writer.close();
             } catch (IOException ex) {
                 miscIOErrorDisplay();
-            }*/
+            }
         }
     }
 

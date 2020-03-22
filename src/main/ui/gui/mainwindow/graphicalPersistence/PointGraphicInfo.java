@@ -1,10 +1,8 @@
-package ui.gui.mainwindow;
+package ui.gui.mainwindow.graphicalPersistence;
 
 import model.geometric.Geometry;
 import ui.gui.mainwindow.component.Drawable;
 import ui.gui.mainwindow.component.GraphicalPoint;
-
-import java.awt.*;
 
 // Represents a named Point with graphic information
 public class PointGraphicInfo extends GraphicInfo  {

@@ -5,6 +5,7 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.algebraic.Constraint;
 import model.calculational.FullSystem;
 import model.geometric.Point;
+import model.persistence.Saveable;
 import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
@@ -13,6 +14,9 @@ import ui.gui.mainwindow.component.pointlabels.ConstraintSetYLabel;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
 import model.geometric.Geometry;
 import ui.DataGUI;
+import ui.gui.mainwindow.graphicalPersistence.GraphicInfo;
+import ui.gui.mainwindow.graphicalPersistence.LineGraphicInfo;
+import ui.gui.mainwindow.graphicalPersistence.PointGraphicInfo;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +70,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     private boolean validDrag;
     private int dragBeginX;
     private int dragBeginY;
+
 
 
     // TODO: Fix component drawing (or rather, lack thereof) for resizes and component init
@@ -710,16 +716,53 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // =================================================================================================================
     // GRABBING DATA AS OTHER DATA FORMATS
 
-    // Takes the graphical elements that user can edit and generates a system of pure geometric elements the
-    // solver can use
-    public FullSystem getFullSystem() {
-        return null;
+    public String getAsString() {
+        HashMap<Drawable, String> generatedNames = new HashMap<>();
+        ArrayList<Geometry> geoElements = new ArrayList<>();
+        // First, take care of the points
+        // It will be helpful to have a dict bewteen the two so I don't have to write a seach function
+        HashMap<Drawable, Point> pointDict = new HashMap<>();
+        for (Drawable d : components) {
+            if (d.getType().equals(Geometry.TYPE_POINT)) {
+                String name = "P" + geoElements.size(); // Ensures name is unique to each point
+                generatedNames.put(d, name);
+                Point p = new Point(name);
+                pointDict.put(d, p);
+                geoElements.add(p);
+            }
+        }
+        // That's all the points put in GeoElements
+        // Now to add the constraints. Each has a createPure function, which creates a pure (algebraic) constraint
+        // given just a list of points and$aame. This makes it pretty straightforward.
+        ArrayList<Constraint> conElements = new ArrayList<>();
+        for (Drawable d : components) {
+            String type = d.getType();
+            if (Constraint.TYPES.contains(type)) {
+                conElements.add(((DrawableConstraint) d).makePure(pointDict, "C" + components.size()));
+            }
+        }
+
+        FullSystem fs = new FullSystem(geoElements, conElements);
+
+        ArrayList<GraphicInfo> graphics = new ArrayList<>();
+        for (Drawable d : components) {
+            if (d.getType().equals(Geometry.TYPE_POINT)) {
+                graphics.add(new PointGraphicInfo(generatedNames.get(d), d.coordX, d.coordY));
+            } else if (d.getType().equals(Geometry.TYPE_LINE)) {
+                String name = "L" + graphics.size();
+                graphics.add(new LineGraphicInfo(name,
+                        generatedNames.get(((GraphicalLine) d).getP1()),
+                        generatedNames.get(((GraphicalLine) d).getP2())));
+            }
+        }
+
+        String output = "";
+        output += "{GFX}\n";
+        for (GraphicInfo g : graphics) {
+            output += g.writeAsString() + "\n";
+        }
+        output += fs.getStringToPrint();
+        return output;
     }
-
-
-
-
-
-
 
 }
