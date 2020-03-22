@@ -1,10 +1,8 @@
 package ui.gui.mainwindow.component;
 
-import javafx.scene.shape.Circle;
 import model.geometric.Geometry;
 import ui.DataGUI;
 
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 

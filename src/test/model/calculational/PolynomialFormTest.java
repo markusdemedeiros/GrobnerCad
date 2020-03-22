@@ -1,18 +1,17 @@
 package model.calculational;
 
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import edu.jas.arith.BigDecimal;
 import edu.jas.poly.ExpVector;
 import edu.jas.poly.GenPolynomial;
 import edu.jas.poly.GenPolynomialRing;
-import model.calculational.PolynomialForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 // Test for Polynomial form
 public class PolynomialFormTest {

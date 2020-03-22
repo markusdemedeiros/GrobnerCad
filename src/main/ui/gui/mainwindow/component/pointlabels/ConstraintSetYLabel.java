@@ -1,7 +1,6 @@
 package ui.gui.mainwindow.component.pointlabels;
 
 import model.algebraic.Constraint;
-import model.algebraic.PSetXConstraint;
 import model.algebraic.PSetYConstraint;
 import model.geometric.Point;
 import ui.DataGUI;

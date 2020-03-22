@@ -3,7 +3,6 @@ package ui.gui.mainwindow.component.pointlabels;
 import ui.DataGUI;
 import ui.gui.mainwindow.component.GraphicalPoint;
 
-import javax.xml.crypto.Data;
 import java.awt.*;
 
 // TODO: A lot of this stuff is similar to SquareLineLabel. Extract the squareness properties to new class

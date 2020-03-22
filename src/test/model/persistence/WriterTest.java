@@ -1,7 +1,7 @@
 package model.persistence;
 
-import model.calculational.FullSystem;
 import model.algebraic.*;
+import model.calculational.FullSystem;
 import model.geometric.Geometry;
 import model.geometric.Point;
 import org.junit.jupiter.api.BeforeEach;

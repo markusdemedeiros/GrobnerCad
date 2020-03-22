@@ -1,8 +1,8 @@
 package ui.gui.mainwindow.component;
 
-import ui.gui.mainwindow.exceptions.ZeroSlopeException;
 import model.geometric.Geometry;
 import ui.DataGUI;
+import ui.gui.mainwindow.exceptions.ZeroSlopeException;
 
 import java.awt.*;
 import java.util.ArrayList;

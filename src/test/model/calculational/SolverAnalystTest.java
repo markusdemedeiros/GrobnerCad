@@ -1,8 +1,6 @@
 package model.calculational;
 
 import model.algebraic.*;
-import model.calculational.Analyst;
-import model.calculational.Solver;
 import model.geometric.Geometry;
 import model.geometric.Point;
 import org.junit.jupiter.api.BeforeEach;

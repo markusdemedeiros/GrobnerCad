@@ -1,11 +1,7 @@
 package ui.gui.mainwindow.component.pointlabels;
 
-import model.geometric.Point;
-import ui.DataGUI;
 import ui.gui.mainwindow.component.Drawable;
 import ui.gui.mainwindow.component.GraphicalPoint;
-
-import javax.xml.crypto.Data;
 
 public abstract class PointLabel extends Drawable {
 

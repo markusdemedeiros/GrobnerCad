@@ -1,14 +1,13 @@
 package ui.gui.mainwindow.panel;
 
 import model.persistence.Saveable;
+import ui.DataGUI;
 import ui.gui.mainwindow.component.Drawable;
+import ui.gui.mainwindow.component.DrawingComponent;
 import ui.gui.mainwindow.exceptions.BadCreationActionException;
 import ui.gui.mainwindow.exceptions.BadDistanceException;
 import ui.gui.mainwindow.exceptions.BadPositionException;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
-import ui.DataGUI;
-import ui.gui.mainwindow.component.DrawingComponent;
-import ui.gui.mainwindow.component.GraphicalPoint;
 
 import javax.swing.*;
 import java.awt.*;

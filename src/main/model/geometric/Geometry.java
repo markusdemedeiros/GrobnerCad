@@ -1,7 +1,5 @@
 package model.geometric;
 
-import java.awt.*;
-
 // Abstract class to specify a geometric object in space
 public abstract class Geometry {
 

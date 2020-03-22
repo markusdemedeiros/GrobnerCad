@@ -1,19 +1,16 @@
 package ui.gui.mainwindow.component;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.algebraic.Constraint;
 import model.calculational.FullSystem;
+import model.geometric.Geometry;
 import model.geometric.Point;
-import model.persistence.Saveable;
+import ui.DataGUI;
 import ui.gui.mainwindow.component.linelabels.ConstraintDistanceLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintHorizontalLineLabel;
 import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
 import ui.gui.mainwindow.component.pointlabels.ConstraintSetXLabel;
 import ui.gui.mainwindow.component.pointlabels.ConstraintSetYLabel;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
-import model.geometric.Geometry;
-import ui.DataGUI;
 import ui.gui.mainwindow.graphicalPersistence.GraphicInfo;
 import ui.gui.mainwindow.graphicalPersistence.LineGraphicInfo;
 import ui.gui.mainwindow.graphicalPersistence.PointGraphicInfo;
@@ -27,14 +24,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.lang.Thread.sleep;
 
 
 // Jpanel which handles the display and graphical editing of a drawing
