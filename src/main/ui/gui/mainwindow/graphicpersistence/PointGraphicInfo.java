@@ -1,4 +1,4 @@
-package ui.gui.mainwindow.graphicalPersistence;
+package ui.gui.mainwindow.graphicpersistence;
 
 import model.geometric.Geometry;
 import ui.gui.mainwindow.component.Drawable;

@@ -6,7 +6,7 @@ import model.calculational.FullSystem;
 import model.geometric.Geometry;
 import model.geometric.Point;
 import ui.gui.mainwindow.exceptions.NoGraphicsException;
-import ui.gui.mainwindow.graphicalPersistence.GraphicInfo;
+import ui.gui.mainwindow.graphicpersistence.GraphicInfo;
 
 import java.io.File;
 import java.io.IOException;

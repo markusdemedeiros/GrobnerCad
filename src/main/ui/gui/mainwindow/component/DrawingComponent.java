@@ -11,9 +11,9 @@ import ui.gui.mainwindow.component.linelabels.ConstraintVerticalLineLabel;
 import ui.gui.mainwindow.component.pointlabels.ConstraintSetXLabel;
 import ui.gui.mainwindow.component.pointlabels.ConstraintSetYLabel;
 import ui.gui.mainwindow.exceptions.IncorrectSelectionException;
-import ui.gui.mainwindow.graphicalPersistence.GraphicInfo;
-import ui.gui.mainwindow.graphicalPersistence.LineGraphicInfo;
-import ui.gui.mainwindow.graphicalPersistence.PointGraphicInfo;
+import ui.gui.mainwindow.graphicpersistence.GraphicInfo;
+import ui.gui.mainwindow.graphicpersistence.LineGraphicInfo;
+import ui.gui.mainwindow.graphicpersistence.PointGraphicInfo;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -728,6 +728,25 @@ public class DrawingComponent extends JPanel implements MouseListener {
         // That's all the points put in GeoElements
         // Now to add the constraints. Each has a createPure function, which creates a pure (algebraic) constraint
         // given just a list of points and$aame. This makes it pretty straightforward.
+        ArrayList<Constraint> conElements = generateConElements(pointDict);
+        FullSystem fs = new FullSystem(geoElements, conElements);
+        ArrayList<GraphicInfo> graphics = generateGraphics(generatedNames);
+
+        String output = generateFileString(fs, graphics);
+        return output;
+    }
+
+    private String generateFileString(FullSystem fs, ArrayList<GraphicInfo> graphics) {
+        String output = "";
+        output += "{GFX}\n";
+        for (GraphicInfo g : graphics) {
+            output += g.writeAsString() + "\n";
+        }
+        output += fs.getStringToPrint();
+        return output;
+    }
+
+    private ArrayList<Constraint> generateConElements(HashMap<Drawable, Point> pointDict) {
         ArrayList<Constraint> conElements = new ArrayList<>();
         for (Drawable d : components) {
             String type = d.getType();
@@ -735,9 +754,10 @@ public class DrawingComponent extends JPanel implements MouseListener {
                 conElements.add(((DrawableConstraint) d).makePure(pointDict, "C" + components.size()));
             }
         }
+        return conElements;
+    }
 
-        FullSystem fs = new FullSystem(geoElements, conElements);
-
+    private ArrayList<GraphicInfo> generateGraphics(HashMap<Drawable, String> generatedNames) {
         ArrayList<GraphicInfo> graphics = new ArrayList<>();
         for (Drawable d : components) {
             if (d.getType().equals(Geometry.TYPE_POINT)) {
@@ -749,14 +769,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
                         generatedNames.get(((GraphicalLine) d).getP2())));
             }
         }
-
-        String output = "";
-        output += "{GFX}\n";
-        for (GraphicInfo g : graphics) {
-            output += g.writeAsString() + "\n";
-        }
-        output += fs.getStringToPrint();
-        return output;
+        return graphics;
     }
 
 }

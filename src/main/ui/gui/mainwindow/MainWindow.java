@@ -4,7 +4,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import model.calculational.FullSystem;
 import model.persistence.Reader;
 import ui.gui.mainwindow.exceptions.NoGraphicsException;
-import ui.gui.mainwindow.graphicalPersistence.GraphicalLoader;
+import ui.gui.mainwindow.graphicpersistence.GraphicalLoader;
 import ui.gui.mainwindow.panel.DrawingEditorPanel;
 
 import javax.swing.*;
