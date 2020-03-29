@@ -46,4 +46,20 @@ On a personal note, I am a student of pure mathematics with interest in pure and
 
 *By the time this course is done I will have the skills in mathematics needed to write my own, more purpose-build Buchberger solving algorithm in (probably) Julia which will interface with the files this program saves. Buchberger's algorithm is invariant under the physical placement of the elements in space, so the new graphics data I am saving is only so this program can read it's own creations. I want this program to be able to read and write to .sys files WITH the graphics specified so I can visually design complex real life test cases, but it shouldn't be able to read a .sys file without graphics info so that I can unleash my new solver on systems with un-drawable algebraic and geometric systems. I hope that explains part of why my save/load is so odd, while some of the weird coupling and cohesion is admittedly poor design which I hope to tackle in the next phase, the idea is motivated by something good :)*
 
+## Phase 4 Task 2
+I will explain the type hierarchy I implement to represent objects in ui.gui.mainwindow.component.
+
+The abstract class Drawable represents an object which can be drawn to the screen. It is designed to handle all of the common functions, like recomputing coordinates, being drawn to a graphics2D object, detecting clicks, etc. 
+
+The classes GraphicalLine and GraphicalPoint extends Drawable, overriding the above listed functions to display lines and points to the screen.
+
+The abstract class PointLabel also extends drawable, it represents constraint labels attached to GraphicalPoints. One special type of pointlabel, the SquarePointLabel, is an abstract class representing point labels that have a square icon. I currently have implemented two concrete types (constraintSetXLabel and ConstraintSetYLabel) which are different types of square Labels. 
+
+Similarly, a Linelabel is an object attached to a line. SquareLineLabel is a special type of line label, and is implemented by three distinct constraints.
+
+Finally I have one more concrete Drawable subtype- the ConstraintCoincidentLabel. It is neither a Linelabel or Pointlabel because it it behaves more like a line (open my program to see what I mean), so I simply have it as a subtype of GraphicalLine. 
+
+All of my constriant types implement DrawableConstraint, which allows me to turn them into their nongraphical (model) counterparts to solve or save to a file. 
+
+
  
