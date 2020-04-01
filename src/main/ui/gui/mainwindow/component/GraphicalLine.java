@@ -34,7 +34,6 @@ public class GraphicalLine extends Drawable {
     @Override
     public void updateToDraw(GlobalCoordinateSystem gcs) {
         super.updateToDraw(gcs);
-        //super.updateToDraw(xleft, xright, ytop, ybot);
     }
 
     @Override

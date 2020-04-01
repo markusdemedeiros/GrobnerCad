@@ -68,6 +68,5 @@ There are several places in my code with questionable design decisions, but for 
 - Improve Cohesion in coordinate transformations: All of my drawable elements use many different constraint systems which I have explained in a comment. However, this leads to lots of duplicate code and passing around unnessecary variables which is making development hard at this scale. I will abstract the coordinate transformation methods from that class in DrawingEditor, and refactor my Drawable elements to let the new Coordinate types handle all these computations so they do not need to "know" the nuts and bolts of how the editor is handling coordinates and can just be given the peritnent information. This increased robustness would allow me to add more nuanced coordinate operations, like zoooming the screen in and out.
 
 - Improve Cohesion in drawable creations: Right now, I have a signifigant amount of duplicate code in DrawingComponent pertaining to the creation of objects.
- 
 
- 
+- Improve Coupling in Solver: Make solver take a Fullsystem instead of two lists of geometric and algebraic elements. A solver only makes sense in the context of a full system of compatable algebra and geometry, so passing it both components individually could lead to situations which are undefined (like a constraint on a point which is not there). This will make my solver more robust.  

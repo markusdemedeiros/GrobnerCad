@@ -50,8 +50,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     private LinkedList<Drawable> selected;
 
     // Position of the virtual origin in screen coordinates.
-    private int voriginX;
-    private int voriginY;
     private GlobalCoordinateSystem gcs;
 
     // Background image variables
@@ -92,8 +90,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // MODIFIES: this
     // EFFECTS: Removes EVERYTHING!!!! Can be called to clear the screen.
     public void blankInit() {
-        voriginX = 0;
-        voriginY = 0;
         gcs = new GlobalCoordinateSystem(this);
 
         validDrag = false;
@@ -194,7 +190,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     private void displayDrawable() {
         for (Drawable d : components) {
             if (d.getToDraw()) {
-                d.drawImage(g2, gcs);                          /// =========================== << REMOVE THE TWO COMPONENTS HERE
+                d.drawImage(g2, gcs);
             }
         }
     }
@@ -214,7 +210,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //              (not, for example, considering interference with other components)
     // MODIFIES: this, d
     private void updateToDrawEntireScreen(Drawable d) {
-        //d.updateToDraw(getLft(), getRgt(), getTop(), getBot());                                    /// =========================== << MAKE TAKE A GCS
         d.updateToDraw(gcs);
     }
 

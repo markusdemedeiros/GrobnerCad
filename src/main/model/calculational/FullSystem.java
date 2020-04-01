@@ -39,15 +39,6 @@ public class FullSystem implements Saveable {
         return output;
     }
 
-    public Geometry[] getGeometryAsArray() {
-        Geometry[] output = new Geometry[geometery.size()];
-        for (int i = 0; i < geometery.size(); i++) {
-            output[i] = geometery.get(i);
-        }
-        return output;
-    }
-
-
     @Override
     public void save(PrintWriter printWriter) {
         printWriter.println(getStringToPrint());

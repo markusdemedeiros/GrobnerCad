@@ -22,7 +22,6 @@ import java.io.UncheckedIOException;
 
 public class MainWindow extends JFrame {
 
-    private FullSystem currentSystem;
 
     public static final Dimension MIN_SIZE = new Dimension(700, 500);
     public static final Dimension DEF_SIZE = new Dimension(1000, 600);
@@ -176,13 +175,6 @@ public class MainWindow extends JFrame {
     }
 
     public MainWindow() {
-        try {
-            currentSystem = Reader.readSystem(new File("./data/allconstraints.sys"));
-        } catch (IOException e) {
-            // Just crash for now, I will handle this later
-            throw new UncheckedIOException(e);
-        }
-
         initUI();
     }
 }

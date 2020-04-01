@@ -36,7 +36,7 @@ public class SolverApp {
         System.out.println("View help.md to read about this program!");
         while (getData()) {
             promptSave();
-            Solver s = new Solver(geoElements, geoConstraints);
+            Solver s = new Solver(new FullSystem(geoElements, geoConstraints));
             System.out.println("Solving the system of constraints: ");
             for (Constraint k : geoConstraints) {
                 System.out.println(k.show());

@@ -14,8 +14,9 @@ import java.util.List;
 // Class which handles the solving of a constraint problem
 public class Solver {
     // Independent fields
-    private ArrayList<Geometry> geoElements;                // List of geometric elements
-    private ArrayList<Constraint> geoConstraints;           // List of geometric constraints
+    private List<Geometry> geoElements;                // List of geometric elements
+    private List<Constraint> geoConstraints;           // List of geometric constraints
+    private FullSystem system;
     private GenPolynomialRing polyRing;                     // Poynomial Ring to generate polynomials
 
     // Dependent fields
@@ -28,8 +29,12 @@ public class Solver {
 
     // MODIFIES: this
     // REQUIRES: All constraints in list are in terms of elements in geoElements
-    public Solver(List<Geometry> geoElements, List<Constraint> geoConstraints) {
-        // Initialize and copy over arrays
+    public Solver(FullSystem system) {
+        this.system = system;
+        this.geoElements = new ArrayList<>(system.getGeometery());
+        this.geoConstraints = new ArrayList<>(system.getAlgebra());
+
+        /*// Initialize and copy over arrays
         this.geoElements = new ArrayList<>();
         for (Geometry element : geoElements) {
             this.geoElements.add(element);
@@ -38,6 +43,7 @@ public class Solver {
         for (Constraint constaint : geoConstraints) {
             this.geoConstraints.add(constaint);
         }
+         */
         polyRing = new GenPolynomialRing<BigDecimal>(new BigDecimal(), 0);
         polyList = new ArrayList<GenPolynomial<BigDecimal>>();
         variableDict = new ArrayList<String>();

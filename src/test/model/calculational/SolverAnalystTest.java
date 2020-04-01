@@ -33,7 +33,7 @@ public class SolverAnalystTest {
         testGeometery.add(new Point("B"));
         testGeometery.add(new Point("C"));
 
-        inconsistentSystem = new Solver(testGeometery,
+        inconsistentSystem = new Solver(new FullSystem(testGeometery,
                 Arrays.asList(new PPDistanceConstraint("DIST1",
                         (Point) testGeometery.get(0),
                         (Point) testGeometery.get(1),
@@ -41,9 +41,9 @@ public class SolverAnalystTest {
                         new PPDistanceConstraint("DIST2",
                                 (Point) testGeometery.get(1),
                                 (Point) testGeometery.get(0),
-                                6)));
+                                6))));
 
-        finiteSystem = new Solver(testGeometery,
+        finiteSystem = new Solver(new FullSystem(testGeometery,
                 Arrays.asList(
                         new PPDistanceConstraint("DIST1",
                                 (Point) testGeometery.get(0),
@@ -64,9 +64,9 @@ public class SolverAnalystTest {
                                 (Point) testGeometery.get(1)),
                         new PPVerticalConstraint("VRT",
                                 (Point) testGeometery.get(0),
-                                (Point) testGeometery.get(2))));
+                                (Point) testGeometery.get(2)))));
 
-        infiniteSystem = new Solver (testGeometery,
+        infiniteSystem = new Solver (new FullSystem(testGeometery,
                 Arrays.asList(new PSetXConstraint("AX",
                         (Point) testGeometery.get(0),
                         5),
@@ -82,7 +82,7 @@ public class SolverAnalystTest {
                         new PPDistanceConstraint("DIST",
                                 (Point) testGeometery.get(1),
                                 (Point) testGeometery.get(2),
-                                5)));
+                                5))));
     }
 
     @Test
