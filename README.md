@@ -67,7 +67,7 @@ There are several places in my code with questionable design decisions, but for 
 
 - Improve Cohesion in coordinate transformations: All of my drawable elements use many different constraint systems which I have explained in a comment. However, this leads to lots of duplicate code and passing around unnessecary variables which is making development hard at this scale. I will abstract the coordinate transformation methods from that class in DrawingEditor, and refactor my Drawable elements to let the new Coordinate types handle all these computations so they do not need to "know" the nuts and bolts of how the editor is handling coordinates and can just be given the peritnent information. This increased robustness would allow me to add more nuanced coordinate operations, like zoooming the screen in and out.
 
-- Improve Cohesion in drawable creations: Right now, I have a signifigant amount of duplicate code in DrawingComponent pertaining to the creation of objects. Part of this is related to the type-unsafety of just throwing all my Drawable objects into one list. I will make a new object DrawableItemsList which handles this in a more type-safe way. Considering that many of my drawable items interact with each other (they are a graph of dependencies) it makes sense to have an object to handle this behavior.  This improves the coupling by having DrawingComponent not have to deal with the weird accounting of this list.
-
+- Improve Cohesion in drawable creations: Right now, I have a signifigant amount of duplicate code in DrawingComponent pertaining to the creation of objects.
+ 
 
  
