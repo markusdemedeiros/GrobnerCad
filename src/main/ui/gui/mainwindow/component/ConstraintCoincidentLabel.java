@@ -26,7 +26,9 @@ public class ConstraintCoincidentLabel extends GraphicalLine implements Drawable
     }
 
     @Override
-    public void drawNotSelected(Graphics2D g, int originx, int originy) {
+    public void drawNotSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         Stroke prevStroke = g.getStroke();
         g.setStroke(DataGUI.dashedStroke);
         g.drawLine(p1.getVirtualCenterX() + originx,
@@ -37,7 +39,10 @@ public class ConstraintCoincidentLabel extends GraphicalLine implements Drawable
     }
 
     @Override
-    public void drawSelected(Graphics2D g, int originx, int originy) {
+    public void drawSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
+
         Stroke prevStroke = g.getStroke();
         g.setStroke(DataGUI.bigDashedStroke);
         g.drawLine(p1.getVirtualCenterX() + originx,

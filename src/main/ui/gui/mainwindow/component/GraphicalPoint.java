@@ -21,13 +21,17 @@ public class GraphicalPoint extends Drawable {
 
     // Circle inside the bounding box
     @Override
-    public void drawSelected(Graphics2D g2d, int originx, int originy) {
+    public void drawSelected(Graphics2D g2d, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         g2d.draw(getOutline(originx, originy));
         g2d.fill(getOutline(originx, originy));
     }
 
     @Override
-    protected void drawNotSelected(Graphics2D g2d, int originx, int originy) {
+    protected void drawNotSelected(Graphics2D g2d, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         g2d.draw(getOutline(originx, originy));
     }
 

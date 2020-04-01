@@ -46,7 +46,7 @@ On a personal note, I am a student of pure mathematics with interest in pure and
 
 *By the time this course is done I will have the skills in mathematics needed to write my own, more purpose-build Buchberger solving algorithm in (probably) Julia which will interface with the files this program saves. Buchberger's algorithm is invariant under the physical placement of the elements in space, so the new graphics data I am saving is only so this program can read it's own creations. I want this program to be able to read and write to .sys files WITH the graphics specified so I can visually design complex real life test cases, but it shouldn't be able to read a .sys file without graphics info so that I can unleash my new solver on systems with un-drawable algebraic and geometric systems. I hope that explains part of why my save/load is so odd, while some of the weird coupling and cohesion is admittedly poor design which I hope to tackle in the next phase, the idea is motivated by something good :)*
 
-## Phase 4 Task 2
+## Phase 4 Task: 2
 I will explain the type hierarchy I implement to represent objects in ui.gui.mainwindow.component.
 
 The abstract class Drawable represents an object which can be drawn to the screen. It is designed to handle all of the common functions, like recomputing coordinates, being drawn to a graphics2D object, detecting clicks, etc. 
@@ -60,6 +60,14 @@ Similarly, a Linelabel is an object attached to a line. SquareLineLabel is a spe
 Finally I have one more concrete Drawable subtype- the ConstraintCoincidentLabel. It is neither a Linelabel or Pointlabel because it it behaves more like a line (open my program to see what I mean), so I simply have it as a subtype of GraphicalLine. 
 
 All of my constriant types implement DrawableConstraint, which allows me to turn them into their nongraphical (model) counterparts to solve or save to a file. 
+
+## Phase 4: Task 3
+
+There are several places in my code with questionable design decisions, but for now I will focus on what I think is the most critical. 
+
+- Improve Cohesion in coordinate transformations: All of my drawable elements use many different constraint systems which I have explained in a comment. However, this leads to lots of duplicate code and passing around unnessecary variables which is making development hard at this scale. I will abstract the coordinate transformation methods from that class in DrawingEditor, and refactor my Drawable elements to let the new Coordinate types handle all these computations so they do not need to "know" the nuts and bolts of how the editor is handling coordinates and can just be given the peritnent information. This increased robustness would allow me to add more nuanced coordinate operations, like zoooming the screen in and out.
+
+- Improve Cohesion in drawable creations: Right now, I have a signifigant amount of duplicate code in DrawingComponent pertaining to the creation of objects. Part of this is related to the type-unsafety of just throwing all my Drawable objects into one list. I will make a new object DrawableItemsList which handles this in a more type-safe way. Considering that many of my drawable items interact with each other (they are a graph of dependencies) it makes sense to have an object to handle this behavior.  This improves the coupling by having DrawingComponent not have to deal with the weird accounting of this list.
 
 
  

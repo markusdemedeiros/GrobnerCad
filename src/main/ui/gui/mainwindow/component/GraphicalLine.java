@@ -32,12 +32,15 @@ public class GraphicalLine extends Drawable {
     }
 
     @Override
-    public void updateToDraw(int xleft, int xright, int ytop, int ybot) {
-        super.updateToDraw(xleft, xright, ytop, ybot);
+    public void updateToDraw(GlobalCoordinateSystem gcs) {
+        super.updateToDraw(gcs);
+        //super.updateToDraw(xleft, xright, ytop, ybot);
     }
 
     @Override
-    protected void drawSelected(Graphics2D g, int originx, int originy) {
+    protected void drawSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         Stroke prevStroke = g.getStroke();
         g.setStroke(DataGUI.bigStroke);
         g.drawLine(p1.getVirtualCenterX() + originx,
@@ -48,7 +51,9 @@ public class GraphicalLine extends Drawable {
     }
 
     @Override
-    protected void drawNotSelected(Graphics2D g, int originx, int originy) {
+    protected void drawNotSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         g.drawLine(p1.getVirtualCenterX() + originx,
                 p1.getVirtualCenterY()  + originy,
                 p2.getVirtualCenterX() + originx,

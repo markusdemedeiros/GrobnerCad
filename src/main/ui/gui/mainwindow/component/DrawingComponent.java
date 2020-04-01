@@ -52,6 +52,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // Position of the virtual origin in screen coordinates.
     private int voriginX;
     private int voriginY;
+    private GlobalCoordinateSystem gcs;
 
     // Background image variables
     private BufferedImage backgroundImage;
@@ -93,6 +94,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void blankInit() {
         voriginX = 0;
         voriginY = 0;
+        gcs = new GlobalCoordinateSystem(this);
 
         validDrag = false;
 
@@ -124,21 +126,27 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // EFFECTS: Draws a shape which tracks the origin to the screen
     // MODIFIES: this
     private void drawOrigin() {
-        g2.drawLine(voriginX - DataGUI.ORIGIN_SIZE,
-                voriginY - DataGUI.ORIGIN_SIZE,
-                voriginX + DataGUI.ORIGIN_SIZE,
-                voriginY + DataGUI.ORIGIN_SIZE);
-        g2.drawLine(voriginX - DataGUI.ORIGIN_SIZE,
-                voriginY + DataGUI.ORIGIN_SIZE,
-                voriginX + DataGUI.ORIGIN_SIZE,
-                voriginY - DataGUI.ORIGIN_SIZE);
+        /*
+        int topleftx = voriginX - DataGUI.ORIGIN_SIZE;
+        int toplefty = voriginY - DataGUI.ORIGIN_SIZE;
+        int botrightx = voriginX + DataGUI.ORIGIN_SIZE;
+        int botrighty = voriginY + DataGUI.ORIGIN_SIZE;
+         */
+
+        int topleftx = gcs.liftToScreenX(-DataGUI.ORIGIN_SIZE);
+        int toplefty = gcs.liftToScreenY(-DataGUI.ORIGIN_SIZE);
+        int botrightx = gcs.liftToScreenX(DataGUI.ORIGIN_SIZE);
+        int botrighty = gcs.liftToScreenY(DataGUI.ORIGIN_SIZE);
+
+        g2.drawLine(topleftx, toplefty, botrightx, botrighty);
+        g2.drawLine(topleftx, botrighty, botrightx, toplefty);
     }
 
 
     // EFFETCS: Draws a box on the edge of the drawable region
     // MODIFIES: this
     private void drawBoundingBox() {
-        g2.drawRect(0,0, drawingWidth(), drawingHeight());
+        g2.drawRect(0,0, gcs.screenWidth() - 1, gcs.screenHeight() - 1);
     }
 
 
@@ -150,26 +158,24 @@ public class DrawingComponent extends JPanel implements MouseListener {
         // TODO: Experiment with different drawing methods. Maybe drawImage is not optimal. Furthermore,
         //          experiment with non-default 'observer' fields
         // TODO: These two variables only need to be updated on screen resize, extract to listener?
-        int totalXTiles = drawingWidth() / backgroundWidth + 1;
-        int totalYTiles = drawingHeight() / backgroundHeight + 1;
+        int totalXTiles = gcs.screenWidth() / backgroundWidth + 1;
+        int totalYTiles = gcs.screenHeight() / backgroundHeight + 1;
 
         // "Moving" the background is mathematically identical mod the tile size
-        int subtileXOffset = Math.floorMod(voriginX, backgroundWidth);
-        int subtileYOffset = Math.floorMod(voriginY, backgroundHeight);
+        int subtileXOffset = Math.floorMod(gcs.getVirtualX(), backgroundWidth);
+        int subtileYOffset = Math.floorMod(gcs.getVirtualY(), backgroundHeight);
 
         for (int i = 0; i <= totalYTiles; i++) {
             for (int j = 0; j <= totalXTiles; j++) {
                 int x = (j - 1) * backgroundWidth + subtileXOffset;
                 int y = (i - 1) * backgroundHeight + subtileYOffset;
-                g2.drawImage(backgroundImage,
-                        x,
-                        y,
-                        null);
+                g2.drawImage(backgroundImage, x, y, null);
             }
         }
     }
 
-    
+
+    /*
     // EFFECTS: adds a Drawable component to the list with local origin (originX, originY)
     //          and repaints component (I want there never to be a situation where a component is added and not shown)
     // MODIFIES: this, d
@@ -180,13 +186,15 @@ public class DrawingComponent extends JPanel implements MouseListener {
         repaint();
     }
 
+     */
+
 
     // EFFECTS: Displays drawable component to the screen iff it has toDraw set.
     // MODIFIES: this
     private void displayDrawable() {
         for (Drawable d : components) {
             if (d.getToDraw()) {
-                d.drawImage(g2, voriginX, voriginY);
+                d.drawImage(g2, gcs);                          /// =========================== << REMOVE THE TWO COMPONENTS HERE
             }
         }
     }
@@ -206,7 +214,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //              (not, for example, considering interference with other components)
     // MODIFIES: this, d
     private void updateToDrawEntireScreen(Drawable d) {
-        d.updateToDraw(getLft(), getRgt(), getTop(), getBot());
+        //d.updateToDraw(getLft(), getRgt(), getTop(), getBot());                                    /// =========================== << MAKE TAKE A GCS
+        d.updateToDraw(gcs);
     }
 
     // EFFECTS: Forces toDraw check on all components, and then redraws entire screen including background.
@@ -221,7 +230,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          Updates toDraw of every object (never want a situation where plane moves and visibility is not updated)
     // MODIFIES: this, every Drawable in components
     private void dragPlane(int dx, int dy) {
-        addOffset(dx, dy);
+        gcs.shiftCoordinates(dx, dy);
         updateToDraw();
     }
 
@@ -239,7 +248,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
 
 
 
-
+    /*
     // EFFECTS: Gets the top object at the position (x,y) in virtual coordinates,
     //              or null if no object at the position
     private Drawable getObjectAtPosition(int x, int y) {
@@ -250,6 +259,7 @@ public class DrawingComponent extends JPanel implements MouseListener {
         }
         return null;
     }
+    */
 
     // =================================================================================================================
     // MOUSE EVENT HANDLING
@@ -270,8 +280,10 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // MODIFIES: this, objects in selected and components
     private void doClick(MouseEvent e) {
         // If there is one or zero clicked then proceed with behavior immediately
-        List<Drawable> clicked = getAllObjectsAtPosition(screenToOriginX(e.getX()),
-                screenToOriginY(e.getY()));
+        //List<Drawable> clicked = getAllObjectsAtPosition(screenToOriginX(e.getX()),
+        //        screenToOriginY(e.getY()));
+
+        List<Drawable> clicked = getAllObjectsAtPosition(gcs.pushToVirtualX(e.getX()), gcs.pushToVirtualY(e.getY()));
 
         if (clicked.size() == 0) {
             deselectAll();
@@ -354,7 +366,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
             if (Math.abs(dx) > DataGUI.CLICK_SENS_TOLERANCE && Math.abs(dy) > DataGUI.CLICK_SENS_TOLERANCE) {
                 // True drag has been detected. Move the items if the drag started on a selected object
                 boolean startedOnSelected = false;
-                for (Drawable d : getAllObjectsAtPosition(screenToOriginX(dragBeginX), screenToOriginY(dragBeginY))) {
+                for (Drawable d : getAllObjectsAtPosition(gcs.pushToVirtualX(dragBeginX),
+                        gcs.pushToVirtualY(dragBeginY))) {
                     startedOnSelected = startedOnSelected || selected.contains(d);
                 }
                 if (!startedOnSelected) {
@@ -436,61 +449,18 @@ public class DrawingComponent extends JPanel implements MouseListener {
     // Creates new point in the center of the screen and redraws
     public void createNewPoint() {
         GraphicalPoint output = new GraphicalPoint();
-        output.addOffset((getWidth() / 2) - voriginX, getHeight() / 2 - voriginY);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
+        output.addOffset(gcs.pushToVirtualX(gcs.screenWidth() / 2),
+                gcs.pushToVirtualY(gcs.screenHeight() / 2));
+        createNewDrawable(output);
         repaint();
     }
 
-    // EFFETCS: Creates a new line from two points, and adds it to components
+
+    // EFFECTS: Adds a new drawable to the list of drawables and updates it's visibility
     // MODIFIES: this
-    private void createNewLine(GraphicalPoint p1, GraphicalPoint p2) {
-        GraphicalLine output = new GraphicalLine(p1, p2);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-    // EFFECTS: Creates new horizontal constraint component from line, adds to list of components
-    // MODIFIES: this
-    private void createNewHoriz(GraphicalLine g1) {
-        ConstraintHorizontalLineLabel output = new ConstraintHorizontalLineLabel(g1);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-    // EFFECTS: Creates new vertical constraint component from line, adds to list of componets
-    // MODIFIES: this
-    private void createNewVert(GraphicalLine gl) {
-        ConstraintVerticalLineLabel output = new ConstraintVerticalLineLabel(gl);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-    // EFFECTS: Creates new distance constraint, adds to list of components
-    // MODIFIES: this
-    private void createNewDist(GraphicalLine gl, double dist) {
-        ConstraintDistanceLabel output = new ConstraintDistanceLabel(gl, dist);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-    private void createNewSetX(GraphicalPoint gp, double xval) {
-        ConstraintSetXLabel output = new ConstraintSetXLabel(gp, xval);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-
-    private void createNewSetY(GraphicalPoint gp, double yval) {
-        ConstraintSetYLabel output = new ConstraintSetYLabel(gp, yval);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
-    }
-
-    private void createNewCoincident(GraphicalPoint gp1, GraphicalPoint gp2) {
-        ConstraintCoincidentLabel output = new ConstraintCoincidentLabel(gp1, gp2);
-        output.updateToDraw(getLft(), getRgt(), getTop(), getBot());
-        components.add(output);
+    private void createNewDrawable(Drawable d) {
+        d.updateToDraw(gcs);
+        components.add(d);
     }
 
     // EFFECTS: Creates new line form selected components if those components can create a line
@@ -498,9 +468,8 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          If no line can be created from selected, throw IncorrectSelectionException with message to user.
     // MODIFIES: this
     public void createNewLineFromSelected() throws IncorrectSelectionException {
-        isTwoPointsSelected();
-        createNewLine((GraphicalPoint) selected.get(0),
-                (GraphicalPoint) selected.get(1));
+        List<GraphicalPoint> points = isTwoPointsSelected();
+        createNewDrawable(new GraphicalLine(points.get(0), points.get(1)));
         repaint();
     }
 
@@ -510,10 +479,9 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          repaints when done
     // MODIFIES: this
     public void createNewHorizFromSelected() throws IncorrectSelectionException {
-        isOneLineSelected();
-        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkDrawableForLabelType(selectedLine, Constraint.PP_HORIZONTAL_TYPE);
-        createNewHoriz(selectedLine);
+        GraphicalLine line = isOneLineSelected();
+        checkDrawableForLabelType(line, Constraint.PP_HORIZONTAL_TYPE);
+        createNewDrawable(new ConstraintHorizontalLineLabel(line));
         repaint();
     }
 
@@ -523,10 +491,9 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          repaints when done
     // MODIFIES: this
     public void createNewVertFromSelected() throws IncorrectSelectionException {
-        isOneLineSelected();
-        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkDrawableForLabelType(selectedLine, Constraint.PP_VERTICAL_TYPE);
-        createNewVert(selectedLine);
+        GraphicalLine line = isOneLineSelected();
+        checkDrawableForLabelType(line, Constraint.PP_VERTICAL_TYPE);
+        createNewDrawable(new ConstraintVerticalLineLabel(line));
         repaint();
     }
 
@@ -536,10 +503,9 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          repaints when done
     // MODIFIES: this
     public void createNewDistFromSelected(double dist) throws IncorrectSelectionException {
-        isOneLineSelected();
-        GraphicalLine selectedLine = (GraphicalLine) selected.get(0);
-        checkDrawableForLabelType(selectedLine, Constraint.PP_DISTANCE_TYPE);
-        createNewDist(selectedLine, dist);
+        GraphicalLine line = isOneLineSelected();
+        checkDrawableForLabelType(line, Constraint.PP_DISTANCE_TYPE);
+        createNewDrawable(new ConstraintDistanceLabel(line, dist));
         repaint();
     }
 
@@ -549,10 +515,9 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          repaints when done
     // MODIFIES: this
     public void createNewSetXFromSelected(double dist) throws IncorrectSelectionException {
-        isOnePointSelected();
-        GraphicalPoint point = (GraphicalPoint) selected.get(0);
+        GraphicalPoint point = isOnePointSelected();
         checkDrawableForLabelType(point, Constraint.P_SETX_CONSTRAINT);
-        createNewSetX(point, dist);
+        createNewDrawable(new ConstraintSetXLabel(point, dist));
         repaint();
     }
 
@@ -562,58 +527,61 @@ public class DrawingComponent extends JPanel implements MouseListener {
     //          repaints when done
     // MODIFIES: this
     public void createNewSetYFromSelected(double dist) throws IncorrectSelectionException {
-        isOnePointSelected();
-        GraphicalPoint point = (GraphicalPoint) selected.get(0);
+        GraphicalPoint point = isOnePointSelected();
         checkDrawableForLabelType(point, Constraint.P_SETY_CONSTRAINT);
-        createNewSetY(point, dist);
+        createNewDrawable(new ConstraintSetYLabel(point, dist));
         repaint();
     }
 
     public void createNewCoincidentFromSelected() throws IncorrectSelectionException {
-        isTwoPointsSelected();
-        GraphicalPoint p0 = (GraphicalPoint) selected.get(0);
-        GraphicalPoint p1 = (GraphicalPoint) selected.get(1);
-        for (Drawable d : p0.getDependencies()) {
+        List<GraphicalPoint> points = isTwoPointsSelected();
+        for (Drawable d : points.get(0).getDependencies()) {
             if (d.getType() == Constraint.PP_COINCIDENT_TYPE
-                    && d.getDependencies().contains(p1)) {
+                    && d.getDependencies().contains(points.get(1))) {
                 // If p0 has a dependency which is a PP Coincident constraint which also has p1 as a dependency,
                 //      the two points are coincident by definition. No dupicates.
                 throw new IncorrectSelectionException("Those two points are already coincident");
             }
         }
-        createNewCoincident(p0, p1);
+        createNewDrawable(new ConstraintCoincidentLabel(points.get(0), points.get(1)));
         repaint();
     }
 
 
-    // TODO: refactor to actually return a tuple of points
-    // EFFECTS: Does nothing if exactly two points are selected,
+    // EFFECTS: Returns a list of exactly two graphicalpoints, if there are exactly two GraphicaPoints selected
     //              throws an exception with instructions to the user if not
-    private void isTwoPointsSelected() throws IncorrectSelectionException {
+    private List<GraphicalPoint> isTwoPointsSelected() throws IncorrectSelectionException {
         if ((selected.size() != 2)
                 || (selected.get(0).getType() != Geometry.TYPE_POINT)
                 || (selected.get(1).getType() != Geometry.TYPE_POINT)) {
             throw new IncorrectSelectionException("Please select two points");
+        } else {
+            List<GraphicalPoint> output = new ArrayList<>();
+            output.add((GraphicalPoint) selected.get(0));
+            output.add((GraphicalPoint) selected.get(1));
+            return output;
         }
     }
 
-    // TODO: refactor to actually return a tuple of points
-    // EFFECTS: Does nothing if exactly two points are selected,
+    // EFFECTS: Returns a GraphicalPoint if exactly one point is selected
     //              throws an exception with instructions to the user if not
-    private void isOnePointSelected() throws IncorrectSelectionException {
+    private GraphicalPoint isOnePointSelected() throws IncorrectSelectionException {
         if ((selected.size() != 1)
                 || (selected.get(0).getType() != Geometry.TYPE_POINT)) {
             throw new IncorrectSelectionException("Please select one point");
+        } else {
+            return (GraphicalPoint) selected.get(0);
         }
     }
 
-    // TODO: Refactor to actually return a line
-    // EFFECTS: Does nothing if exactly one line is selected
+    // EFFECTS: Returns a GraphicalLine exactly one line is selected
     //              throws exception with user instructions otherwise
-    private void isOneLineSelected() throws IncorrectSelectionException {
+    private GraphicalLine isOneLineSelected() throws IncorrectSelectionException {
         if ((selected.size() != 1)
                 || (selected.get(0).getType() != Geometry.TYPE_LINE)) {
             throw new IncorrectSelectionException("Please select one line");
+        } else {
+            return (GraphicalLine) selected.get(0);
         }
     }
 
@@ -637,75 +605,6 @@ public class DrawingComponent extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
         // Nothing
     }
-
-
-    // =================================================================================================================
-    // COORDINATE TRANSFORMS AND OPERATIONS THEREOF
-
-    // * Screen co-ords are the literal pixels displayed to screen
-    //  (0,0) ---------------- (drawingWidth, 0)
-    //   |                      |
-    //  (drawingHeight, 0) ----(drawingWidth, drawingHeight)
-
-    private int drawingWidth() {
-        return (int) (getSize().getWidth() - 1);
-    }
-
-    private int drawingHeight() {
-        return (int) (getSize().getHeight() - 1);
-    }
-
-    //  * Origin co-ords are coordinates relative to virtual origin
-    //          The virtual origin is located at (voriginx, voriginy)
-    //  (getLft(), getTop()) ------------------------- (getRgt(), getTop())
-    //   |                                              |
-    //   |                                              |
-    //   |          (0, 0)                              |
-    //   |                                              |
-    //   (getLft(), getBot() ------------------------- (getRgt(), getBot())
-
-
-    // EFFECTS: Converts screen x coordinate to origin x coordinate
-    private int screenToOriginX(int screenX) {
-        return screenX - voriginX;
-    }
-
-    // EFFECTS: Converts screen y coordinate to origin y coordinate
-    private int screenToOriginY(int screenY) {
-        return screenY - voriginY;
-    }
-
-    private int getLft() {
-        return screenToOriginX(0);
-    }
-
-    private int getRgt() {
-        return screenToOriginX(drawingWidth());
-    }
-
-    private int getTop() {
-        return screenToOriginY(0);
-    }
-
-    private int getBot() {
-        return screenToOriginY(drawingHeight());
-    }
-
-    // EFFECTS: Offsets the virtual origin by (offsetX, offsetY)
-    // MODIFIES: this
-    public void addOffset(int offsetX, int offsetY) {
-        voriginX += offsetX;
-        voriginY += offsetY;
-    }
-
-    // EFFECTS: Changes the position of the virtual origin to (offsetX, offsetY)
-    // MODIFIES: this
-    public void setOffset(int offsetX, int offsetY) {
-        voriginX = offsetX;
-        voriginY = offsetY;
-    }
-
-
 
     // =================================================================================================================
     // GRABBING DATA AS OTHER DATA FORMATS

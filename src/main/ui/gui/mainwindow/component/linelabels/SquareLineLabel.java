@@ -1,6 +1,7 @@
 package ui.gui.mainwindow.component.linelabels;
 
 import ui.DataGUI;
+import ui.gui.mainwindow.component.GlobalCoordinateSystem;
 import ui.gui.mainwindow.component.GraphicalLine;
 
 import java.awt.*;
@@ -33,13 +34,17 @@ public abstract class SquareLineLabel extends LineLabel {
     }
 
     @Override
-    protected void drawNotSelected(Graphics2D g, int originx, int originy) {
+    protected void drawNotSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         drawBoundingBox(g, originx, originy, 0);
         drawIcon(g, originx + getTopLeftX(), originy + getTopLeftY());
     }
 
     @Override
-    protected void drawSelected(Graphics2D g, int originx, int originy) {
+    protected void drawSelected(Graphics2D g, GlobalCoordinateSystem gcs) {
+        int originx = gcs.getVirtualX();
+        int originy = gcs.getVirtualY();
         Stroke defaultStroke = g.getStroke();
         g.setStroke(DataGUI.bigStroke);
         drawBoundingBox(g, originx, originy, DataGUI.BIG_STROKE_WIDTH / 2);
