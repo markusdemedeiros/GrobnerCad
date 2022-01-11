@@ -1,4 +1,12 @@
-# A Geometric Constraint solver
+# GrobnerCAD: A Geometric Constraint Generation Engine
+
+## Summary
+
+This project is written in fulfillment of UBC's Computer Science 210 Software Contruction project. It is a graphical frontend, written in Java, which allows the user to edit 2D dimensioned drawings and generates a system of polynomial equations representing the user's model. A demonstration of the functionality can be found [here](https://youtu.be/HW87QbK1Wi4). 
+
+
+Below you will find the sections of the README required by the CPSC 210 project, although not all of it is relevant in the final build. 
+
 
 ## Background
 **Geometric Constraint Solving** is a class of problems in computational geometery, centrally motivated by it's applications in computer aided design (CAD). The task at hand is to develop algorithms to resolve dimensioned drawings: collections of geometric elements which satisfy a set of constraints pertaining to their placement. One simple formulation of this problem takes place in 2 dimensional real space with geometric elements consisting of points and lines and dimensions consisting of line-line angles, point-point distnaces and point-line distance. Several other more general formulations are of practical use, but are often signifigantly more difficult and are unsolved in general. 
